@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "id": "database-table-comparison",
+  "root": {
+    "id": "comparison",
+    "type": "stack",
+    "children": [
+      {
+        "id": "overview",
+        "type": "detail",
+        "title": "Comparison",
+        "controls": [
+          "tableId",
+          "definitionState",
+          "deployedCommit",
+          "activatedCommit",
+          "result",
+          "attention"
+        ]
+      },
+      {
+        "id": "columns",
+        "type": "list",
+        "title": "Fields",
+        "bind": "columns",
+        "key": "key",
+        "display": ["name", "change", "activated", "deployed", "database"]
+      },
+      {
+        "id": "indexes",
+        "type": "list",
+        "title": "Indexes",
+        "bind": "indexes",
+        "key": "key",
+        "display": ["name", "change", "activated", "deployed", "database"]
+      },
+      {
+        "id": "differences",
+        "type": "list",
+        "title": "Detected differences",
+        "bind": "differences",
+        "key": "key",
+        "display": ["status", "issue"]
+      }
+    ]
+  }
+}

@@ -1,0 +1,68 @@
+{
+  "schema": 1,
+  "id": "database-table-detail",
+  "root": {
+    "id": "table",
+    "type": "stack",
+    "children": [
+      {
+        "id": "overview",
+        "type": "detail",
+        "title": "Overview",
+        "controls": [
+          "tableId",
+          "tableState",
+          "schemaState",
+          "package",
+          "sourceCommit",
+          "sourceModule",
+          "synchronizedAt",
+          "fields",
+          "attention"
+        ]
+      },
+      {
+        "id": "columns",
+        "type": "list",
+        "title": "Fields",
+        "bind": "columns",
+        "key": "key",
+        "display": [
+          "name",
+          "state",
+          "logicalType",
+          "databaseType",
+          "required",
+          "defaultValue",
+          "databaseDefault",
+          "constraints",
+          "reference"
+        ]
+      },
+      {
+        "id": "indexes",
+        "type": "list",
+        "title": "Indexes",
+        "bind": "indexes",
+        "key": "key",
+        "display": ["name", "state", "columns", "unique"]
+      },
+      {
+        "id": "checks",
+        "type": "list",
+        "title": "Database checks",
+        "bind": "checks",
+        "key": "key",
+        "display": ["expression"]
+      },
+      {
+        "id": "differences",
+        "type": "list",
+        "title": "Detected differences",
+        "bind": "differences",
+        "key": "key",
+        "display": ["status", "issue"]
+      }
+    ]
+  }
+}

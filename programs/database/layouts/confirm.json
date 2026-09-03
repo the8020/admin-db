@@ -1,0 +1,9 @@
+{
+  "schema": 1,
+  "id": "database-trim-confirmation",
+  "root": {
+    "id": "confirmation",
+    "type": "detail",
+    "controls": ["operation", "affected", "warning", "confirmed"]
+  }
+}
