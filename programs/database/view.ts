@@ -87,8 +87,8 @@ export interface TableDetail extends TableSummary {
 export const ListScreen = z.object({
   tables: z.array(z.object({
     navigation: z.string(),
-    id: field(z.string(), { label: "Table", readOnly: true, length: "long" }),
     package: field(z.string(), { label: "Package", readOnly: true }),
+    table: field(z.string(), { label: "Table", readOnly: true }),
     state: field(z.string(), { label: "Table state", readOnly: true }),
     synchronization: field(z.string(), {
       label: "Database schema",
@@ -141,10 +141,14 @@ const DifferenceRow = z.object({
 });
 
 export const DetailScreen = z.object({
-  tableId: field(z.string(), { label: "Table", readOnly: true }),
-  tableState: field(z.string(), { label: "Table state", readOnly: true }),
-  schemaState: field(z.string(), { label: "Database schema", readOnly: true }),
   package: field(z.string(), { label: "Package", readOnly: true }),
+  tableName: field(z.string(), { label: "Table", readOnly: true }),
+  physicalTable: field(z.string(), {
+    label: "Physical table",
+    readOnly: true,
+  }),
+  tableState: field(z.string(), { label: "State", readOnly: true }),
+  schemaState: field(z.string(), { label: "Database schema", readOnly: true }),
   sourceCommit: field(z.string(), {
     label: "Deployed package commit",
     readOnly: true,
@@ -229,8 +233,8 @@ export const DefinitionsScreen = z.object({
 export function tableRows(tables: TableSummary[]) {
   return tables.map((table) => ({
     navigation: table.table_id,
-    id: table.table_id,
     package: table.source_package || "—",
+    table: tableName(table),
     state: stateLabel(table.state),
     synchronization: stateLabel(table.synchronization_state),
     activeColumns: table.active_columns,
@@ -238,6 +242,14 @@ export function tableRows(tables: TableSummary[]) {
     synchronizedAt: table.synchronized_at ?? "—",
     alert: tableAlert(table) || "—",
   }));
+}
+
+function tableName(table: TableSummary): string {
+  const filename = table.source_module.split("/").at(-1) ?? "";
+  if (filename.endsWith(".ts") && filename.length > 3) {
+    return filename.slice(0, -3);
+  }
+  return table.table_id.split("__").at(-1) || "—";
 }
 
 export function tableAlert(table: TableSummary): string {
@@ -252,10 +264,11 @@ export function tableDetailModel(
   detail: TableDetail,
 ): z.infer<typeof DetailScreen> {
   return {
-    tableId: detail.table_id,
+    package: detail.source_package || "—",
+    tableName: tableName(detail),
+    physicalTable: detail.table_id,
     tableState: stateLabel(detail.state),
     schemaState: stateLabel(detail.synchronization_state),
-    package: detail.source_package || "—",
     sourceCommit: detail.source_commit || "—",
     sourceModule: detail.source_module || "—",
     synchronizedAt: detail.synchronized_at ?? "—",
@@ -310,7 +323,7 @@ function columnRows(detail: TableDetail): z.infer<typeof ColumnRow>[] {
       if (parsed !== undefined) deployed.set(column.column_name, parsed);
     }
   }
-  return sortedUnion(deployed, catalog, physical).map((name) => {
+  return orderedUnion(deployed, catalog, physical).map((name) => {
     const definition = deployed.get(name);
     const catalogColumn = catalog.get(name);
     const databaseColumn = physical.get(name);
@@ -343,7 +356,7 @@ function indexRows(
 ) {
   const expected = new Map(expectedItems.map((index) => [index.name, index]));
   const physical = new Map(physicalItems.map((index) => [index.name, index]));
-  return sortedUnion(expected, physical).map((name) => {
+  return orderedUnion(expected, physical).map((name) => {
     const definition = expected.get(name);
     const databaseIndex = physical.get(name);
     return {
@@ -368,7 +381,7 @@ function comparisonColumnRows(detail: TableDetail) {
   );
   const unavailable = detail.definition_state === "error" ||
     detail.definition_state === "unknown";
-  return sortedUnion(activated, deployed, physical).map((name) => ({
+  return orderedUnion(activated, deployed, physical).map((name) => ({
     key: name,
     name,
     change: unavailable
@@ -390,7 +403,7 @@ function comparisonIndexRows(detail: TableDetail) {
   );
   const unavailable = detail.definition_state === "error" ||
     detail.definition_state === "unknown";
-  return sortedUnion(activated, deployed, physical).map((name) => ({
+  return orderedUnion(activated, deployed, physical).map((name) => ({
     key: name,
     name,
     change: unavailable
@@ -529,14 +542,14 @@ function definitionChange<T>(
     : "Changed";
 }
 
-function sortedUnion(
+function orderedUnion(
   ...maps: Array<{ keys(): IterableIterator<string> }>
 ): string[] {
   const values = new Set<string>();
   for (const map of maps) {
     for (const key of map.keys()) values.add(key);
   }
-  return [...values].sort((left, right) => left.localeCompare(right));
+  return [...values];
 }
 
 function yesNo(value: boolean): string {

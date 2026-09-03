@@ -7,8 +7,8 @@
     "bind": "tables",
     "key": "navigation",
     "display": [
-      "id",
       "package",
+      "table",
       "state",
       "synchronization",
       "activeColumns",

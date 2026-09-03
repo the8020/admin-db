@@ -10,10 +10,11 @@
         "type": "detail",
         "title": "Overview",
         "controls": [
-          "tableId",
+          "package",
+          "tableName",
+          "physicalTable",
           "tableState",
           "schemaState",
-          "package",
           "sourceCommit",
           "sourceModule",
           "synchronizedAt",

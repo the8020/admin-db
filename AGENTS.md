@@ -17,7 +17,12 @@
   `@the8020/kernel` commands and the ordinary UUI package mapping.
 - Ordinary list and detail screens are fast database-first views. They present
   fields, indexes, checks, and differences as structured rows and never launch
-  TypeScript evaluation.
+  TypeScript evaluation. Field rows preserve table-definition order; database-
+  only fields follow in physical table order.
+- The table list displays package and source table name as its first two
+  columns; the concatenated physical identifier remains only its navigation key.
+- Table detail starts with package, source table name, physical table name, and
+  active/retired state, in that order.
 - Activated definition scans, per-table comparison, and synchronization are
   explicit deeper operations. Selecting a scan result opens comparison and never
   mutates the database implicitly.

@@ -23,8 +23,8 @@ Deno.test("database table list contains only useful human-facing state", () => {
   }]);
   assertEquals(row, {
     navigation: "acme__orders__orders",
-    id: "acme__orders__orders",
     package: "acme/orders",
+    table: "orders",
     state: "Active",
     synchronization: "Drift",
     activeColumns: 4,
@@ -36,6 +36,9 @@ Deno.test("database table list contains only useful human-facing state", () => {
 
 Deno.test("table detail presents fields, indexes, checks, and differences as rows", () => {
   const model = tableDetailModel(tableFixture());
+  assertEquals(model.package, "acme/orders");
+  assertEquals(model.tableName, "orders");
+  assertEquals(model.physicalTable, "acme__orders__orders");
   assertEquals(model.tableState, "Active");
   assertEquals(model.schemaState, "Synchronized");
   assertEquals(model.attention, "None");
@@ -121,12 +124,25 @@ Deno.test("activated comparison makes changed fields readable", () => {
     model.columns.map(({ name, change }) => ({ name, change })),
     [
       { name: "id", change: "Same" },
-      { name: "note", change: "New" },
       { name: "status", change: "Changed" },
+      { name: "note", change: "New" },
       { name: "total", change: "Removed" },
     ],
   );
   assertEquals(model.differences[0]?.issue, detail.differences[0]);
+});
+
+Deno.test("fields preserve table-definition order instead of sorting by name", () => {
+  const detail = tableFixture();
+  detail.descriptor.columns = [
+    detail.descriptor.columns![2]!,
+    detail.descriptor.columns![0]!,
+    detail.descriptor.columns![1]!,
+  ];
+  assertEquals(
+    tableDetailModel(detail).columns.map((column) => column.name),
+    ["total", "id", "status"],
+  );
 });
 
 Deno.test("activated evaluation failures remain visible and are not presented as removals", () => {
