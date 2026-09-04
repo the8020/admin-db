@@ -91,7 +91,7 @@ export const ListScreen = z.object({
     table: field(z.string(), { label: "Table", readOnly: true }),
     state: field(z.string(), { label: "Table state", readOnly: true }),
     synchronization: field(z.string(), {
-      label: "Database schema",
+      label: "Last sync result",
       readOnly: true,
     }),
     activeColumns: field(z.number(), {

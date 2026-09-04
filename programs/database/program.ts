@@ -2,7 +2,7 @@ import { kernel } from "@the8020/kernel";
 import {
   BACK_EVENT,
   callScreen,
-  showNotification,
+  sendMessage,
   z,
 } from "@packages/the8020/uui/mod.ts";
 import compareLayout from "./layouts/compare.json" with { type: "json" };
@@ -53,7 +53,7 @@ export default async function databaseTables(): Promise<void> {
     if (event.action === "sync-all") {
       try {
         await kernel.database.tables.synchronizeAll();
-        showNotification("Database tables synchronized", "success");
+        sendMessage("Database tables synchronized", "success");
       } catch (error) {
         notifyError(error, "Synchronization failed");
       }
@@ -107,7 +107,7 @@ async function tableDetail(tableId: string): Promise<void> {
     try {
       if (event.action === "sync") {
         await kernel.database.tables.synchronize(tableId);
-        showNotification("Table synchronized", "success");
+        sendMessage("Table synchronized", "success");
       }
       if (
         event.action === "trim-columns" &&
@@ -118,7 +118,7 @@ async function tableDetail(tableId: string): Promise<void> {
           columns: retired,
           confirm: true,
         });
-        showNotification("Retired fields permanently removed", "success");
+        sendMessage("Retired fields permanently removed", "success");
       }
       if (
         event.action === "trim-table" &&
@@ -129,7 +129,7 @@ async function tableDetail(tableId: string): Promise<void> {
           dropTable: true,
           confirm: true,
         });
-        showNotification("Retired table permanently removed", "success");
+        sendMessage("Retired table permanently removed", "success");
         return;
       }
     } catch (error) {
@@ -165,7 +165,7 @@ async function comparisonDetail(tableId: string): Promise<void> {
     if (event.action === "sync") {
       try {
         await kernel.database.tables.synchronize(tableId);
-        showNotification("Table synchronized", "success");
+        sendMessage("Table synchronized", "success");
       } catch (error) {
         notifyError(error, "Synchronization failed");
       }
@@ -244,5 +244,5 @@ async function definitionList(): Promise<void> {
 }
 
 function notifyError(error: unknown, fallback: string): void {
-  showNotification(error instanceof Error ? error.message : fallback, "error");
+  sendMessage(error instanceof Error ? error.message : fallback, "error");
 }
