@@ -1,0 +1,4 @@
+schema = 1
+description = "Browse rows in a database table"
+entrypoint = "program.ts"
+discoverable = false

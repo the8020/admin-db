@@ -9,6 +9,7 @@
   "imports": {
     "@std/assert": "jsr:@std/assert@1.0.14",
     "@the8020/db": "file:///workspace/packages/the8020/db/mod.ts",
+    "@the8020/db/codecs": "file:///workspace/packages/the8020/db/codecs.ts",
     "@the8020/db/types": "file:///workspace/packages/the8020/db/types.ts",
     "@the8020/http": "file:///opt/runtime/http/the8020_http.js",
     "@the8020/kernel": "file:///opt/runtime/kernel/mod.ts",
@@ -19,7 +20,7 @@
     "zod": "npm:zod@4.1.5"
   },
   "tasks": {
-    "check": "deno fmt --check . && deno lint . && deno check --import-map=deno.local.json programs/database/program.ts",
+    "check": "deno fmt --check . && deno lint . && deno check --import-map=deno.local.json programs/database/program.ts programs/browse/program.ts programs/sql/program.ts",
     "test": "deno test --import-map=deno.local.json --allow-read=. ."
   }
 }

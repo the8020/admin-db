@@ -2,9 +2,12 @@ import { kernel } from "@the8020/kernel";
 import {
   BACK_EVENT,
   callScreen,
+  invokeProgram,
+  type ScreenAction,
   sendMessage,
   z,
 } from "@packages/the8020/uui/mod.ts";
+import { countTableRows } from "../browse/data.ts";
 import compareLayout from "./layouts/compare.json" with { type: "json" };
 import confirmLayout from "./layouts/confirm.json" with { type: "json" };
 import definitionsLayout from "./layouts/definitions.json" with {
@@ -28,6 +31,9 @@ import {
 
 export { tableAlert } from "./view.ts";
 
+export const TABLE_BROWSE_PROGRAM = "the8020/admin-db/browse";
+export const SQL_EXECUTOR_PROGRAM = "the8020/admin-db/sql";
+
 export default async function databaseTables(): Promise<void> {
   while (true) {
     const result = await kernel.database.tables.list() as TableSummary[];
@@ -41,6 +47,7 @@ export default async function databaseTables(): Promise<void> {
         actions: [
           { id: "sync-all", label: "Synchronize all", kind: "primary" },
           { id: "definitions", label: "Scan definitions" },
+          { id: "sql", label: "SQL executor" },
           { id: "refresh", label: "[[icon=refresh]] Refresh" },
         ],
       },
@@ -50,6 +57,13 @@ export default async function databaseTables(): Promise<void> {
       await tableDetail(event.value);
     }
     if (event.action === "definitions") await definitionList();
+    if (event.action === "sql") {
+      try {
+        await invokeProgram(SQL_EXECUTOR_PROGRAM);
+      } catch (error) {
+        notifyError(error, "SQL executor failed");
+      }
+    }
     if (event.action === "sync-all") {
       try {
         await kernel.database.tables.synchronizeAll();
@@ -77,34 +91,22 @@ async function tableDetail(tableId: string): Promise<void> {
       model: tableDetailModel(detail),
       layout: detailLayout,
       header: {
-        actions: [
-          ...(detail.source_package
-            ? [
-              { id: "sync", label: "Synchronize", kind: "primary" as const },
-              { id: "compare", label: "Compare activated definition" },
-            ]
-            : []),
-          { id: "refresh", label: "[[icon=refresh]] Refresh" },
-          ...(retired.length > 0
-            ? [{
-              id: "trim-columns",
-              label: "Trim retired fields",
-              kind: "danger" as const,
-            }]
-            : []),
-          ...(detail.state === "retired"
-            ? [{
-              id: "trim-table",
-              label: "Trim table",
-              kind: "danger" as const,
-            }]
-            : []),
-        ],
+        actions: tableDetailActions(detail),
       },
     });
     if (event.action === BACK_EVENT) return;
     if (event.action === "compare") await comparisonDetail(tableId);
     try {
+      if (event.action === "count-rows") {
+        const count = await countTableRows(detail.table_id);
+        sendMessage(
+          `Table contains ${count.toString()} ${count === 1n ? "row" : "rows"}`,
+          "info",
+        );
+      }
+      if (event.action === "browse") {
+        await invokeProgram(TABLE_BROWSE_PROGRAM, detail.table_id);
+      }
       if (event.action === "sync") {
         await kernel.database.tables.synchronize(tableId);
         sendMessage("Table synchronized", "success");
@@ -136,6 +138,35 @@ async function tableDetail(tableId: string): Promise<void> {
       notifyError(error, "Database operation failed");
     }
   }
+}
+
+export function tableDetailActions(detail: TableDetail): ScreenAction[] {
+  const retired = detail.columns.some((column) => column.state === "retired");
+  return [
+    { id: "count-rows", label: "Count rows" },
+    { id: "browse", label: "Browse" },
+    ...(detail.source_package
+      ? [
+        { id: "sync", label: "Synchronize", kind: "primary" as const },
+        { id: "compare", label: "Compare activated definition" },
+      ]
+      : []),
+    { id: "refresh", label: "[[icon=refresh]] Refresh" },
+    ...(retired
+      ? [{
+        id: "trim-columns",
+        label: "Trim retired fields",
+        kind: "danger" as const,
+      }]
+      : []),
+    ...(detail.state === "retired"
+      ? [{
+        id: "trim-table",
+        label: "Trim table",
+        kind: "danger" as const,
+      }]
+      : []),
+  ];
 }
 
 async function comparisonDetail(tableId: string): Promise<void> {

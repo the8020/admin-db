@@ -1,6 +1,35 @@
 import { assertEquals, assertThrows } from "@std/assert";
+import type { ColumnDescriptor } from "@the8020/db/codecs";
+import { kernelInvokeSymbol } from "@the8020/kernel";
+import type {
+  ScreenEventMessage,
+  ScreenSnapshot,
+  UUIClientMessage,
+  UUIWorkerOutbound,
+} from "@packages/the8020/uui/mod.ts";
+import { UUI_PROTOCOL_VERSION } from "@packages/the8020/uui/mod.ts";
+import {
+  bindSession,
+  type SessionChannel,
+} from "@packages/the8020/uui/internal.ts";
+import {
+  countTableRows,
+  rowCountFromResult,
+  tableBrowseStatement,
+  tableRowsFromResult,
+} from "../browse/data.ts";
+import {
+  tableBrowseLayout,
+  tableBrowseModel,
+  tableBrowseScreen,
+} from "../browse/view.ts";
+import browseTable from "../browse/program.ts";
 import detailLayout from "./layouts/detail.json" with { type: "json" };
-import { requireDestructiveConfirmation } from "./program.ts";
+import {
+  requireDestructiveConfirmation,
+  TABLE_BROWSE_PROGRAM,
+  tableDetailActions,
+} from "./program.ts";
 import {
   tableComparisonModel,
   type TableDetail,
@@ -179,6 +208,208 @@ Deno.test("destructive trim requires deliberate confirmation", () => {
   requireDestructiveConfirmation(true);
 });
 
+Deno.test("table detail exposes row count and parameterized browse actions", () => {
+  assertEquals(
+    tableDetailActions(tableFixture()).slice(0, 2).map((action) => ({
+      id: action.id,
+      label: action.label,
+    })),
+    [
+      { id: "count-rows", label: "Count rows" },
+      { id: "browse", label: "Browse" },
+    ],
+  );
+  assertEquals(TABLE_BROWSE_PROGRAM, "the8020/admin-db/browse");
+});
+
+Deno.test("browse builds one bounded read-only table query", () => {
+  const columns = browseColumns().slice(0, 2);
+  assertEquals(
+    tableBrowseStatement("acme__orders__orders", columns, {
+      limit: 25,
+      where: " enabled = 1 ",
+      orderBy: "id DESC",
+    }),
+    'SELECT "id", "enabled" FROM "acme__orders__orders" WHERE enabled = 1 ORDER BY id DESC LIMIT 25',
+  );
+  assertThrows(
+    () =>
+      tableBrowseStatement("acme__orders__orders", columns, {
+        limit: 25,
+        where: "1 = 1; DELETE FROM anything",
+        orderBy: "",
+      }),
+    TypeError,
+    "one SQL fragment",
+  );
+  assertThrows(
+    () =>
+      tableBrowseStatement("acme__orders__orders", columns, {
+        limit: 10_001,
+        where: "",
+        orderBy: "",
+      }),
+    TypeError,
+    "1 through 10000",
+  );
+});
+
+Deno.test("browse rows use logical types from the deployed table definition", () => {
+  const columns = browseColumns();
+  const rows = tableRowsFromResult({
+    columns: columns.map((column) => column.name),
+    rows: [[
+      7,
+      1,
+      { type: "bigint", value: "12345" },
+      "2026-09-04T01:02:03.000Z",
+      { type: "bytes", value: "AP4=" },
+      '{"ready":true}',
+    ]],
+  }, columns);
+  assertEquals(rows, [{
+    id: 7,
+    enabled: true,
+    total: "123.45",
+    createdAt: "2026-09-04T01:02:03.000Z",
+    receipt: "AP4=",
+    metadata: { ready: true },
+  }]);
+
+  const model = { ...tableBrowseModel(), rows };
+  assertEquals(tableBrowseScreen(columns).safeParse(model).success, true);
+  assertEquals(
+    tableBrowseScreen(columns).safeParse({
+      ...model,
+      rows: [{ ...rows[0], enabled: "true" }],
+    }).success,
+    false,
+  );
+  assertEquals(
+    tableBrowseLayout(columns).root.children?.[1]?.headings?.total,
+    "total (decimal(18, 2))",
+  );
+});
+
+Deno.test("row count supports lossless kernel integer results", () => {
+  assertEquals(
+    rowCountFromResult({
+      columns: ["row_count"],
+      rows: [[{ type: "bigint", value: "9007199254740993" }]],
+    }),
+    9007199254740993n,
+  );
+});
+
+Deno.test("browse program receives a table name and reruns changed filters", async () => {
+  const tableName = "acme__orders__orders";
+  const columns = browseColumns().slice(0, 2);
+  const statements: string[] = [];
+  const runtime = globalThis as unknown as Record<symbol, unknown>;
+  const previousInvoke = runtime[kernelInvokeSymbol];
+  runtime[kernelInvokeSymbol] = (
+    operation: string,
+    input: Record<string, unknown>,
+  ) => {
+    if (operation === "runtime.operation") {
+      assertEquals(input, {
+        operation: "database.table.inspect",
+        input: { table_id: tableName },
+      });
+      return Promise.resolve({
+        success: true,
+        result: {
+          table: { table_id: tableName, descriptor: { columns } },
+        },
+      });
+    }
+    if (operation === "database.transaction.begin") {
+      assertEquals(input, { settings: { readOnly: true } });
+      return Promise.resolve({ transaction: "browse-transaction" });
+    }
+    if (operation === "database.transaction.rollback") {
+      assertEquals(input, { transaction: "browse-transaction" });
+      return Promise.resolve(undefined);
+    }
+    if (operation === "database.execute") {
+      statements.push(String(input.statement));
+      assertEquals(input.return_rows, true);
+      if (String(input.statement).startsWith("SELECT COUNT(*)")) {
+        assertEquals(input.transaction, undefined);
+        return Promise.resolve({
+          columns: ["row_count"],
+          rows: [[4]],
+        });
+      }
+      assertEquals(input.transaction, "browse-transaction");
+      return Promise.resolve({
+        columns: columns.map((column) => column.name),
+        rows: [[4, 1]],
+      });
+    }
+    return Promise.reject(new Error(`unexpected operation ${operation}`));
+  };
+
+  const channel = new ProgramChannel();
+  const unbind = bindSession(channel);
+  try {
+    const running = browseTable(tableName);
+    const initial = await channel.screen();
+    assertEquals(initial.screen.id, "database-table-browse");
+    assertEquals(initial.screen.model, {
+      limit: 100,
+      where: "",
+      orderBy: "",
+      rows: [{ id: 4, enabled: true }],
+    });
+    assertEquals(
+      statements[0],
+      'SELECT "id", "enabled" FROM "acme__orders__orders" LIMIT 100',
+    );
+
+    channel.event(initial, "run", [
+      { bind: "limit", value: 5 },
+      { bind: "where", value: "enabled = 1" },
+      { bind: "orderBy", value: "id DESC" },
+    ]);
+    const filtered = await channel.screen();
+    assertEquals(
+      statements[1],
+      'SELECT "id", "enabled" FROM "acme__orders__orders" WHERE enabled = 1 ORDER BY id DESC LIMIT 5',
+    );
+    channel.event(filtered, "back");
+    await running;
+    assertEquals(await countTableRows(tableName), 4n);
+  } finally {
+    unbind();
+    if (previousInvoke === undefined) delete runtime[kernelInvokeSymbol];
+    else runtime[kernelInvokeSymbol] = previousInvoke;
+  }
+});
+
+function browseColumns(): ColumnDescriptor[] {
+  const common = {
+    nullable: false,
+    generated: false,
+    primary_key: false,
+    unique: false,
+  };
+  return [
+    { ...common, name: "id", logical_type: "integer", primary_key: true },
+    { ...common, name: "enabled", logical_type: "boolean" },
+    {
+      ...common,
+      name: "total",
+      logical_type: "decimal",
+      precision: 18,
+      scale: 2,
+    },
+    { ...common, name: "createdAt", logical_type: "datetime" },
+    { ...common, name: "receipt", logical_type: "bytes" },
+    { ...common, name: "metadata", logical_type: "json" },
+  ];
+}
+
 function tableFixture(): TableDetail {
   const columns = [
     {
@@ -261,4 +492,71 @@ function tableFixture(): TableDetail {
     physical_checks: ["total >= 0"],
     differences: [],
   };
+}
+
+interface WorkerScreenShow {
+  surfaceId: string;
+  screen: ScreenSnapshot;
+}
+
+class ProgramChannel implements SessionChannel {
+  readonly sessionId = "admin-db-program-test";
+  #client: UUIClientMessage[] = [];
+  #clientWaiters: Array<(message: UUIClientMessage) => void> = [];
+  #server: UUIWorkerOutbound[] = [];
+  #serverWaiters: Array<(message: UUIWorkerOutbound) => void> = [];
+  #clientSequence = 0;
+
+  send(message: UUIWorkerOutbound): void {
+    const waiter = this.#serverWaiters.shift();
+    if (waiter === undefined) this.#server.push(message);
+    else waiter(message);
+  }
+
+  receive(): Promise<UUIClientMessage> {
+    const message = this.#client.shift();
+    if (message !== undefined) return Promise.resolve(message);
+    return new Promise((resolve) => this.#clientWaiters.push(resolve));
+  }
+
+  async screen(): Promise<WorkerScreenShow> {
+    while (true) {
+      const message = await this.#nextServer();
+      if (
+        message.type === "presentation.show" &&
+        message.presentation.activeSurfaceId !== null
+      ) {
+        const surface = message.presentation.surfaces.at(-1)!;
+        return { surfaceId: surface.surfaceId, screen: surface.screen };
+      }
+    }
+  }
+
+  event(
+    screen: WorkerScreenShow,
+    action: string,
+    changes: ScreenEventMessage["changes"] = [],
+  ): void {
+    const message: ScreenEventMessage = {
+      type: "screen.event",
+      protocol: UUI_PROTOCOL_VERSION,
+      clientSequence: ++this.#clientSequence,
+      sessionId: this.sessionId,
+      surfaceId: screen.surfaceId,
+      screenId: screen.screen.id,
+      screenRevision: screen.screen.revision,
+      action,
+      eventType: action === "back" ? "back" : "action",
+      changes,
+    };
+    const waiter = this.#clientWaiters.shift();
+    if (waiter === undefined) this.#client.push(message);
+    else waiter(message);
+  }
+
+  #nextServer(): Promise<UUIWorkerOutbound> {
+    const message = this.#server.shift();
+    if (message !== undefined) return Promise.resolve(message);
+    return new Promise((resolve) => this.#serverWaiters.push(resolve));
+  }
 }

@@ -1,0 +1,4 @@
+schema = 1
+description = "Run SQL and inspect database results"
+entrypoint = "program.ts"
+discoverable = true

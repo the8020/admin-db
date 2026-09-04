@@ -6,7 +6,8 @@
 
 # Ownership
 
-- Own database table list, detail, activated-definition comparison,
+- Own database table list, detail, row counting, read-only row browsing, generic
+  single-statement SQL execution, activated-definition comparison,
   synchronization, and confirmed destructive-trim screens.
 - Do not own the table DSL, Kysely driver, codecs, evaluator, catalog, physical
   schema operations, or database credentials.
@@ -23,6 +24,15 @@
   columns; the concatenated physical identifier remains only its navigation key.
 - Table detail starts with package, source table name, physical table name, and
   active/retired state, in that order.
+- Table detail exposes row count as an informational message and launches the
+  non-discoverable `browse` program with its physical table name. Browse uses
+  deployed descriptor order and logical codecs, bounds the result limit, and
+  accepts only single-statement read-only Where and Order by SQL fragments.
+- The discoverable `sql` program presents one SQL textarea and one dynamically
+  shaped output list. It preserves returned column order (including duplicate
+  names), renders scalar and tagged values human-readably, and summarizes
+  statements that return affected-row or insert-ID metadata. Execution errors
+  use UUI error messages.
 - Activated definition scans, per-table comparison, and synchronization are
   explicit deeper operations. Selecting a scan result opens comparison and never
   mutates the database implicitly.
@@ -39,5 +49,6 @@
 # Verification
 
 - `deno task check` formats, lints, and type-checks the program.
-- `deno task test` covers list/detail/comparison view models, removal of raw
-  descriptor controls, and destructive confirmation.
+- `deno task test` covers list/detail/comparison view models, row browse query
+  and logical-value mapping, generic SQL intent and dynamic result presentation,
+  removal of raw descriptor controls, and destructive confirmation.
