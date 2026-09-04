@@ -11,11 +11,8 @@ import {
   UUI_PROTOCOL_VERSION,
   type UUIClientMessage,
   type UUIWorkerOutbound,
-} from "@packages/the8020/uui/mod.ts";
-import {
-  bindSession,
-  type SessionChannel,
-} from "@packages/the8020/uui/internal.ts";
+} from "/p/the8020/uui/mod.ts";
+import { bindSession, type SessionChannel } from "/p/the8020/uui/internal.ts";
 import { presentSQLResult, sqlStatementIntent } from "./data.ts";
 import sqlExecutor from "./program.ts";
 

@@ -4,7 +4,7 @@ import {
   type DatabaseValue,
   decodeDatabaseColumnValue,
   decodeDatabaseValue,
-} from "@the8020/db/codecs";
+} from "/p/the8020/db/codecs.ts";
 import { kernel } from "@the8020/kernel";
 
 export const DEFAULT_BROWSE_LIMIT = 100;

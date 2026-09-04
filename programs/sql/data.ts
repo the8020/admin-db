@@ -2,7 +2,7 @@ import {
   bytesToBase64,
   type DatabaseValue,
   decodeDatabaseValue,
-} from "@the8020/db/codecs";
+} from "/p/the8020/db/codecs.ts";
 import {
   type DatabaseBackend,
   kernel,

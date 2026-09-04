@@ -1,4 +1,4 @@
-import { field, z } from "@packages/the8020/uui/mod.ts";
+import { field, z } from "/p/the8020/uui/mod.ts";
 
 export interface TableSummary {
   table_id: string;

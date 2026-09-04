@@ -1,5 +1,5 @@
-import type { ColumnDescriptor } from "@the8020/db/codecs";
-import { field, type LayoutDocument, z } from "@packages/the8020/uui/mod.ts";
+import type { ColumnDescriptor } from "/p/the8020/db/codecs.ts";
+import { field, type LayoutDocument, z } from "/p/the8020/uui/mod.ts";
 import {
   DEFAULT_BROWSE_LIMIT,
   MAXIMUM_BROWSE_LIMIT,

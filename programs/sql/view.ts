@@ -1,4 +1,4 @@
-import { field, type LayoutDocument, z } from "@packages/the8020/uui/mod.ts";
+import { field, type LayoutDocument, z } from "/p/the8020/uui/mod.ts";
 import type { SQLResultColumn } from "./data.ts";
 
 export function sqlScreen(columns: readonly SQLResultColumn[]) {

@@ -6,7 +6,7 @@ import {
   type ScreenAction,
   sendMessage,
   z,
-} from "@packages/the8020/uui/mod.ts";
+} from "/p/the8020/uui/mod.ts";
 import { countTableRows } from "../browse/data.ts";
 import compareLayout from "./layouts/compare.json" with { type: "json" };
 import confirmLayout from "./layouts/confirm.json" with { type: "json" };

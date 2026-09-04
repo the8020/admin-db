@@ -1,8 +1,4 @@
-import {
-  BACK_EVENT,
-  callScreen,
-  sendMessage,
-} from "@packages/the8020/uui/mod.ts";
+import { BACK_EVENT, callScreen, sendMessage } from "/p/the8020/uui/mod.ts";
 import { executeSQL, type SQLResultColumn } from "./data.ts";
 import { sqlLayout, sqlScreen } from "./view.ts";
 

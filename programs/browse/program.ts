@@ -1,10 +1,6 @@
 import { kernel } from "@the8020/kernel";
-import {
-  BACK_EVENT,
-  callScreen,
-  sendMessage,
-} from "@packages/the8020/uui/mod.ts";
-import type { ColumnDescriptor } from "@the8020/db/codecs";
+import { BACK_EVENT, callScreen, sendMessage } from "/p/the8020/uui/mod.ts";
+import type { ColumnDescriptor } from "/p/the8020/db/codecs.ts";
 import { browseTableRows } from "./data.ts";
 import {
   tableBrowseLayout,

@@ -1,17 +1,14 @@
 import { assertEquals, assertThrows } from "@std/assert";
-import type { ColumnDescriptor } from "@the8020/db/codecs";
+import type { ColumnDescriptor } from "/p/the8020/db/codecs.ts";
 import { kernelInvokeSymbol } from "@the8020/kernel";
 import type {
   ScreenEventMessage,
   ScreenSnapshot,
   UUIClientMessage,
   UUIWorkerOutbound,
-} from "@packages/the8020/uui/mod.ts";
-import { UUI_PROTOCOL_VERSION } from "@packages/the8020/uui/mod.ts";
-import {
-  bindSession,
-  type SessionChannel,
-} from "@packages/the8020/uui/internal.ts";
+} from "/p/the8020/uui/mod.ts";
+import { UUI_PROTOCOL_VERSION } from "/p/the8020/uui/mod.ts";
+import { bindSession, type SessionChannel } from "/p/the8020/uui/internal.ts";
 import {
   countTableRows,
   rowCountFromResult,
