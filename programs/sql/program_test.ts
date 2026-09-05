@@ -199,8 +199,12 @@ Deno.test("SQL program reshapes output and reports errors as UUI messages", asyn
     assertEquals(calls[0]?.return_rows, true);
     assertEquals(selected.screen.model, {
       sql: "SELECT 42",
-      output: [{ __rowKey: "0", value_0: "42" }],
+      output: [],
     });
+    assertEquals(selected.screen.lists[0]!.rows, [{
+      __rowKey: "0",
+      value_0: "42",
+    }]);
     const selectedLayout = selected.screen.layout as LayoutDocument;
     assertEquals(
       selectedLayout.root.children?.[1]?.headings,
@@ -215,8 +219,13 @@ Deno.test("SQL program reshapes output and reports errors as UUI messages", asyn
     assertEquals(calls[1]?.return_rows, false);
     assertEquals(updated.screen.model, {
       sql: "UPDATE orders SET active = false",
-      output: [{ __rowKey: "0", result: "Rows affected", value: "2" }],
+      output: [],
     });
+    assertEquals(updated.screen.lists[0]!.rows, [{
+      __rowKey: "0",
+      result: "Rows affected",
+      value: "2",
+    }]);
 
     channel.event(updated, "run", [{ bind: "sql", value: "BROKEN" }]);
     assertEquals(await channel.message(), {
@@ -300,6 +309,12 @@ class ProgramChannel implements SessionChannel {
       surfaceId: screen.surfaceId,
       screenId: screen.screen.id,
       screenRevision: screen.screen.revision,
+      instanceId: screen.screen.state.instanceId,
+      screenState: {
+        version: screen.screen.state.version,
+        scroll: screen.screen.state.scroll,
+        elements: {},
+      },
       action,
       eventType: action === BACK_EVENT ? BACK_EVENT : "action",
       changes,

@@ -24,7 +24,13 @@
         "title": "Fields",
         "bind": "columns",
         "key": "key",
-        "display": ["name", "change", "activated", "deployed", "database"]
+        "display": [
+          "name",
+          "change",
+          "activated",
+          "deployed",
+          "database"
+        ]
       },
       {
         "id": "indexes",
@@ -32,7 +38,13 @@
         "title": "Indexes",
         "bind": "indexes",
         "key": "key",
-        "display": ["name", "change", "activated", "deployed", "database"]
+        "display": [
+          "name",
+          "change",
+          "activated",
+          "deployed",
+          "database"
+        ]
       },
       {
         "id": "differences",
@@ -40,7 +52,15 @@
         "title": "Detected differences",
         "bind": "differences",
         "key": "key",
-        "display": ["status", "issue"]
+        "display": [
+          "status",
+          "issue"
+        ],
+        "columnOptions": {
+          "issue": {
+            "length": "long"
+          }
+        }
       }
     ]
   }

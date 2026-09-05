@@ -38,7 +38,15 @@
           "databaseDefault",
           "constraints",
           "reference"
-        ]
+        ],
+        "columnOptions": {
+          "constraints": {
+            "length": "long"
+          },
+          "reference": {
+            "length": "long"
+          }
+        }
       },
       {
         "id": "indexes",
@@ -46,7 +54,12 @@
         "title": "Indexes",
         "bind": "indexes",
         "key": "key",
-        "display": ["name", "state", "columns", "unique"]
+        "display": [
+          "name",
+          "state",
+          "columns",
+          "unique"
+        ]
       },
       {
         "id": "checks",
@@ -54,7 +67,14 @@
         "title": "Database checks",
         "bind": "checks",
         "key": "key",
-        "display": ["expression"]
+        "display": [
+          "expression"
+        ],
+        "columnOptions": {
+          "expression": {
+            "length": "long"
+          }
+        }
       },
       {
         "id": "differences",
@@ -62,7 +82,15 @@
         "title": "Detected differences",
         "bind": "differences",
         "key": "key",
-        "display": ["status", "issue"]
+        "display": [
+          "status",
+          "issue"
+        ],
+        "columnOptions": {
+          "issue": {
+            "length": "long"
+          }
+        }
       }
     ]
   }

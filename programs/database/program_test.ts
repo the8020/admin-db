@@ -357,8 +357,12 @@ Deno.test("browse program receives a table name and reruns changed filters", asy
       limit: 100,
       where: "",
       orderBy: "",
-      rows: [{ id: 4, enabled: true }],
+      rows: [],
     });
+    assertEquals(
+      initial.screen.lists.find((list) => list.bind === "rows")!.rows,
+      [{ id: 4, enabled: true }],
+    );
     assertEquals(
       statements[0],
       'SELECT "id", "enabled" FROM "acme__orders__orders" LIMIT 100',
@@ -542,6 +546,12 @@ class ProgramChannel implements SessionChannel {
       surfaceId: screen.surfaceId,
       screenId: screen.screen.id,
       screenRevision: screen.screen.revision,
+      instanceId: screen.screen.state.instanceId,
+      screenState: {
+        version: screen.screen.state.version,
+        scroll: screen.screen.state.scroll,
+        elements: {},
+      },
       action,
       eventType: action === "back" ? "back" : "action",
       changes,

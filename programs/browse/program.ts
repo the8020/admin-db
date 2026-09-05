@@ -1,5 +1,10 @@
 import { kernel } from "@the8020/kernel";
-import { BACK_EVENT, callScreen, sendMessage } from "/p/the8020/uui/mod.ts";
+import {
+  BACK_EVENT,
+  callScreen,
+  Model,
+  sendMessage,
+} from "/p/the8020/uui/mod.ts";
 import type { ColumnDescriptor } from "/p/the8020/db/codecs.ts";
 import { browseTableRows } from "./data.ts";
 import {
@@ -26,6 +31,7 @@ export default async function browseTable(tableName: unknown): Promise<void> {
   const layout = tableBrowseLayout(columns);
   let refresh = true;
 
+  const screenModel = new Model(model);
   while (true) {
     if (refresh) {
       try {
@@ -38,13 +44,14 @@ export default async function browseTable(tableName: unknown): Promise<void> {
         );
       }
     }
+    screenModel.data = model;
     const event = await callScreen({
       id: "database-table-browse",
       title: `Browse ${detail.table_id}`,
       description:
         "Rows use the deployed TypeScript table definition. Where and Order by accept one read-only SQL fragment each.",
       schema,
-      model,
+      model: screenModel,
       layout,
       header: {
         actions: [{ id: "run", label: "Run query", kind: "primary" }],

@@ -6,6 +6,17 @@
     "type": "list",
     "bind": "definitions",
     "key": "navigation",
-    "display": ["id", "package", "state", "commit", "error"]
+    "display": [
+      "id",
+      "package",
+      "state",
+      "commit",
+      "error"
+    ],
+    "columnOptions": {
+      "error": {
+        "length": "long"
+      }
+    }
   }
 }

@@ -11,19 +11,19 @@ export function tableBrowseScreen(columns: readonly ColumnDescriptor[]) {
     columns.map((column) => [column.name, tableValueSchema(column)]),
   );
   return z.object({
-    limit: field(
-      z.number().int().min(1).max(MAXIMUM_BROWSE_LIMIT),
-      { label: "Limit" },
-    ),
     where: field(z.string().max(MAXIMUM_SQL_CLAUSE_LENGTH), {
       label: "Where",
       description: "SQL condition without the WHERE keyword",
       length: "long",
     }),
+    limit: field(
+      z.number().int().min(1).max(MAXIMUM_BROWSE_LIMIT),
+      { label: "Limit", length: "medium" },
+    ),
     orderBy: field(z.string().max(MAXIMUM_SQL_CLAUSE_LENGTH), {
       label: "Order by",
       description: "SQL ordering without the ORDER BY keyword",
-      length: "long",
+      length: "medium",
     }),
     rows: z.array(z.object(rowShape)),
   });
@@ -31,8 +31,8 @@ export function tableBrowseScreen(columns: readonly ColumnDescriptor[]) {
 
 export function tableBrowseModel() {
   return {
-    limit: DEFAULT_BROWSE_LIMIT,
     where: "",
+    limit: DEFAULT_BROWSE_LIMIT,
     orderBy: "",
     rows: [] as Record<string, unknown>[],
   };
@@ -52,7 +52,7 @@ export function tableBrowseLayout(
           id: "query",
           type: "detail",
           title: "Query",
-          controls: ["limit", "where", "orderBy"],
+          controls: ["where", "limit", "orderBy"],
         },
         {
           id: "rows",

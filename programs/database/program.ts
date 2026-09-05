@@ -3,6 +3,7 @@ import {
   BACK_EVENT,
   callScreen,
   invokeProgram,
+  Model,
   type ScreenAction,
   sendMessage,
   z,
@@ -35,13 +36,17 @@ export const TABLE_BROWSE_PROGRAM = "the8020/admin-db/browse";
 export const SQL_EXECUTOR_PROGRAM = "the8020/admin-db/sql";
 
 export default async function databaseTables(): Promise<void> {
+  let screenModel: Model<z.infer<typeof ListScreen>> | undefined;
   while (true) {
     const result = await kernel.database.tables.list() as TableSummary[];
+    const screenModelData = { tables: tableRows(result) };
+    screenModel ??= new Model(screenModelData);
+    screenModel.data = screenModelData;
     const event = await callScreen({
       id: "database-tables",
       title: "Database tables",
       schema: ListScreen,
-      model: { tables: tableRows(result) },
+      model: screenModel,
       layout: listLayout,
       header: {
         actions: [
@@ -76,6 +81,7 @@ export default async function databaseTables(): Promise<void> {
 }
 
 async function tableDetail(tableId: string): Promise<void> {
+  let screenModel1: Model<z.infer<typeof DetailScreen>> | undefined;
   while (true) {
     const detail = await kernel.database.tables.inspect(
       tableId,
@@ -84,11 +90,14 @@ async function tableDetail(tableId: string): Promise<void> {
       column.state === "retired"
     )
       .map((column) => column.column_name);
+    const screenModel1Data = tableDetailModel(detail);
+    screenModel1 ??= new Model(screenModel1Data);
+    screenModel1.data = screenModel1Data;
     const event = await callScreen({
       id: "database-table-detail",
       title: detail.table_id,
       schema: DetailScreen,
-      model: tableDetailModel(detail),
+      model: screenModel1,
       layout: detailLayout,
       header: {
         actions: tableDetailActions(detail),
@@ -105,7 +114,7 @@ async function tableDetail(tableId: string): Promise<void> {
         );
       }
       if (event.action === "browse") {
-        await invokeProgram(TABLE_BROWSE_PROGRAM, detail.table_id);
+        await invokeProgram(TABLE_BROWSE_PROGRAM, [detail.table_id]);
       }
       if (event.action === "sync") {
         await kernel.database.tables.synchronize(tableId);
@@ -170,15 +179,19 @@ export function tableDetailActions(detail: TableDetail): ScreenAction[] {
 }
 
 async function comparisonDetail(tableId: string): Promise<void> {
+  let screenModel2: Model<z.infer<typeof CompareScreen>> | undefined;
   while (true) {
     const detail = await kernel.database.tables.compare(
       tableId,
     ) as unknown as TableDetail;
+    const screenModel2Data = tableComparisonModel(detail);
+    screenModel2 ??= new Model(screenModel2Data);
+    screenModel2.data = screenModel2Data;
     const event = await callScreen({
       id: "database-table-comparison",
       title: `Compare ${tableId}`,
       schema: CompareScreen,
-      model: tableComparisonModel(detail),
+      model: screenModel2,
       layout: compareLayout,
       header: {
         actions: [
@@ -214,12 +227,14 @@ async function confirmTrim(
     warning: "This permanently deletes database structure and stored data.",
     confirmed: false,
   };
+  const screenModel3 = new Model(model);
   while (true) {
+    screenModel3.data = model;
     const event = await callScreen({
       id: "database-trim-confirmation",
       title: "Confirm destructive database trim",
       schema: ConfirmScreen,
-      model,
+      model: screenModel3,
       layout: confirmLayout,
       header: {
         actions: [{ id: "trim", label: "Permanently trim", kind: "danger" }],
@@ -244,24 +259,28 @@ export function requireDestructiveConfirmation(confirmed: boolean): void {
 }
 
 async function definitionList(): Promise<void> {
+  let screenModel4: Model<z.infer<typeof DefinitionsScreen>> | undefined;
   while (true) {
     const definitions = await kernel.database.tables.definitions();
+    const screenModel4Data = {
+      definitions: definitions.map((definition) => ({
+        navigation: definition.table_id,
+        id: definition.table_id,
+        package: definition.source_package,
+        state: stateLabel(definition.synchronization_state),
+        commit: definition.source_commit,
+        error: definition.error ?? "",
+      })),
+    };
+    screenModel4 ??= new Model(screenModel4Data);
+    screenModel4.data = screenModel4Data;
     const event = await callScreen({
       id: "database-table-definitions",
       title: "Activated definition changes",
       description:
         "This scan evaluates activated TypeScript definitions. Select a table to compare it before synchronizing.",
       schema: DefinitionsScreen,
-      model: {
-        definitions: definitions.map((definition) => ({
-          navigation: definition.table_id,
-          id: definition.table_id,
-          package: definition.source_package,
-          state: stateLabel(definition.synchronization_state),
-          commit: definition.source_commit,
-          error: definition.error ?? "",
-        })),
-      },
+      model: screenModel4,
       layout: definitionsLayout,
       header: {
         actions: [{ id: "refresh", label: "[[icon=refresh]] Refresh" }],
