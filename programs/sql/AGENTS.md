@@ -10,6 +10,7 @@ Parent DOX: [admin-db/programs DOX](../AGENTS.md).
 
 # Local Contracts
 
+- Keep the SQL textarea at the standard two-row size (`rowSpan: 2`).
 - Preserve returned column order, including duplicate names, and distinguish row
   results from affected-row or insert-ID metadata.
 - Render scalar and tagged values human-readably and report execution failures

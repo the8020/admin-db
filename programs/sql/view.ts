@@ -13,7 +13,7 @@ export function sqlScreen(columns: readonly SQLResultColumn[]) {
       description: "Run one database statement at a time",
       placeholder: "SELECT * FROM table_name LIMIT 100",
       length: "long",
-      rowSpan: 6,
+      rowSpan: 2,
     }),
     output: z.array(z.object(resultShape)),
   });
