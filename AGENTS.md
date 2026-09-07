@@ -172,19 +172,19 @@ below.
 
 # Work Guidance
 
-- Compose database administration from shared table definitions, logical
-  codecs, typed operations, and UUI presentation. Keep new workflows in this
-  package; extend kernel foundations only when the physical operation cannot
-  be correctly provided by an existing owner.
+- Compose database administration from shared table definitions, logical codecs,
+  typed operations, and UUI presentation. Keep new workflows in this package;
+  extend kernel foundations only when the physical operation cannot be correctly
+  provided by an existing owner.
 - Repair shared SQL or value discrepancies in db or the kernel database owner
   and verify the affected browse, query, or synchronization path. Keep
   collection reads and explicit maintenance work bounded.
 
 - Show concise human-readable schema information. Never expose raw descriptor
   JSON as an administration control.
-- Keep database command policy in its owning Deno programs and physical
-  schema decisions in the kernel. This package maps typed results to UUI
-  models and explicit actions.
+- Keep database command policy in its owning Deno programs and physical schema
+  decisions in the kernel. This package maps typed results to UUI models and
+  explicit actions.
 
 # Verification
 
