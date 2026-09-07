@@ -7,10 +7,9 @@
     "bind": "definitions",
     "key": "navigation",
     "display": [
-      "id",
       "package",
+      "id",
       "state",
-      "commit",
       "error"
     ],
     "columnOptions": {

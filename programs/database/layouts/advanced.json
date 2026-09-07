@@ -1,0 +1,97 @@
+{
+  "schema": 1,
+  "id": "database-table-advanced",
+  "root": {
+    "id": "table",
+    "type": "stack",
+    "children": [
+      {
+        "id": "overview",
+        "type": "detail",
+        "title": "Overview",
+        "controls": [
+          "package",
+          "tableName",
+          "physicalTable",
+          "tableState",
+          "schemaState",
+          "sourceCommit",
+          "sourceModule",
+          "synchronizedAt",
+          "fields",
+          "attention"
+        ]
+      },
+      {
+        "id": "columns",
+        "type": "list",
+        "title": "Fields",
+        "bind": "columns",
+        "key": "key",
+        "display": [
+          "name",
+          "state",
+          "logicalType",
+          "databaseType",
+          "required",
+          "defaultValue",
+          "databaseDefault",
+          "constraints",
+          "reference"
+        ],
+        "columnOptions": {
+          "constraints": {
+            "length": "long"
+          },
+          "reference": {
+            "length": "long"
+          }
+        }
+      },
+      {
+        "id": "indexes",
+        "type": "list",
+        "title": "Indexes",
+        "bind": "indexes",
+        "key": "key",
+        "display": [
+          "name",
+          "state",
+          "columns",
+          "unique"
+        ]
+      },
+      {
+        "id": "checks",
+        "type": "list",
+        "title": "Database checks",
+        "bind": "checks",
+        "key": "key",
+        "display": [
+          "expression"
+        ],
+        "columnOptions": {
+          "expression": {
+            "length": "long"
+          }
+        }
+      },
+      {
+        "id": "differences",
+        "type": "list",
+        "title": "Detected differences",
+        "bind": "differences",
+        "key": "key",
+        "display": [
+          "status",
+          "issue"
+        ],
+        "columnOptions": {
+          "issue": {
+            "length": "long"
+          }
+        }
+      }
+    ]
+  }
+}

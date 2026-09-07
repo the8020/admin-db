@@ -80,6 +80,7 @@ Deno.test("table detail presents fields, indexes, checks, and differences as row
       databaseDefault: "—",
       constraints: "Primary key, Generated",
       reference: "—",
+      referenceTable: "",
     },
     {
       key: "status",
@@ -92,6 +93,7 @@ Deno.test("table detail presents fields, indexes, checks, and differences as row
       databaseDefault: "'draft'",
       constraints: "—",
       reference: "—",
+      referenceTable: "",
     },
     {
       key: "total",
@@ -104,6 +106,7 @@ Deno.test("table detail presents fields, indexes, checks, and differences as row
       databaseDefault: "—",
       constraints: "—",
       reference: "—",
+      referenceTable: "",
     },
   ]);
   assertEquals(model.indexes, [{
@@ -212,8 +215,8 @@ Deno.test("table detail exposes row count and parameterized browse actions", () 
       label: action.label,
     })),
     [
+      { id: "browse", label: "Browse rows" },
       { id: "count-rows", label: "Count rows" },
-      { id: "browse", label: "Browse" },
     ],
   );
   assertEquals(TABLE_BROWSE_PROGRAM, "the8020/admin-db/browse");
@@ -284,7 +287,7 @@ Deno.test("browse rows use logical types from the deployed table definition", ()
   );
   assertEquals(
     tableBrowseLayout(columns).root.children?.[1]?.headings?.total,
-    "total (decimal(18, 2))",
+    "total",
   );
 });
 

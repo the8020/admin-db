@@ -1,4 +1,6 @@
 import { field, z } from "/p/the8020/uui/mod.ts";
+import { packageId } from "/p/the8020/packages/types/package.ts";
+import { tableId } from "/p/the8020/db/types/table.ts";
 
 export interface TableSummary {
   table_id: string;
@@ -87,7 +89,7 @@ export interface TableDetail extends TableSummary {
 export const ListScreen = z.object({
   tables: z.array(z.object({
     navigation: z.string(),
-    package: field(z.string(), { label: "Package", readOnly: true }),
+    package: field(packageId, { readOnly: true }),
     table: field(z.string(), { label: "Table", readOnly: true }),
     state: field(z.string(), { label: "Table state", readOnly: true }),
     synchronization: field(z.string(), {
@@ -110,7 +112,7 @@ export const ListScreen = z.object({
   })),
 });
 
-const ColumnRow = z.object({
+export const ColumnRow = z.object({
   key: z.string(),
   name: field(z.string(), { label: "Field", readOnly: true }),
   state: field(z.string(), { label: "State", readOnly: true }),
@@ -124,6 +126,7 @@ const ColumnRow = z.object({
   }),
   constraints: field(z.string(), { label: "Constraints", readOnly: true }),
   reference: field(z.string(), { label: "Reference", readOnly: true }),
+  referenceTable: field(tableId, { label: "Related table", readOnly: true }),
 });
 
 const IndexRow = z.object({
@@ -141,11 +144,12 @@ const DifferenceRow = z.object({
 });
 
 export const DetailScreen = z.object({
-  package: field(z.string(), { label: "Package", readOnly: true }),
+  package: field(packageId, { readOnly: true }),
   tableName: field(z.string(), { label: "Table", readOnly: true }),
-  physicalTable: field(z.string(), {
+  physicalTable: field(tableId, {
     label: "Physical table",
     readOnly: true,
+    open: undefined,
   }),
   tableState: field(z.string(), { label: "State", readOnly: true }),
   schemaState: field(z.string(), { label: "Database schema", readOnly: true }),
@@ -189,7 +193,7 @@ const ComparisonIndexRow = ComparisonRow.extend({
 });
 
 export const CompareScreen = z.object({
-  tableId: field(z.string(), { label: "Table", readOnly: true }),
+  tableId: field(tableId, { readOnly: true }),
   definitionState: field(z.string(), {
     label: "Activated definition",
     readOnly: true,
@@ -346,6 +350,7 @@ function columnRows(detail: TableDetail): z.infer<typeof ColumnRow>[] {
       reference: definition?.reference === undefined
         ? "—"
         : `${definition.reference.table}.${definition.reference.column}`,
+      referenceTable: definition?.reference?.table ?? "",
     };
   });
 }

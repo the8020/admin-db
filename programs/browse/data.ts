@@ -126,7 +126,7 @@ function presentValue(value: unknown): unknown {
   return value;
 }
 
-function quoteIdentifier(value: string): string {
+export function quoteIdentifier(value: string): string {
   if (
     typeof value !== "string" || value.length === 0 || value.includes("\0") ||
     new TextEncoder().encode(value).byteLength > 63

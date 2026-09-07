@@ -128,8 +128,9 @@ below.
 
 # Local Contracts
 
-- `the8020/admin-db/database` is a parameterless program backed only by typed
-  `@the8020/kernel` commands and the ordinary UUI package mapping.
+- `the8020/admin-db/database` opens its catalog without arguments and accepts an
+  optional table ID for linked navigation. It uses typed kernel APIs and
+  ordinary UUI programs.
 - Database, SQL, and the hidden row browser declare `uui = true`; calls to the
   row browser pass its table name as one positional argument to `invokeProgram`.
 - Ordinary list and detail screens are fast database-first views. They present
@@ -138,8 +139,13 @@ below.
   only fields follow in physical table order.
 - The table list displays package and source table name as its first two
   columns; the concatenated physical identifier remains only its navigation key.
-- Table detail starts with package, source table name, physical table name, and
-  active/retired state, in that order.
+- Catalogs put package, table name, state, field count, and attention first.
+  Table detail shows package/name, state, and a compact field list. Browse rows
+  is primary. Field selection opens its full definition and any related-table
+  reference. Package, SQL, and table links call their owning programs.
+- Advanced table detail owns physical names, source metadata, indexes, checks,
+  differences, comparison, synchronization, and confirmed trimming. Catalog
+  Advanced opens maintenance with definition review and Synchronize all.
 - Table detail exposes row count as an informational message and launches the
   non-discoverable `browse` program with its physical table name. Browse uses
   deployed descriptor order and logical codecs, bounds the result limit, and
@@ -150,7 +156,9 @@ below.
   shaped output list. It preserves returned column order (including duplicate
   names), renders scalar and tagged values human-readably, and summarizes
   statements that return affected-row or insert-ID metadata. Execution errors
-  use UUI error messages.
+  use UUI error messages. A shared table field provides searchable reference
+  help. New SELECT prepares a quoted, bounded query for the chosen table without
+  executing it; a table detail may prefill the same editor.
 - Activated definition scans, per-table comparison, and synchronization are
   explicit deeper operations. Selecting a scan result opens comparison and never
   mutates the database implicitly.
@@ -164,10 +172,19 @@ below.
 
 # Work Guidance
 
+- Compose database administration from shared table definitions, logical
+  codecs, typed operations, and UUI presentation. Keep new workflows in this
+  package; extend kernel foundations only when the physical operation cannot
+  be correctly provided by an existing owner.
+- Repair shared SQL or value discrepancies in db or the kernel database owner
+  and verify the affected browse, query, or synchronization path. Keep
+  collection reads and explicit maintenance work bounded.
+
 - Show concise human-readable schema information. Never expose raw descriptor
   JSON as an administration control.
-- Keep command behavior and physical schema decisions in the kernel; this
-  package only maps typed results to UUI models and explicit actions.
+- Keep database command policy in its owning Deno programs and physical
+  schema decisions in the kernel. This package maps typed results to UUI
+  models and explicit actions.
 
 # Verification
 

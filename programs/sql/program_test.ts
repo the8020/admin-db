@@ -198,6 +198,7 @@ Deno.test("SQL program reshapes output and reports errors as UUI messages", asyn
     const selected = await channel.screen();
     assertEquals(calls[0]?.return_rows, true);
     assertEquals(selected.screen.model, {
+      table: "",
       sql: "SELECT 42",
       output: [],
     });
@@ -218,6 +219,7 @@ Deno.test("SQL program reshapes output and reports errors as UUI messages", asyn
     const updated = await channel.screen();
     assertEquals(calls[1]?.return_rows, false);
     assertEquals(updated.screen.model, {
+      table: "",
       sql: "UPDATE orders SET active = false",
       output: [],
     });
@@ -234,7 +236,7 @@ Deno.test("SQL program reshapes output and reports errors as UUI messages", asyn
       message: "syntax error near BROKEN",
     });
     const failed = await channel.screen();
-    assertEquals(failed.screen.model, { sql: "BROKEN", output: [] });
+    assertEquals(failed.screen.model, { table: "", sql: "BROKEN", output: [] });
     channel.event(failed, BACK_EVENT);
     await running;
   } finally {

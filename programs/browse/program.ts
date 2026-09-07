@@ -3,6 +3,7 @@ import {
   BACK_EVENT,
   callScreen,
   Model,
+  presentPage,
   sendMessage,
 } from "/p/the8020/uui/mod.ts";
 import type { ColumnDescriptor } from "/p/the8020/db/codecs.ts";
@@ -47,17 +48,24 @@ export default async function browseTable(tableName: unknown): Promise<void> {
     screenModel.data = model;
     const event = await callScreen({
       id: "database-table-browse",
-      title: `Browse ${detail.table_id}`,
+      title: `Rows · ${detail.table_id.split("__").at(-1)}`,
       description:
-        "Rows use the deployed TypeScript table definition. Where and Order by accept one read-only SQL fragment each.",
+        "Filter and sort the rows below. Leave Where blank to include all rows up to the limit.",
       schema,
       model: screenModel,
       layout,
       header: {
-        actions: [{ id: "run", label: "Run query", kind: "primary" }],
+        actions: [{ id: "run", label: "Run query", kind: "primary" }, {
+          id: "table",
+          label: "Table details",
+        }],
       },
     });
     if (event.action === BACK_EVENT) return;
+    if (event.action === "table") {
+      const { default: tables } = await import("../database/program.ts");
+      await presentPage(() => tables(detail.table_id));
+    }
     refresh = event.action === "run";
   }
 }

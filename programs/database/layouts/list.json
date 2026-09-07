@@ -10,23 +10,21 @@
       "package",
       "table",
       "state",
-      "synchronization",
       "activeColumns",
-      "retiredColumns",
-      "synchronizedAt",
       "alert"
     ],
     "columnOptions": {
+      "package": {
+        "length": "long"
+      },
+      "table": {
+        "length": "medium"
+      },
       "activeColumns": {
-        "length": "compact",
-        "shortHeading": "Active"
+        "length": "short"
       },
-      "retiredColumns": {
-        "length": "compact",
-        "shortHeading": "Retired"
-      },
-      "synchronizedAt": {
-        "shortHeading": "Synced"
+      "alert": {
+        "length": "long"
       }
     }
   }

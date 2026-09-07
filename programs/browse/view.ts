@@ -13,7 +13,8 @@ export function tableBrowseScreen(columns: readonly ColumnDescriptor[]) {
   return z.object({
     where: field(z.string().max(MAXIMUM_SQL_CLAUSE_LENGTH), {
       label: "Where",
-      description: "SQL condition without the WHERE keyword",
+      description:
+        "A SQL condition, for example `enabled = true`. Leave out the `WHERE` keyword.",
       length: "long",
     }),
     limit: field(
@@ -22,7 +23,8 @@ export function tableBrowseScreen(columns: readonly ColumnDescriptor[]) {
     ),
     orderBy: field(z.string().max(MAXIMUM_SQL_CLAUSE_LENGTH), {
       label: "Order by",
-      description: "SQL ordering without the ORDER BY keyword",
+      description:
+        "Fields to sort by, for example `createdAt DESC`. Leave out the `ORDER BY` keyword.",
       length: "medium",
     }),
     rows: z.array(z.object(rowShape)),
@@ -63,21 +65,13 @@ export function tableBrowseLayout(
           headings: Object.fromEntries(
             columns.map((column) => [
               column.name,
-              `${column.name} (${logicalTypeLabel(column)})`,
+              column.name,
             ]),
           ),
         },
       ],
     },
   };
-}
-
-export function logicalTypeLabel(column: ColumnDescriptor): string {
-  if (column.logical_type === "decimal") {
-    return `decimal(${column.precision}, ${column.scale})`;
-  }
-  if (column.logical_type === "enum") return "enum";
-  return column.logical_type;
 }
 
 function tableValueSchema(column: ColumnDescriptor): z.ZodType {

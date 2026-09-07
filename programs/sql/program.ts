@@ -6,10 +6,12 @@ import {
 } from "/p/the8020/uui/mod.ts";
 import { executeSQL, type SQLResultColumn } from "./data.ts";
 import { sqlLayout, sqlScreen } from "./view.ts";
+import { quoteIdentifier } from "../browse/data.ts";
 
-export default async function sqlExecutor(): Promise<void> {
+export default async function sqlExecutor(table = ""): Promise<void> {
   const model = {
-    sql: "",
+    table,
+    sql: table ? `SELECT * FROM ${quoteIdentifier(table)} LIMIT 100` : "",
     output: [] as Record<string, string>[],
   };
   let columns: SQLResultColumn[] = [];
@@ -26,10 +28,18 @@ export default async function sqlExecutor(): Promise<void> {
       model: screenModel,
       layout: sqlLayout(columns),
       header: {
-        actions: [{ id: "run", label: "Run SQL", kind: "primary" }],
+        controls: [{ bind: "table", label: "Table reference", length: "long" }],
+        actions: [
+          { id: "run", label: "Run SQL", kind: "primary" },
+          ...(model.table ? [{ id: "select", label: "New SELECT" }] : []),
+        ],
       },
     });
     if (event.action === BACK_EVENT) return;
+    if (event.action === "select" && model.table) {
+      model.sql = `SELECT * FROM ${quoteIdentifier(model.table)} LIMIT 100`;
+      continue;
+    }
     if (event.action !== "run") continue;
     try {
       const result = await executeSQL(model.sql);

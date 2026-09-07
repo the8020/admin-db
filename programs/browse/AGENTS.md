@@ -13,6 +13,10 @@ Parent DOX: [admin-db/programs DOX](../AGENTS.md).
 - Accept one physical table name and preserve deployed descriptor column order.
 - Accept only single-statement read-only Where and Order by fragments; bound the
   result limit.
+- Keep row headings focused on field names. Table details opens the owning
+  catalog entry. Field help explains SQL predicates and ordering with examples.
+- `data.ts` shares identifier quoting with the SQL starter; both retain the same
+  validation and escaping contract.
 - Shared database codecs own physical-to-logical value conversion.
 
 # Work Guidance

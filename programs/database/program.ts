@@ -4,6 +4,7 @@ import {
   callScreen,
   invokeProgram,
   Model,
+  presentPage,
   type ScreenAction,
   sendMessage,
   z,
@@ -15,8 +16,10 @@ import definitionsLayout from "./layouts/definitions.json" with {
   type: "json",
 };
 import detailLayout from "./layouts/detail.json" with { type: "json" };
+import advancedLayout from "./layouts/advanced.json" with { type: "json" };
 import listLayout from "./layouts/list.json" with { type: "json" };
 import {
+  ColumnRow,
   CompareScreen,
   ConfirmScreen,
   DefinitionsScreen,
@@ -35,7 +38,8 @@ export { tableAlert } from "./view.ts";
 export const TABLE_BROWSE_PROGRAM = "the8020/admin-db/browse";
 export const SQL_EXECUTOR_PROGRAM = "the8020/admin-db/sql";
 
-export default async function databaseTables(): Promise<void> {
+export default async function databaseTables(tableId?: string): Promise<void> {
+  if (tableId) return await tableDetail(tableId);
   let screenModel: Model<z.infer<typeof ListScreen>> | undefined;
   while (true) {
     const result = await kernel.database.tables.list() as TableSummary[];
@@ -50,9 +54,8 @@ export default async function databaseTables(): Promise<void> {
       layout: listLayout,
       header: {
         actions: [
-          { id: "sync-all", label: "Synchronize all", kind: "primary" },
-          { id: "definitions", label: "Scan definitions" },
           { id: "sql", label: "SQL executor" },
+          { id: "advanced", label: "Advanced" },
           { id: "refresh", label: "[[icon=refresh]] Refresh" },
         ],
       },
@@ -61,7 +64,7 @@ export default async function databaseTables(): Promise<void> {
     if (event.action === "select" && typeof event.value === "string") {
       await tableDetail(event.value);
     }
-    if (event.action === "definitions") await definitionList();
+    if (event.action === "advanced") await presentPage(databaseMaintenance);
     if (event.action === "sql") {
       try {
         await invokeProgram(SQL_EXECUTOR_PROGRAM);
@@ -69,18 +72,39 @@ export default async function databaseTables(): Promise<void> {
         notifyError(error, "SQL executor failed");
       }
     }
-    if (event.action === "sync-all") {
-      try {
+  }
+}
+
+async function databaseMaintenance(): Promise<void> {
+  const model = new Model({});
+  while (true) {
+    const event = await callScreen({
+      id: "database-maintenance",
+      title: "Database maintenance",
+      description:
+        "Review changes to table definitions, then synchronize the database when ready.",
+      schema: z.object({}),
+      model,
+      actions: [{
+        id: "definitions",
+        label: "Review definitions",
+        kind: "primary",
+      }, { id: "sync-all", label: "Synchronize all" }],
+    });
+    if (event.action === BACK_EVENT) return;
+    try {
+      if (event.action === "definitions") await definitionList();
+      if (event.action === "sync-all") {
         await kernel.database.tables.synchronizeAll();
         sendMessage("Database tables synchronized", "success");
-      } catch (error) {
-        notifyError(error, "Synchronization failed");
       }
+    } catch (error) {
+      notifyError(error, "Synchronization failed");
     }
   }
 }
 
-async function tableDetail(tableId: string): Promise<void> {
+async function tableDetail(tableId: string, advanced = false): Promise<void> {
   let screenModel1: Model<z.infer<typeof DetailScreen>> | undefined;
   while (true) {
     const detail = await kernel.database.tables.inspect(
@@ -94,16 +118,57 @@ async function tableDetail(tableId: string): Promise<void> {
     screenModel1 ??= new Model(screenModel1Data);
     screenModel1.data = screenModel1Data;
     const event = await callScreen({
-      id: "database-table-detail",
-      title: detail.table_id,
+      id: advanced ? "database-table-advanced" : "database-table-detail",
+      title: `${
+        advanced ? "Advanced ·" : "Table"
+      } ${screenModel1Data.tableName}`,
       schema: DetailScreen,
       model: screenModel1,
-      layout: detailLayout,
+      layout: advanced ? advancedLayout : detailLayout,
       header: {
-        actions: tableDetailActions(detail),
+        actions: tableDetailActions(detail, advanced),
       },
     });
     if (event.action === BACK_EVENT) return;
+    if (event.action === "advanced") {
+      await presentPage(() => tableDetail(tableId, true));
+    }
+    if (event.action === "package" && detail.source_package) {
+      const { default: packages } = await import(
+        "/p/the8020/admin-core/programs/packages/program.ts"
+      );
+      await presentPage(() => packages(detail.source_package));
+    }
+    if (event.action === "sql") {
+      const { default: sql } = await import("../sql/program.ts");
+      await presentPage(() => sql(detail.table_id));
+    }
+    if (event.action === "select" && event.controlId === "columns") {
+      const column = screenModel1Data.columns.find((column) =>
+        column.key === event.value
+      );
+      if (column) {
+        await presentPage(() =>
+          callScreen({
+            id: "database-column",
+            title: `Field ${column.name}`,
+            schema: ColumnRow,
+            model: new Model(column),
+            controls: [
+              "logicalType",
+              "required",
+              "defaultValue",
+              "constraints",
+              "state",
+              "databaseType",
+              "databaseDefault",
+              "reference",
+              ...(column.referenceTable ? ["referenceTable"] : []),
+            ].map((bind) => ({ bind })),
+          })
+        );
+      }
+    }
     if (event.action === "compare") await comparisonDetail(tableId);
     try {
       if (event.action === "count-rows") {
@@ -149,11 +214,24 @@ async function tableDetail(tableId: string): Promise<void> {
   }
 }
 
-export function tableDetailActions(detail: TableDetail): ScreenAction[] {
+export function tableDetailActions(
+  detail: TableDetail,
+  advanced = false,
+): ScreenAction[] {
+  if (!advanced) {
+    return [
+      { id: "browse", label: "Browse rows", kind: "primary" },
+      { id: "count-rows", label: "Count rows" },
+      { id: "sql", label: "SQL" },
+      ...(detail.source_package
+        ? [{ id: "package", label: "Open package" }]
+        : []),
+      { id: "advanced", label: "Advanced" },
+      { id: "refresh", label: "[[icon=refresh]] Refresh" },
+    ];
+  }
   const retired = detail.columns.some((column) => column.state === "retired");
   return [
-    { id: "count-rows", label: "Count rows" },
-    { id: "browse", label: "Browse" },
     ...(detail.source_package
       ? [
         { id: "sync", label: "Synchronize", kind: "primary" as const },
@@ -277,8 +355,7 @@ async function definitionList(): Promise<void> {
     const event = await callScreen({
       id: "database-table-definitions",
       title: "Activated definition changes",
-      description:
-        "This scan evaluates activated TypeScript definitions. Select a table to compare it before synchronizing.",
+      description: "Select a table to review its changes before applying them.",
       schema: DefinitionsScreen,
       model: screenModel4,
       layout: definitionsLayout,

@@ -1,5 +1,6 @@
 import { field, type LayoutDocument, z } from "/p/the8020/uui/mod.ts";
 import type { SQLResultColumn } from "./data.ts";
+import { tableId } from "/p/the8020/db/types/table.ts";
 
 export function sqlScreen(columns: readonly SQLResultColumn[]) {
   const resultShape: z.ZodRawShape = {
@@ -7,6 +8,11 @@ export function sqlScreen(columns: readonly SQLResultColumn[]) {
     ...Object.fromEntries(columns.map((column) => [column.key, z.string()])),
   };
   return z.object({
+    table: field(tableId, {
+      label: "Table reference",
+      length: "long",
+      reactive: true,
+    }),
     sql: field(z.string().max(1_048_576), {
       label: "SQL",
       control: "textarea",

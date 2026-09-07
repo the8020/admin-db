@@ -18,6 +18,11 @@ Parent DOX: [admin-db DOX](../AGENTS.md).
 
 # Work Guidance
 
+- Keep these programs as bounded UUI workflows over shared database contracts.
+  Repair codec, SQL, and physical-schema defects in db or the kernel database
+  owner, then verify the affected program instead of adding local coercions or
+  alternate query machinery.
+
 # Verification
 
 - From the repository root, run `deno task check` and `deno task test`.
