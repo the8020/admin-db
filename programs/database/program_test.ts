@@ -1,4 +1,9 @@
-import { assertEquals, assertThrows } from "@std/assert";
+import { z } from "/p/the8020/uui/mod.ts";
+import { buildFieldCatalog } from "/p/the8020/uui/fields.ts";
+import { fieldMetadata } from "/p/the8020/db/fields.ts";
+import { queryInfo, tableValue } from "../../types/query.ts";
+import { catalogInfo } from "../../types/catalog.ts";
+import { assert, assertEquals, assertThrows } from "@std/assert";
 import type { ColumnDescriptor } from "/p/the8020/db/codecs.ts";
 import { kernelInvokeSymbol } from "@the8020/kernel";
 import type {
@@ -570,3 +575,38 @@ class ProgramChannel implements SessionChannel {
     return new Promise((resolve) => this.#serverWaiters.push(resolve));
   }
 }
+
+Deno.test("database fields share help and preserve exact deployed value types", () => {
+  for (const schema of [catalogInfo, queryInfo]) {
+    for (const [name, value] of Object.entries(schema.shape)) {
+      assert(fieldMetadata(value)?.label, `${name} needs a label`);
+      assert(fieldMetadata(value)?.description, `${name} needs help`);
+    }
+  }
+  const total = tableValue(
+    browseColumns().find((column) => column.name === "total")!,
+  );
+  assert(total.safeParse("9007199254740993.01").success);
+  assert(!total.safeParse("1.234").success);
+  const fields = buildFieldCatalog(z.object({ total }));
+  assertEquals(fields[0]?.semanticType, "decimal");
+  assert(fields[0]?.description?.includes("2 decimal places"));
+  const choice = tableValue({
+    name: "state",
+    logical_type: "enum",
+    enum_values: ["draft", "confirmed"],
+    nullable: true,
+    generated: false,
+    primary_key: false,
+    unique: false,
+  });
+  assert(choice.safeParse(null).success);
+  assert(!choice.safeParse("invented").success);
+  assertEquals(
+    buildFieldCatalog(z.object({ choice }))[0]?.options?.map((option) =>
+      option.value
+    ),
+    ["draft", "confirmed"],
+  );
+  assert(!queryInfo.shape.limit.safeParse(10_001).success);
+});

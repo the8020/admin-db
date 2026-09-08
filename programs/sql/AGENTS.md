@@ -10,6 +10,9 @@ Parent DOX: [admin-db/programs DOX](../AGENTS.md).
 
 # Local Contracts
 
+- Reuse `../../types/` fields for labels, descriptions, and scalar schemas;
+  screen modules own layout and editability.
+
 - Keep the SQL textarea at the standard two-row size (`rowSpan: 2`).
 - Reuse the database-owned table field for on-demand search and navigation. The
   optional selected table pre-fills a quoted SELECT limited to 100 rows. New

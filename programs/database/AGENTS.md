@@ -11,6 +11,9 @@ Parent DOX: [admin-db/programs DOX](../AGENTS.md).
 
 # Local Contracts
 
+- Reuse `../../types/` fields for labels, descriptions, and scalar schemas;
+  screen modules own layout and editability.
+
 - Ordinary list/detail views use the deployed catalog without evaluating
   TypeScript definitions.
 - Definition scans, comparison, and synchronization are explicit actions;

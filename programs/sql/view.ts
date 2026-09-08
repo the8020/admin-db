@@ -1,3 +1,4 @@
+import { queryInfo } from "../../types/query.ts";
 import { field, type LayoutDocument, z } from "/p/the8020/uui/mod.ts";
 import type { SQLResultColumn } from "./data.ts";
 import { tableId } from "/p/the8020/db/types/table.ts";
@@ -5,7 +6,14 @@ import { tableId } from "/p/the8020/db/types/table.ts";
 export function sqlScreen(columns: readonly SQLResultColumn[]) {
   const resultShape: z.ZodRawShape = {
     __rowKey: z.string(),
-    ...Object.fromEntries(columns.map((column) => [column.key, z.string()])),
+    ...Object.fromEntries(
+      columns.map((
+        column,
+      ) => [
+        column.key,
+        field(queryInfo.shape.resultValue, { label: column.heading }),
+      ]),
+    ),
   };
   return z.object({
     table: field(tableId, {
@@ -13,10 +21,8 @@ export function sqlScreen(columns: readonly SQLResultColumn[]) {
       length: "long",
       reactive: true,
     }),
-    sql: field(z.string().max(1_048_576), {
-      label: "SQL",
+    sql: field(queryInfo.shape.sql, {
       control: "textarea",
-      description: "Run one database statement at a time",
       placeholder: "SELECT * FROM table_name LIMIT 100",
       length: "long",
       rowSpan: 2,

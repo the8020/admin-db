@@ -10,6 +10,9 @@ Parent DOX: [admin-db/programs DOX](../AGENTS.md).
 
 # Local Contracts
 
+- Reuse `../../types/` fields for labels, descriptions, and scalar schemas;
+  screen modules own layout and editability.
+
 - Accept one physical table name and preserve deployed descriptor column order.
 - Accept only single-statement read-only Where and Order by fragments; bound the
   result limit.

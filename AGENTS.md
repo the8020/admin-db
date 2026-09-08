@@ -111,6 +111,8 @@ below.
 
 - [programs/AGENTS.md](programs/AGENTS.md): Group the database catalog, row
   browser, and SQL administration programs.
+- [types/AGENTS.md](types/AGENTS.md): Share catalog/query field metadata and
+  descriptor-based row-value schemas.
 
 # Purpose
 

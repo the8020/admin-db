@@ -7,9 +7,10 @@ import {
 } from "/p/the8020/db/codecs.ts";
 import { kernel } from "@the8020/kernel";
 
-export const DEFAULT_BROWSE_LIMIT = 100;
-export const MAXIMUM_BROWSE_LIMIT = 10_000;
-export const MAXIMUM_SQL_CLAUSE_LENGTH = 4_000;
+import {
+  MAXIMUM_BROWSE_LIMIT,
+  MAXIMUM_SQL_CLAUSE_LENGTH,
+} from "../../types/query.ts";
 
 export interface BrowseOptions {
   limit: number;

@@ -1,3 +1,5 @@
+import { catalogInfo } from "../../types/catalog.ts";
+import { sourceInfo } from "/p/the8020/packages/types/source.ts";
 import { field, z } from "/p/the8020/uui/mod.ts";
 import { packageId } from "/p/the8020/packages/types/package.ts";
 import { tableId } from "/p/the8020/db/types/table.ts";
@@ -90,135 +92,178 @@ export const ListScreen = z.object({
   tables: z.array(z.object({
     navigation: z.string(),
     package: field(packageId, { readOnly: true }),
-    table: field(z.string(), { label: "Table", readOnly: true }),
-    state: field(z.string(), { label: "Table state", readOnly: true }),
-    synchronization: field(z.string(), {
+    table: field(catalogInfo.shape.tableName, {
+      label: "Table",
+      readOnly: true,
+    }),
+    state: field(catalogInfo.shape.state, {
+      label: "Table state",
+      readOnly: true,
+    }),
+    synchronization: field(catalogInfo.shape.synchronization, {
       label: "Last sync result",
       readOnly: true,
     }),
-    activeColumns: field(z.number(), {
+    activeColumns: field(catalogInfo.shape.activeColumns, {
       label: "Active fields",
       readOnly: true,
     }),
-    retiredColumns: field(z.number(), {
+    retiredColumns: field(catalogInfo.shape.retiredColumns, {
       label: "Retired fields",
       readOnly: true,
     }),
-    synchronizedAt: field(z.string(), {
+    synchronizedAt: field(catalogInfo.shape.synchronizedAt, {
       label: "Last synchronized",
       readOnly: true,
     }),
-    alert: field(z.string(), { label: "Attention", readOnly: true }),
+    alert: field(catalogInfo.shape.attention, {
+      label: "Attention",
+      readOnly: true,
+    }),
   })),
 });
 
 export const ColumnRow = z.object({
   key: z.string(),
-  name: field(z.string(), { label: "Field", readOnly: true }),
-  state: field(z.string(), { label: "State", readOnly: true }),
-  logicalType: field(z.string(), { label: "Logical type", readOnly: true }),
-  databaseType: field(z.string(), { label: "Database type", readOnly: true }),
-  required: field(z.string(), { label: "Required", readOnly: true }),
-  defaultValue: field(z.string(), { label: "Default", readOnly: true }),
-  databaseDefault: field(z.string(), {
-    label: "Database default",
+  name: field(catalogInfo.shape.columnName, { readOnly: true }),
+  state: field(catalogInfo.shape.state, { readOnly: true }),
+  logicalType: field(catalogInfo.shape.logicalType, {
     readOnly: true,
   }),
-  constraints: field(z.string(), { label: "Constraints", readOnly: true }),
-  reference: field(z.string(), { label: "Reference", readOnly: true }),
+  databaseType: field(catalogInfo.shape.databaseType, {
+    readOnly: true,
+  }),
+  required: field(catalogInfo.shape.required, {
+    readOnly: true,
+  }),
+  defaultValue: field(catalogInfo.shape.defaultValue, {
+    readOnly: true,
+  }),
+  databaseDefault: field(catalogInfo.shape.databaseDefault, {
+    readOnly: true,
+  }),
+  constraints: field(catalogInfo.shape.constraints, {
+    readOnly: true,
+  }),
+  reference: field(catalogInfo.shape.reference, {
+    readOnly: true,
+  }),
   referenceTable: field(tableId, { label: "Related table", readOnly: true }),
 });
 
 const IndexRow = z.object({
   key: z.string(),
-  name: field(z.string(), { label: "Index", readOnly: true }),
-  state: field(z.string(), { label: "State", readOnly: true }),
-  columns: field(z.string(), { label: "Fields", readOnly: true }),
-  unique: field(z.string(), { label: "Unique", readOnly: true }),
+  name: field(catalogInfo.shape.indexName, { readOnly: true }),
+  state: field(catalogInfo.shape.state, { readOnly: true }),
+  columns: field(catalogInfo.shape.indexColumns, {
+    readOnly: true,
+  }),
+  unique: field(catalogInfo.shape.unique, { readOnly: true }),
 });
 
 const DifferenceRow = z.object({
   key: z.string(),
-  status: field(z.string(), { label: "Status", readOnly: true }),
-  issue: field(z.string(), { label: "Difference", readOnly: true }),
+  status: field(catalogInfo.shape.result, { label: "Status", readOnly: true }),
+  issue: field(catalogInfo.shape.difference, {
+    readOnly: true,
+  }),
 });
 
 export const DetailScreen = z.object({
   package: field(packageId, { readOnly: true }),
-  tableName: field(z.string(), { label: "Table", readOnly: true }),
+  tableName: field(catalogInfo.shape.tableName, {
+    readOnly: true,
+  }),
   physicalTable: field(tableId, {
     label: "Physical table",
     readOnly: true,
     open: undefined,
   }),
-  tableState: field(z.string(), { label: "State", readOnly: true }),
-  schemaState: field(z.string(), { label: "Database schema", readOnly: true }),
-  sourceCommit: field(z.string(), {
+  tableState: field(catalogInfo.shape.state, {
+    readOnly: true,
+  }),
+  schemaState: field(catalogInfo.shape.schemaState, {
+    readOnly: true,
+  }),
+  sourceCommit: field(sourceInfo.shape.commit, {
     label: "Deployed package commit",
     readOnly: true,
   }),
-  sourceModule: field(z.string(), {
+  sourceModule: field(sourceInfo.shape.path, {
     label: "Definition module",
     readOnly: true,
   }),
-  synchronizedAt: field(z.string(), {
-    label: "Last synchronized",
+  synchronizedAt: field(catalogInfo.shape.synchronizedAt, {
     readOnly: true,
   }),
-  fields: field(z.string(), { label: "Fields", readOnly: true }),
-  attention: field(z.string(), { label: "Attention", readOnly: true }),
+  fields: field(catalogInfo.shape.fields, { readOnly: true }),
+  attention: field(catalogInfo.shape.attention, {
+    readOnly: true,
+  }),
   columns: z.array(ColumnRow),
   indexes: z.array(IndexRow),
   checks: z.array(z.object({
     key: z.string(),
-    expression: field(z.string(), { label: "Database check", readOnly: true }),
+    expression: field(catalogInfo.shape.expression, {
+      label: "Database check",
+      readOnly: true,
+    }),
   })),
   differences: z.array(DifferenceRow),
 });
 
 const ComparisonRow = z.object({
   key: z.string(),
-  name: field(z.string(), { label: "Field", readOnly: true }),
-  change: field(z.string(), { label: "Change", readOnly: true }),
-  activated: field(z.string(), {
-    label: "Activated definition",
+  name: field(catalogInfo.shape.columnName, { readOnly: true }),
+  change: field(catalogInfo.shape.change, { readOnly: true }),
+  activated: field(catalogInfo.shape.activated, {
     readOnly: true,
   }),
-  deployed: field(z.string(), { label: "Deployed definition", readOnly: true }),
-  database: field(z.string(), { label: "Database", readOnly: true }),
+  deployed: field(catalogInfo.shape.deployed, {
+    readOnly: true,
+  }),
+  database: field(catalogInfo.shape.database, {
+    readOnly: true,
+  }),
 });
 
 const ComparisonIndexRow = ComparisonRow.extend({
-  name: field(z.string(), { label: "Index", readOnly: true }),
+  name: field(catalogInfo.shape.indexName, { readOnly: true }),
 });
 
 export const CompareScreen = z.object({
   tableId: field(tableId, { readOnly: true }),
-  definitionState: field(z.string(), {
-    label: "Activated definition",
+  definitionState: field(catalogInfo.shape.activated, {
     readOnly: true,
   }),
-  deployedCommit: field(z.string(), {
+  deployedCommit: field(sourceInfo.shape.commit, {
     label: "Deployed package commit",
     readOnly: true,
   }),
-  activatedCommit: field(z.string(), {
+  activatedCommit: field(sourceInfo.shape.commit, {
     label: "Activated package commit",
     readOnly: true,
   }),
-  result: field(z.string(), { label: "Result", readOnly: true }),
-  attention: field(z.string(), { label: "Attention", readOnly: true }),
+  result: field(catalogInfo.shape.result, { readOnly: true }),
+  attention: field(catalogInfo.shape.attention, {
+    readOnly: true,
+  }),
   columns: z.array(ComparisonRow),
   indexes: z.array(ComparisonIndexRow),
   differences: z.array(DifferenceRow),
 });
 
 export const ConfirmScreen = z.object({
-  operation: field(z.string(), { label: "Operation", readOnly: true }),
-  affected: field(z.string(), { label: "Permanently remove", readOnly: true }),
-  warning: field(z.string(), { label: "Warning", readOnly: true }),
-  confirmed: field(z.boolean(), {
-    label: "I understand that this data cannot be recovered",
+  operation: field(catalogInfo.shape.operation, {
+    readOnly: true,
+  }),
+  affected: field(catalogInfo.shape.affected, {
+    readOnly: true,
+  }),
+  warning: field(catalogInfo.shape.warning, {
+    readOnly: true,
+  }),
+  confirmed: field(catalogInfo.shape.confirmed, {
     control: "checkbox",
   }),
 });
@@ -226,11 +271,17 @@ export const ConfirmScreen = z.object({
 export const DefinitionsScreen = z.object({
   definitions: z.array(z.object({
     navigation: z.string(),
-    id: field(z.string(), { label: "Definition", readOnly: true }),
-    package: field(z.string(), { label: "Package", readOnly: true }),
-    state: field(z.string(), { label: "Change", readOnly: true }),
-    commit: field(z.string(), { label: "Activated commit", readOnly: true }),
-    error: field(z.string(), { label: "Attention", readOnly: true }),
+    id: field(tableId, { label: "Definition", readOnly: true }),
+    package: field(packageId, { label: "Package", readOnly: true }),
+    state: field(catalogInfo.shape.state, { label: "Change", readOnly: true }),
+    commit: field(sourceInfo.shape.commit, {
+      label: "Activated commit",
+      readOnly: true,
+    }),
+    error: field(catalogInfo.shape.attention, {
+      label: "Attention",
+      readOnly: true,
+    }),
   })),
 });
 
