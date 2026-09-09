@@ -21,7 +21,7 @@ export function tableBrowseScreen(columns: readonly ColumnDescriptor[]) {
     ]),
   );
   return z.object({
-    where: field(queryInfo.shape.where, { length: "long" }),
+    where: field(queryInfo.shape.where, { length: "long", enterEvent: "run" }),
     limit: field(queryInfo.shape.limit, { length: "medium" }),
     orderBy: field(queryInfo.shape.orderBy, { length: "medium" }),
     rows: z.array(z.object(rowShape)),
