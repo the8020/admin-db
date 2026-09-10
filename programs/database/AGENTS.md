@@ -13,6 +13,8 @@ Parent DOX: [admin-db/programs DOX](../AGENTS.md).
 
 - Reuse `../../types/` fields for labels, descriptions, and scalar schemas;
   screen modules own layout and editability.
+- Definition scans, definition inspection, and difference rows use their own
+  semantic status fields so value help matches the displayed domain.
 
 - Ordinary list/detail views use the deployed catalog without evaluating
   TypeScript definitions.

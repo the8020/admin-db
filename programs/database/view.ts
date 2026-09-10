@@ -163,7 +163,7 @@ const IndexRow = z.object({
 
 const DifferenceRow = z.object({
   key: z.string(),
-  status: field(catalogInfo.shape.result, { label: "Status", readOnly: true }),
+  status: field(catalogInfo.shape.differenceStatus, { readOnly: true }),
   issue: field(catalogInfo.shape.difference, {
     readOnly: true,
   }),
@@ -233,7 +233,7 @@ const ComparisonIndexRow = ComparisonRow.extend({
 
 export const CompareScreen = z.object({
   tableId: field(tableId, { readOnly: true }),
-  definitionState: field(catalogInfo.shape.activated, {
+  definitionState: field(catalogInfo.shape.definitionState, {
     readOnly: true,
   }),
   deployedCommit: field(sourceInfo.shape.commit, {
@@ -273,7 +273,7 @@ export const DefinitionsScreen = z.object({
     navigation: z.string(),
     id: field(tableId, { label: "Definition", readOnly: true }),
     package: field(packageId, { label: "Package", readOnly: true }),
-    state: field(catalogInfo.shape.state, { label: "Change", readOnly: true }),
+    state: field(catalogInfo.shape.definitionChange, { readOnly: true }),
     commit: field(sourceInfo.shape.commit, {
       label: "Activated commit",
       readOnly: true,

@@ -1,4 +1,17 @@
-import { field, z } from "/p/the8020/db/fields.ts";
+import { choiceHelp, field, z } from "/p/the8020/db/fields.ts";
+
+const synchronizationState = field(z.string(), {
+  label: "Last sync result",
+  description:
+    "The result of the most recent attempt to align the database with the deployed definition.",
+  valueHelp: choiceHelp(z.string(), [
+    "Synchronized",
+    "Retired",
+    "Error",
+    "Drift",
+    "Uncatalogued",
+  ]),
+});
 
 export const catalogInfo = z.object({
   tableName: field(z.string(), {
@@ -9,11 +22,42 @@ export const catalogInfo = z.object({
     label: "State",
     description:
       "Whether this structure is active, retired, missing from the database, or uncatalogued.",
+    valueHelp: choiceHelp(z.string(), [
+      "Active",
+      "Retired",
+      "Missing from database",
+      "Uncatalogued",
+    ]),
   }),
-  synchronization: field(z.string(), {
-    label: "Last sync result",
+  synchronization: synchronizationState,
+  definitionChange: field(z.string(), {
+    label: "Change",
+    description: "How the activated table source differs from the catalog.",
+    valueHelp: choiceHelp(z.string(), [
+      "New",
+      "Changed",
+      "Source Commit Mismatch",
+      "Deleted",
+    ]),
+  }),
+  definitionState: field(z.string(), {
+    label: "Activated definition",
     description:
-      "The result of the most recent attempt to align the database with the deployed definition.",
+      "Whether the activated table definition is available and matches the deployed definition.",
+    valueHelp: choiceHelp(z.string(), [
+      "Present",
+      "Changed",
+      "Commit Mismatch",
+      "Missing",
+      "Unknown",
+      "Error",
+      "Unavailable",
+    ]),
+  }),
+  differenceStatus: field(z.string(), {
+    label: "Status",
+    description: "Whether a compared structure agrees or needs attention.",
+    valueHelp: choiceHelp(z.string(), ["OK", "Attention"]),
   }),
   synchronizedAt: field(z.string(), {
     label: "Last synchronized",
@@ -33,6 +77,17 @@ export const catalogInfo = z.object({
     label: "Logical type",
     description:
       "The package-defined value type, including decimal precision and scale or allowed enum values.",
+    valueHelp: choiceHelp(z.string(), [
+      "text",
+      "boolean",
+      "integer",
+      "float",
+      "decimal",
+      "datetime",
+      "bytes",
+      "json",
+      "enum",
+    ]),
   }),
   databaseType: field(z.string(), {
     label: "Database type",
@@ -42,6 +97,7 @@ export const catalogInfo = z.object({
     label: "Required",
     description:
       "Whether this field must contain a value. Required fields do not accept SQL NULL.",
+    valueHelp: choiceHelp(z.string(), ["Yes", "No"]),
   }),
   defaultValue: field(z.string(), {
     label: "Default",
@@ -75,13 +131,14 @@ export const catalogInfo = z.object({
     label: "Unique",
     description:
       "Whether this index rejects rows with duplicate indexed values.",
+    valueHelp: choiceHelp(z.string(), ["Yes", "No"]),
   }),
   difference: field(z.string(), {
     label: "Difference",
     description:
       "A difference between the activated definition, deployed catalog, and physical database.",
   }),
-  schemaState: field(z.string(), {
+  schemaState: field(synchronizationState, {
     label: "Database schema",
     description:
       "Whether the physical database agrees with the deployed table definition.",
@@ -99,6 +156,13 @@ export const catalogInfo = z.object({
     label: "Change",
     description:
       "How the activated source definition differs from the deployed definition.",
+    valueHelp: choiceHelp(z.string(), [
+      "New",
+      "Removed",
+      "Same",
+      "Changed",
+      "Unavailable",
+    ]),
   }),
   activated: field(z.string(), {
     label: "Activated definition",
@@ -123,6 +187,7 @@ export const catalogInfo = z.object({
   operation: field(z.string(), {
     label: "Operation",
     description: "The database operation that will run after confirmation.",
+    valueHelp: choiceHelp(z.string(), ["Retired fields", "Retired table"]),
   }),
   affected: field(z.string(), {
     label: "Permanently remove",

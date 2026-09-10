@@ -16,6 +16,10 @@ Parent DOX: [admin-db DOX](../AGENTS.md).
 - Reuse the db table reference and package/source fields from their owners.
 - Keep labels and useful help in ordinary Zod fields. Screens own read-only
   controls, layout, and row identity keys.
+- Known catalog, synchronization, definition, comparison, logical-type, Yes/No,
+  and trim-operation values use shared paged choice help. Keep definition
+  states, definition changes, and difference statuses separate from summaries
+  and table lifecycle states. Diagnostic strings retain their original values.
 - Browse uses deployed storage descriptors without importing table sources.
   Describe only known type, nullability, and reference facts. Decimal strings
   retain exact decimal semantics; JSON and enum fields retain their types.
