@@ -174,6 +174,12 @@ below.
 
 # Work Guidance
 
+- Build only what the request and established contracts require. Before adding a
+  mechanism, identify that need and why existing owners or standard tools cannot
+  meet it. Do not invent stronger guarantees for hypothetical cases. Remove
+  unsupported additions at closeout; agent-written tests and DOX do not
+  authorize them. Preserve required correctness, security, and data integrity.
+
 - Compose database administration from shared table definitions, logical codecs,
   typed operations, and UUI presentation. Keep new workflows in this package;
   extend kernel foundations only when the physical operation cannot be correctly
