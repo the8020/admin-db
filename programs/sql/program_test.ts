@@ -1,3 +1,4 @@
+import type { UUIMessage } from "/p/the8020/uui/messages.ts";
 import { assertEquals, assertThrows } from "@std/assert";
 import {
   kernelDatabaseBackendSymbol,
@@ -231,7 +232,6 @@ Deno.test("SQL program reshapes output and reports errors as UUI messages", asyn
 
     channel.event(updated, "run", [{ bind: "sql", value: "BROKEN" }]);
     assertEquals(await channel.message(), {
-      type: "notification.show",
       level: "error",
       message: "syntax error near BROKEN",
     });
@@ -253,10 +253,7 @@ interface WorkerScreenShow {
   surfaceId: string;
   screen: ScreenSnapshot;
 }
-type WorkerNotification = Extract<
-  UUIWorkerOutbound,
-  { type: "notification.show" }
->;
+type WorkerMessage = Pick<UUIMessage, "level" | "message">;
 
 class ProgramChannel implements SessionChannel {
   readonly sessionId = "admin-db-sql-program-test";
@@ -265,8 +262,24 @@ class ProgramChannel implements SessionChannel {
   #server: UUIWorkerOutbound[] = [];
   #serverWaiters: Array<(message: UUIWorkerOutbound) => void> = [];
   #clientSequence = 0;
+  #messageSequence = 0;
+  #messages: WorkerMessage[] = [];
+  #messageWaiters: Array<(message: WorkerMessage) => void> = [];
 
   send(message: UUIWorkerOutbound): void {
+    const items = message.type === "presentation.show"
+      ? message.presentation.messages ?? []
+      : message.type === "channel.frame" && message.id === "append"
+      ? [message.value as UUIMessage]
+      : [];
+    for (const item of items) {
+      if (item.sequence <= this.#messageSequence) continue;
+      this.#messageSequence = item.sequence;
+      const value = { level: item.level, message: item.message };
+      const receive = this.#messageWaiters.shift();
+      if (receive) receive(value);
+      else this.#messages.push(value);
+    }
     const waiter = this.#serverWaiters.shift();
     if (waiter === undefined) this.#server.push(message);
     else waiter(message);
@@ -291,11 +304,11 @@ class ProgramChannel implements SessionChannel {
     }
   }
 
-  async message(): Promise<WorkerNotification> {
-    while (true) {
-      const message = await this.#nextServer();
-      if (message.type === "notification.show") return message;
-    }
+  message(): Promise<WorkerMessage> {
+    const item = this.#messages.shift();
+    return item
+      ? Promise.resolve(item)
+      : new Promise((resolve) => this.#messageWaiters.push(resolve));
   }
 
   event(
