@@ -26,6 +26,12 @@
       "alert": {
         "length": "long"
       }
-    }
+    },
+    "toolbar": [
+      {
+        "id": "refresh",
+        "label": "[[icon=refresh]] Refresh"
+      }
+    ]
   }
 }

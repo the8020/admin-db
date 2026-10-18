@@ -53,11 +53,10 @@ export default async function databaseTables(tableId?: string): Promise<void> {
       model: screenModel,
       layout: listLayout,
       header: {
-        actions: [
-          { id: "sql", label: "SQL executor" },
-          { id: "advanced", label: "Advanced" },
-          { id: "refresh", label: "[[icon=refresh]] Refresh" },
-        ],
+        actions: [{ id: "sql", label: "SQL executor" }, {
+          id: "advanced",
+          label: "Advanced",
+        }],
       },
     });
     if (event.action === BACK_EVENT) return;
@@ -359,9 +358,6 @@ async function definitionList(): Promise<void> {
       schema: DefinitionsScreen,
       model: screenModel4,
       layout: definitionsLayout,
-      header: {
-        actions: [{ id: "refresh", label: "[[icon=refresh]] Refresh" }],
-      },
     });
     if (event.action === BACK_EVENT) return;
     if (event.action === "select" && typeof event.value === "string") {

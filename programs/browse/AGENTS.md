@@ -10,6 +10,9 @@ Parent DOX: [admin-db/programs DOX](../AGENTS.md).
 
 # Local Contracts
 
+- Run query belongs in the Rows toolbar; query fields retain their ordered group
+  and Table details stays in the page header.
+
 - Reuse `../../types/` fields for labels, descriptions, and scalar schemas;
   screen modules own layout and editability.
 

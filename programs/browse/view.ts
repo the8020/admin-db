@@ -58,6 +58,7 @@ export function tableBrowseLayout(
           type: "list",
           title: "Rows",
           bind: "rows",
+          toolbar: [{ id: "run", label: "Run query", kind: "primary" }],
           display: columns.map((column) => column.name),
           headings: Object.fromEntries(
             columns.map((column) => [

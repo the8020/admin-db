@@ -11,6 +11,9 @@ Parent DOX: [admin-db/programs DOX](../AGENTS.md).
 
 # Local Contracts
 
+- Catalog and definition refresh belong in their list toolbars. Database
+  navigation and table-wide schema operations remain in screen headers.
+
 - Reuse `../../types/` fields for labels, descriptions, and scalar schemas;
   screen modules own layout and editability.
 - Definition scans, definition inspection, and difference rows use their own

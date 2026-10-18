@@ -55,7 +55,7 @@ export default async function browseTable(tableName: unknown): Promise<void> {
       model: screenModel,
       layout,
       header: {
-        actions: [{ id: "run", label: "Run query", kind: "primary" }, {
+        actions: [{
           id: "table",
           label: "Table details",
         }],
