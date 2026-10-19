@@ -122,6 +122,8 @@ below.
 
 # Ownership
 
+- `widgets/` declares this package's Home tiles and categories through the
+  `the8020/packages/widgets.ts` format.
 - Own database table list, detail, row counting, read-only row browsing, generic
   single-statement SQL execution, activated-definition comparison,
   synchronization, and confirmed destructive-trim screens.

@@ -1,0 +1,9 @@
+schema = 1
+title = "Database"
+description = "Manage database tables"
+icon = "database"
+category = "development"
+order = 30
+
+[open]
+program = "the8020/admin-db/database"

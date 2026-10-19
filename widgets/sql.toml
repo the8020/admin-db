@@ -1,0 +1,9 @@
+schema = 1
+title = "SQL console"
+description = "Run SQL and inspect results"
+icon = "query_stats"
+category = "development"
+order = 40
+
+[open]
+program = "the8020/admin-db/sql"
