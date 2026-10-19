@@ -205,6 +205,9 @@ below.
 
 # Verification
 
+- Run package tasks inside an 80|20 Deno workspace; its root config supplies
+  platform imports. The package config owns dependencies and tasks.
+
 - `deno task check` formats, lints, and type-checks the program.
 - `deno task test` covers list/detail/comparison view models, row browse query
   and logical-value mapping, generic SQL intent and dynamic result presentation,
