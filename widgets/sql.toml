@@ -7,3 +7,6 @@ order = 40
 
 [open]
 program = "the8020/admin-db/sql"
+
+[visible]
+permission = "the8020.admin-db.sql.execute"

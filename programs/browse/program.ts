@@ -1,3 +1,4 @@
+import { allowed } from "../../src/authorized.ts";
 import { kernel } from "@the8020/kernel";
 import {
   BACK_EVENT,
@@ -23,6 +24,7 @@ export default async function browseTable(tableName: unknown): Promise<void> {
   if (typeof tableName !== "string" || tableName.length === 0) {
     throw new TypeError("Table browse requires a table name input parameter");
   }
+  if (!await allowed("the8020.admin-db.table.view", tableName)) return;
   const detail = await kernel.database.tables.inspect(
     tableName,
   ) as unknown as BrowseTableDetail;

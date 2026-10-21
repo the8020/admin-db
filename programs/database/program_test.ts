@@ -38,6 +38,20 @@ import {
   tableDetailModel,
   tableRows,
 } from "./view.ts";
+import { installContextProvider } from "../../../kernel/defaults/config/runtime/deno/context/runtime.ts";
+
+// Screens run as system, which bypasses permissions.
+installContextProvider(() => ({
+  type: "program",
+  id: "the8020/admin-db/test",
+  userId: "user:system",
+  username: "system",
+  authenticated: true,
+  nodeId: "test",
+  sandboxId: "test",
+  workerId: "test",
+  contextId: "test",
+}));
 
 Deno.test("database table list contains only useful human-facing state", () => {
   const [row] = tableRows([{

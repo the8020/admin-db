@@ -16,6 +16,20 @@ import {
 import { bindSession, type SessionChannel } from "/p/the8020/uui/internal.ts";
 import { presentSQLResult, sqlStatementIntent } from "./data.ts";
 import sqlExecutor from "./program.ts";
+import { installContextProvider } from "../../../kernel/defaults/config/runtime/deno/context/runtime.ts";
+
+// Screens run as system, which bypasses permissions.
+installContextProvider(() => ({
+  type: "program",
+  id: "the8020/admin-db/test",
+  userId: "user:system",
+  username: "system",
+  authenticated: true,
+  nodeId: "test",
+  sandboxId: "test",
+  workerId: "test",
+  contextId: "test",
+}));
 
 const sqliteIntent = (source: string) => sqlStatementIntent(source, "sqlite");
 

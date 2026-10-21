@@ -1,0 +1,3 @@
+"the8020.admin-db.table.view" = "View database tables, their definitions, comparisons and rows; value is the table ID, or empty for the list."
+"the8020.admin-db.table.edit" = "Synchronize or permanently trim a table; value is the table ID, or * for synchronizing all tables."
+"the8020.admin-db.sql.execute" = "Run arbitrary SQL against the system database, which can read or change any table; value is empty."

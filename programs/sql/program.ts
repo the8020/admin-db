@@ -1,3 +1,4 @@
+import { allowed } from "../../src/authorized.ts";
 import {
   BACK_EVENT,
   callScreen,
@@ -9,6 +10,8 @@ import { sqlLayout, sqlScreen } from "./view.ts";
 import { quoteIdentifier } from "../browse/data.ts";
 
 export default async function sqlExecutor(table = ""): Promise<void> {
+  // Arbitrary statements can read or change any table.
+  if (!await allowed("the8020.admin-db.sql.execute", "")) return;
   const model = {
     table,
     sql: table ? `SELECT * FROM ${quoteIdentifier(table)} LIMIT 100` : "",

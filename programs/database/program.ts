@@ -1,3 +1,5 @@
+import { requirePermission } from "/p/the8020/auth/mod.ts";
+import { allowed } from "../../src/authorized.ts";
 import { kernel } from "@the8020/kernel";
 import {
   BACK_EVENT,
@@ -38,7 +40,12 @@ export { tableAlert } from "./view.ts";
 export const TABLE_BROWSE_PROGRAM = "the8020/admin-db/browse";
 export const SQL_EXECUTOR_PROGRAM = "the8020/admin-db/sql";
 
+const VIEW = "the8020.admin-db.table.view";
+const EDIT = "the8020.admin-db.table.edit";
+const requireEdit = (value: string) => requirePermission(EDIT, value);
+
 export default async function databaseTables(tableId?: string): Promise<void> {
+  if (!await allowed(VIEW, tableId ?? "")) return;
   if (tableId) return await tableDetail(tableId);
   let screenModel: Model<z.infer<typeof ListScreen>> | undefined;
   while (true) {
@@ -94,6 +101,7 @@ async function databaseMaintenance(): Promise<void> {
     try {
       if (event.action === "definitions") await definitionList();
       if (event.action === "sync-all") {
+        await requireEdit("*");
         await kernel.database.tables.synchronizeAll();
         sendMessage("Database tables synchronized", "success");
       }
@@ -104,6 +112,7 @@ async function databaseMaintenance(): Promise<void> {
 }
 
 async function tableDetail(tableId: string, advanced = false): Promise<void> {
+  if (!await allowed(VIEW, tableId)) return;
   let screenModel1: Model<z.infer<typeof DetailScreen>> | undefined;
   while (true) {
     const detail = await kernel.database.tables.inspect(
@@ -181,6 +190,7 @@ async function tableDetail(tableId: string, advanced = false): Promise<void> {
         await invokeProgram(TABLE_BROWSE_PROGRAM, [detail.table_id]);
       }
       if (event.action === "sync") {
+        await requireEdit(tableId);
         await kernel.database.tables.synchronize(tableId);
         sendMessage("Table synchronized", "success");
       }
@@ -188,6 +198,7 @@ async function tableDetail(tableId: string, advanced = false): Promise<void> {
         event.action === "trim-columns" &&
         await confirmTrim("Retired fields", retired.join(", "))
       ) {
+        await requireEdit(tableId);
         await kernel.database.tables.trim({
           tableId,
           columns: retired,
@@ -199,6 +210,7 @@ async function tableDetail(tableId: string, advanced = false): Promise<void> {
         event.action === "trim-table" &&
         await confirmTrim("Retired table", tableId)
       ) {
+        await requireEdit(tableId);
         await kernel.database.tables.trim({
           tableId,
           dropTable: true,
@@ -285,6 +297,7 @@ async function comparisonDetail(tableId: string): Promise<void> {
     if (event.action === BACK_EVENT) return;
     if (event.action === "sync") {
       try {
+        await requireEdit(tableId);
         await kernel.database.tables.synchronize(tableId);
         sendMessage("Table synchronized", "success");
       } catch (error) {

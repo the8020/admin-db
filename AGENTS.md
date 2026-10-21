@@ -123,7 +123,8 @@ below.
 # Ownership
 
 - `widgets/` declares this package's Home tiles and categories through the
-  `the8020/packages/widgets.ts` format.
+  `the8020/packages/widgets.ts` format; tiles are visible with
+  `the8020.admin-db.table.view` and `the8020.admin-db.sql.execute`.
 - Own database table list, detail, row counting, read-only row browsing, generic
   single-statement SQL execution, activated-definition comparison,
   synchronization, and confirmed destructive-trim screens.
@@ -132,6 +133,12 @@ below.
 
 # Local Contracts
 
+- Programs check `the8020.admin-db.table.view` (table ID, empty for the list) on
+  entry to the table list, detail and row browser, `the8020.admin-db.table.edit`
+  before synchronize and trim (`*` for synchronizing all), and
+  `the8020.admin-db.sql.execute` before opening the SQL executor, which can read
+  or change any table. Entry denials go through `src/authorized.ts`: the program
+  reports the message and returns.
 - `the8020/admin-db/database` opens its catalog without arguments and accepts an
   optional table ID for linked navigation. It uses typed kernel APIs and
   ordinary UUI programs.
