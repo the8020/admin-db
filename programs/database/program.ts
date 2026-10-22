@@ -4,6 +4,7 @@ import { kernel } from "@the8020/kernel";
 import {
   BACK_EVENT,
   callScreen,
+  CONFIRM_CLASS,
   invokeProgram,
   Model,
   presentPage,
@@ -322,6 +323,7 @@ async function confirmTrim(
     screenModel3.data = model;
     const event = await callScreen({
       id: "database-trim-confirmation",
+      class: CONFIRM_CLASS,
       title: "Confirm destructive database trim",
       schema: ConfirmScreen,
       model: screenModel3,
