@@ -29,7 +29,8 @@ Parent DOX: [admin-db/programs DOX](../AGENTS.md).
 - Shared table and package fields open their owning programs. The default
   entrypoint accepts an optional selected table ID.
 - Keep package/source table names distinct from the physical identifier used for
-  navigation.
+  navigation. Localize known status labels and summary prose; preserve SQL type
+  names, stored values, and native diagnostics. Counts use complete messages.
 
 # Work Guidance
 

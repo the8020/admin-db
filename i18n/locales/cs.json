@@ -2,7 +2,7 @@
   "name": "Čeština",
   "texts": {
     "program.rows_value1": "Řádky · {value1}",
-    "program.filter_and_sort_the_rows_below_leave": "Filtrujte a řaďte řádky níže. Prázdná podmínka Where zahrne všechny řádky do stanoveného limitu.",
+    "program.filter_and_sort_the_rows_below_leave": "Filtrujte a řaďte řádky níže. Prázdná podmínka zahrne všechny řádky do stanoveného limitu.",
     "program.table_details": "Podrobnosti tabulky",
     "view.query": "Dotaz",
     "view.rows": "Řádky",
@@ -17,7 +17,7 @@
     "program.database_tables_synchronized": "Databázové tabulky synchronizovány",
     "program.value1_value2": "{value1} {value2}",
     "program.field_value1": "Pole {value1}",
-    "program.table_contains_value1_value2": "Tabulka obsahuje {value1} {value2}",
+    "program.table_rows_count": "Řádků v tabulce: {count}",
     "program.table_synchronized": "Tabulka synchronizována",
     "program.retired_fields_permanently_removed": "Vyřazená pole trvale odstraněna",
     "program.retired_table_permanently_removed": "Vyřazená tabulka trvale odstraněna",
@@ -39,7 +39,7 @@
     "view.table_state": "Stav tabulky",
     "view.last_sync_result": "Poslední výsledek synchronizace",
     "view.active_fields": "Aktivní pole",
-    "view.retired_fields": "Vyřazená pole",
+    "view.retired_fields": "Vyřazená pole: {count}",
     "view.last_synchronized": "Poslední synchronizace",
     "view.attention": "Vyžaduje pozornost",
     "view.related_table": "Související tabulka",
@@ -115,10 +115,10 @@
     "catalog.number_of_retired_fields_retained_in_the": "Počet vyřazených polí uchovávaných v databázi do jejich výslovného odstranění.",
     "catalog.i_understand_that_this_data_cannot_be": "Rozumím, že tato data nelze obnovit",
     "catalog.confirm_only_after_reviewing_the_exact_structures": "Potvrďte až po kontrole přesných struktur a dat, které budou trvale odstraněny.",
-    "query.where": "Podmínka Where",
+    "query.where": "Podmínka",
     "query.a_sql_condition_for_example_enabled_true": "Podmínka SQL, například `enabled = true`. Vynechte klíčové slovo `WHERE`. Prázdná hodnota zahrne všechny řádky do limitu.",
     "query.limit": "Limit",
-    "query.maximum_number_of_rows_to_fetch_from": "Maximální počet načtených řádků od **1** do **10 000**. Před zvýšením limitu omezte velké tabulky podmínkou Where.",
+    "query.maximum_number_of_rows_to_fetch_from": "Maximální počet načtených řádků od **1** do **10 000**. Před zvýšením limitu omezte velké tabulky podmínkou.",
     "query.order_by": "Řazení Order by",
     "query.fields_to_sort_by_for_example_createdat": "Pole pro řazení, například `createdAt DESC`. Vynechte klíčová slova `ORDER BY`.",
     "query.run_one_sql_statement_at_a_time": "Spouštějte vždy jeden příkaz SQL, nejvýše **1 MiB**. Příkazy mohou číst i měnit data a schéma. Příkazy pro řízení transakcí nejsou dostupné.",
@@ -196,6 +196,11 @@
     "ui.table_has_no_defined_fields_to_browse": "Tabulka nemá definovaná pole k prohlížení",
     "ui.value1_must_be_text": "Pole {value1} musí obsahovat text",
     "ui.value1_must_not_exceed_value2_characters": "Pole {value1} nesmí překročit {value2} znaků",
-    "ui.value1_must_be_one_sql_fragment_without_comments_or_a_statement_separator": "Pole {value1} musí obsahovat jeden úsek SQL bez komentářů a oddělovače příkazů"
+    "ui.value1_must_be_one_sql_fragment_without_comments_or_a_statement_separator": "Pole {value1} musí obsahovat jeden úsek SQL bez komentářů a oddělovače příkazů",
+    "view.differences_count": "Zjištěné rozdíly: {count}",
+    "view.optional": "nepovinné",
+    "view.required": "povinné",
+    "view.default_value": "výchozí hodnota {value}",
+    "view.reference": "odkazuje na {table}.{column}"
   }
 }

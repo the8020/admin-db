@@ -1,6 +1,6 @@
 import { text as localizedText } from "/p/the8020/i18n/mod.ts";
 import { msg } from "/p/the8020/admin-db/i18n/messages.ts";
-import { catalogInfo } from "../../types/catalog.ts";
+import { catalogInfo, catalogStateLabels } from "../../types/catalog.ts";
 import { sourceInfo } from "/p/the8020/packages/types/source.ts";
 import { field, z } from "/p/the8020/uui/mod.ts";
 import { packageId } from "/p/the8020/packages/types/package.ts";
@@ -315,7 +315,11 @@ function tableName(table: TableSummary): string {
 export function tableAlert(table: TableSummary): string {
   const alerts = [table.error ?? ""];
   if (table.retired_columns > 0) {
-    alerts.push(`${table.retired_columns} retired fields`);
+    alerts.push(
+      localizedText(
+        msg("view.retired_fields", { count: table.retired_columns }),
+      ),
+    );
   }
   return [...new Set(alerts.filter(Boolean))].join("; ");
 }
@@ -361,9 +365,9 @@ export function tableComparisonModel(
       ? localizedText(
         msg("view.activated_definition_deployed_catalog_and_database_agree"),
       )
-      : `${differenceCount} difference${
-        differenceCount === 1 ? "" : "s"
-      } detected`,
+      : localizedText(
+        msg("view.differences_count", { count: differenceCount }),
+      ),
     attention: detail.error || localizedText(msg("view.none")),
     columns: comparisonColumnRows(detail),
     indexes: comparisonIndexRows(detail),
@@ -574,15 +578,20 @@ function logicalColumnSummary(column: ColumnDescriptor | undefined): string {
   if (column === undefined) return "—";
   const parts = [
     logicalType(column),
-    column.nullable ? "optional" : "required",
+    localizedText(msg(column.nullable ? "view.optional" : "view.required")),
   ];
   const value = defaultValue(column.default);
-  if (value !== "—") parts.push(`default ${value}`);
+  if (value !== "—") {
+    parts.push(localizedText(msg("view.default_value", { value })));
+  }
   const rules = constraints(column, undefined);
   if (rules !== "—") parts.push(rules.toLocaleLowerCase());
   if (column.reference !== undefined) {
     parts.push(
-      `references ${column.reference.table}.${column.reference.column}`,
+      localizedText(msg("view.reference", {
+        table: column.reference.table,
+        column: column.reference.column,
+      })),
     );
   }
   return parts.join(" · ");
@@ -590,8 +599,15 @@ function logicalColumnSummary(column: ColumnDescriptor | undefined): string {
 
 function physicalColumnSummary(column: PhysicalColumn | undefined): string {
   if (column === undefined) return "—";
-  const parts = [column.type, column.nullable ? "optional" : "required"];
-  if (column.default) parts.push(`default ${column.default}`);
+  const parts = [
+    column.type,
+    localizedText(msg(column.nullable ? "view.optional" : "view.required")),
+  ];
+  if (column.default) {
+    parts.push(
+      localizedText(msg("view.default_value", { value: column.default })),
+    );
+  }
   const rules = constraints(undefined, column);
   if (rules !== "—") parts.push(rules.toLocaleLowerCase());
   return parts.join(" · ");
@@ -601,7 +617,10 @@ function indexSummary(
   index: IndexDescriptor | PhysicalIndex | undefined,
 ): string {
   if (index === undefined) return "—";
-  return `${index.columns.join(", ")}${index.unique ? " · unique" : ""}`;
+  return [
+    index.columns.join(", "),
+    ...(index.unique ? [localizedText(msg("catalog.unique"))] : []),
+  ].join(" · ");
 }
 
 function definitionChange<T>(
@@ -630,11 +649,13 @@ function orderedUnion(
 }
 
 function yesNo(value: boolean): string {
-  return value ? localizedText(msg("view.yes")) : "No";
+  return localizedText(msg(value ? "view.yes" : "choices.no"));
 }
 
 export function stateLabel(value: string): string {
   if (!value) return "—";
+  const label = catalogStateLabels[value];
+  if (label !== undefined) return localizedText(label);
   return value.replaceAll("_", " ").replace(
     /\b\w/g,
     (letter) => letter.toLocaleUpperCase(),

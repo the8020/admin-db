@@ -17,7 +17,7 @@
     "program.database_tables_synchronized": "Database tables synchronized",
     "program.value1_value2": "{value1} {value2}",
     "program.field_value1": "Field {value1}",
-    "program.table_contains_value1_value2": "Table contains {value1} {value2}",
+    "program.table_rows_count": "Rows in table: {count}",
     "program.table_synchronized": "Table synchronized",
     "program.retired_fields_permanently_removed": "Retired fields permanently removed",
     "program.retired_table_permanently_removed": "Retired table permanently removed",
@@ -39,7 +39,7 @@
     "view.table_state": "Table state",
     "view.last_sync_result": "Last sync result",
     "view.active_fields": "Active fields",
-    "view.retired_fields": "Retired fields",
+    "view.retired_fields": "Retired fields: {count}",
     "view.last_synchronized": "Last synchronized",
     "view.attention": "Attention",
     "view.related_table": "Related table",
@@ -196,6 +196,11 @@
     "ui.table_has_no_defined_fields_to_browse": "Table has no defined fields to browse",
     "ui.value1_must_be_text": "{value1} must be text",
     "ui.value1_must_not_exceed_value2_characters": "{value1} must not exceed {value2} characters",
-    "ui.value1_must_be_one_sql_fragment_without_comments_or_a_statement_separator": "{value1} must be one SQL fragment without comments or a statement separator"
+    "ui.value1_must_be_one_sql_fragment_without_comments_or_a_statement_separator": "{value1} must be one SQL fragment without comments or a statement separator",
+    "view.differences_count": "Differences detected: {count}",
+    "view.optional": "optional",
+    "view.required": "required",
+    "view.default_value": "default {value}",
+    "view.reference": "references {table}.{column}"
   }
 }

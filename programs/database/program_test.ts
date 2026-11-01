@@ -1,4 +1,11 @@
-import { text } from "/p/the8020/i18n/mod.ts";
+import {
+  Localization,
+  prepareTexts,
+  text,
+  withLocalization,
+} from "/p/the8020/i18n/mod.ts";
+import { msg } from "../../i18n/messages.ts";
+import czech from "../../i18n/locales/cs.json" with { type: "json" };
 import { z } from "/p/the8020/uui/mod.ts";
 import { buildFieldCatalog } from "/p/the8020/uui/fields.ts";
 import { fieldMetadata } from "/p/the8020/db/fields.ts";
@@ -34,6 +41,7 @@ import {
   tableDetailActions,
 } from "./program.ts";
 import {
+  stateLabel,
   tableComparisonModel,
   type TableDetail,
   tableDetailModel,
@@ -76,7 +84,7 @@ Deno.test("database table list contains only useful human-facing state", () => {
     activeColumns: 4,
     retiredColumns: 2,
     synchronizedAt: "—",
-    alert: "physical table is missing; 2 retired fields",
+    alert: "physical table is missing; Retired fields: 2",
   });
 });
 
@@ -142,6 +150,43 @@ Deno.test("table detail presents fields, indexes, checks, and differences as row
     status: "OK",
     issue: "No differences detected",
   }]);
+});
+
+Deno.test("catalog summaries localize prose while retaining database values and unknown states", async () => {
+  const localization = new Localization(
+    "cs",
+    {
+      defaultLanguage: "en",
+      languages: [{ code: "en", name: "English" }, {
+        code: "cs",
+        name: "Čeština",
+      }],
+      fallbacks: {},
+    },
+    (packageId) =>
+      Promise.resolve({
+        package: packageId,
+        language: "cs",
+        texts: czech.texts,
+      }),
+  );
+  await withLocalization(localization, async () => {
+    await prepareTexts(msg("view.active"));
+    const detail = tableFixture();
+    const model = tableDetailModel(detail);
+    assertEquals(model.tableState, "Aktivní");
+    assertEquals(model.schemaState, "Synchronizováno");
+    assertEquals(model.indexes[0]?.unique, "Ne");
+    detail.differences = ["native diagnostic"];
+    const comparison = tableComparisonModel(detail);
+    assertEquals(comparison.result, "Zjištěné rozdíly: 1");
+    assert(comparison.columns[1]!.deployed.includes("povinné"));
+    assert(comparison.columns[1]!.deployed.includes("výchozí hodnota “draft”"));
+    assert(comparison.columns[1]!.database.includes("TEXT"));
+    assertEquals(comparison.differences[0]?.issue, "native diagnostic");
+    assertEquals(stateLabel("unfamiliar_state"), "Unfamiliar State");
+  });
+  assertEquals(stateLabel("active"), "Active");
 });
 
 Deno.test("activated comparison makes changed fields readable", () => {

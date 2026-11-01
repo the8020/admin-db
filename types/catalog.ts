@@ -1,15 +1,33 @@
 import { msg } from "/p/the8020/admin-db/i18n/messages.ts";
 import { choiceHelp, field, z } from "/p/the8020/db/fields.ts";
 
+export const catalogStateLabels: Record<string, ReturnType<typeof msg>> = {
+  active: msg("view.active"),
+  retired: msg("view.retired"),
+  uncatalogued: msg("view.uncatalogued"),
+  synchronized: msg("choices.synchronized"),
+  error: msg("choices.error"),
+  drift: msg("choices.drift"),
+  source_commit_mismatch: msg("choices.source_commit_mismatch"),
+  present: msg("choices.present"),
+  changed: msg("view.changed"),
+  commit_mismatch: msg("choices.commit_mismatch"),
+  missing: msg("choices.missing"),
+  unknown: msg("choices.unknown"),
+  unavailable: msg("view.unavailable"),
+  new: msg("view.new"),
+  deleted: msg("choices.deleted"),
+};
+
 const synchronizationState = field(z.string(), {
   label: msg("view.last_sync_result"),
   description: msg("catalog.the_result_of_the_most_recent_attempt"),
   valueHelp: choiceHelp(z.string(), [
-    msg("choices.synchronized"),
-    msg("view.retired"),
-    msg("choices.error"),
-    msg("choices.drift"),
-    msg("view.uncatalogued"),
+    catalogStateLabels.synchronized!,
+    catalogStateLabels.retired!,
+    catalogStateLabels.error!,
+    catalogStateLabels.drift!,
+    catalogStateLabels.uncatalogued!,
   ]),
 });
 
@@ -24,10 +42,10 @@ export const catalogInfo = z.object({
       "catalog.whether_this_structure_is_active_retired_missing",
     ),
     valueHelp: choiceHelp(z.string(), [
-      msg("view.active"),
-      msg("view.retired"),
+      catalogStateLabels.active!,
+      catalogStateLabels.retired!,
       msg("view.missing_from_database"),
-      msg("view.uncatalogued"),
+      catalogStateLabels.uncatalogued!,
     ]),
   }),
   synchronization: synchronizationState,
@@ -35,10 +53,10 @@ export const catalogInfo = z.object({
     label: msg("catalog.change"),
     description: msg("catalog.how_the_activated_table_source_differs_from"),
     valueHelp: choiceHelp(z.string(), [
-      msg("view.new"),
-      msg("view.changed"),
-      msg("choices.source_commit_mismatch"),
-      msg("choices.deleted"),
+      catalogStateLabels.new!,
+      catalogStateLabels.changed!,
+      catalogStateLabels.source_commit_mismatch!,
+      catalogStateLabels.deleted!,
     ]),
   }),
   definitionState: field(z.string(), {
@@ -47,13 +65,13 @@ export const catalogInfo = z.object({
       "catalog.whether_the_activated_table_definition_is_available",
     ),
     valueHelp: choiceHelp(z.string(), [
-      msg("choices.present"),
-      msg("view.changed"),
-      msg("choices.commit_mismatch"),
-      msg("choices.missing"),
-      msg("choices.unknown"),
-      msg("choices.error"),
-      msg("view.unavailable"),
+      catalogStateLabels.present!,
+      catalogStateLabels.changed!,
+      catalogStateLabels.commit_mismatch!,
+      catalogStateLabels.missing!,
+      catalogStateLabels.unknown!,
+      catalogStateLabels.error!,
+      catalogStateLabels.unavailable!,
     ]),
   }),
   differenceStatus: field(z.string(), {
@@ -156,11 +174,11 @@ export const catalogInfo = z.object({
       "catalog.how_the_activated_source_definition_differs_from",
     ),
     valueHelp: choiceHelp(z.string(), [
-      msg("view.new"),
+      catalogStateLabels.new!,
       msg("view.removed"),
       msg("view.same"),
-      msg("view.changed"),
-      msg("view.unavailable"),
+      catalogStateLabels.changed!,
+      catalogStateLabels.unavailable!,
     ]),
   }),
   activated: field(z.string(), {

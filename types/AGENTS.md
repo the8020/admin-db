@@ -7,7 +7,8 @@ Parent DOX: [admin-db DOX](../AGENTS.md).
 
 # Ownership
 
-- `catalog.ts` owns descriptive catalog and schema-operation fields.
+- `catalog.ts` owns descriptive catalog and schema-operation fields and shared
+  localized labels for known catalog states.
 - `query.ts` owns query input fields and bounds, textual SQL result fields, and
   descriptor-based row-value schemas.
 

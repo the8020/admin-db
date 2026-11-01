@@ -135,7 +135,9 @@ async function tableDetail(tableId: string, advanced = false): Promise<void> {
     const event = await callScreen({
       id: advanced ? "database-table-advanced" : "database-table-detail",
       title: msg("program.value1_value2", {
-        value1: advanced ? "Advanced ·" : localizedText(msg("view.table")),
+        value1: advanced
+          ? `${localizedText(msg("program.advanced"))} ·`
+          : localizedText(msg("view.table")),
         value2: screenModel1Data.tableName,
       }),
       schema: DetailScreen,
@@ -191,9 +193,8 @@ async function tableDetail(tableId: string, advanced = false): Promise<void> {
         const count = await countTableRows(detail.table_id);
         sendMessage(
           localizedText(
-            msg("program.table_contains_value1_value2", {
-              value1: count.toString(),
-              value2: count === 1n ? "row" : "rows",
+            msg("program.table_rows_count", {
+              count: count.toString(),
             }),
           ),
           "info",
