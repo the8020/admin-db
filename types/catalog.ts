@@ -1,82 +1,83 @@
+import { msg } from "/p/the8020/admin-db/i18n/messages.ts";
 import { choiceHelp, field, z } from "/p/the8020/db/fields.ts";
 
 const synchronizationState = field(z.string(), {
-  label: "Last sync result",
-  description:
-    "The result of the most recent attempt to align the database with the deployed definition.",
+  label: msg("view.last_sync_result"),
+  description: msg("catalog.the_result_of_the_most_recent_attempt"),
   valueHelp: choiceHelp(z.string(), [
-    "Synchronized",
-    "Retired",
-    "Error",
-    "Drift",
-    "Uncatalogued",
+    msg("choices.synchronized"),
+    msg("view.retired"),
+    msg("choices.error"),
+    msg("choices.drift"),
+    msg("view.uncatalogued"),
   ]),
 });
 
 export const catalogInfo = z.object({
   tableName: field(z.string(), {
-    label: "Table",
-    description: "The table name within its owning package.",
+    label: msg("view.table"),
+    description: msg("catalog.the_table_name_within_its_owning_package"),
   }),
   state: field(z.string(), {
-    label: "State",
-    description:
-      "Whether this structure is active, retired, missing from the database, or uncatalogued.",
+    label: msg("catalog.state"),
+    description: msg(
+      "catalog.whether_this_structure_is_active_retired_missing",
+    ),
     valueHelp: choiceHelp(z.string(), [
-      "Active",
-      "Retired",
-      "Missing from database",
-      "Uncatalogued",
+      msg("view.active"),
+      msg("view.retired"),
+      msg("view.missing_from_database"),
+      msg("view.uncatalogued"),
     ]),
   }),
   synchronization: synchronizationState,
   definitionChange: field(z.string(), {
-    label: "Change",
-    description: "How the activated table source differs from the catalog.",
+    label: msg("catalog.change"),
+    description: msg("catalog.how_the_activated_table_source_differs_from"),
     valueHelp: choiceHelp(z.string(), [
-      "New",
-      "Changed",
-      "Source Commit Mismatch",
-      "Deleted",
+      msg("view.new"),
+      msg("view.changed"),
+      msg("choices.source_commit_mismatch"),
+      msg("choices.deleted"),
     ]),
   }),
   definitionState: field(z.string(), {
-    label: "Activated definition",
-    description:
-      "Whether the activated table definition is available and matches the deployed definition.",
+    label: msg("catalog.activated_definition"),
+    description: msg(
+      "catalog.whether_the_activated_table_definition_is_available",
+    ),
     valueHelp: choiceHelp(z.string(), [
-      "Present",
-      "Changed",
-      "Commit Mismatch",
-      "Missing",
-      "Unknown",
-      "Error",
-      "Unavailable",
+      msg("choices.present"),
+      msg("view.changed"),
+      msg("choices.commit_mismatch"),
+      msg("choices.missing"),
+      msg("choices.unknown"),
+      msg("choices.error"),
+      msg("view.unavailable"),
     ]),
   }),
   differenceStatus: field(z.string(), {
-    label: "Status",
-    description: "Whether a compared structure agrees or needs attention.",
-    valueHelp: choiceHelp(z.string(), ["OK", "Attention"]),
+    label: msg("catalog.status"),
+    description: msg("catalog.whether_a_compared_structure_agrees_or_needs"),
+    valueHelp: choiceHelp(z.string(), ["OK", msg("view.attention")]),
   }),
   synchronizedAt: field(z.string(), {
-    label: "Last synchronized",
-    description:
-      "When the table was most recently synchronized with its deployed definition.",
+    label: msg("view.last_synchronized"),
+    description: msg("catalog.when_the_table_was_most_recently_synchronized"),
   }),
   attention: field(z.string(), {
-    label: "Attention",
-    description:
-      "Schema or inspection problems to review before synchronizing or using this table.",
+    label: msg("view.attention"),
+    description: msg("catalog.schema_or_inspection_problems_to_review_before"),
   }),
   columnName: field(z.string(), {
-    label: "Field",
-    description: "The field name used in SQL queries and table definitions.",
+    label: msg("catalog.field"),
+    description: msg("catalog.the_field_name_used_in_sql_queries"),
   }),
   logicalType: field(z.string(), {
-    label: "Logical type",
-    description:
-      "The package-defined value type, including decimal precision and scale or allowed enum values.",
+    label: msg("catalog.logical_type"),
+    description: msg(
+      "catalog.the_package_defined_value_type_including_decimal",
+    ),
     valueHelp: choiceHelp(z.string(), [
       "text",
       "boolean",
@@ -90,126 +91,126 @@ export const catalogInfo = z.object({
     ]),
   }),
   databaseType: field(z.string(), {
-    label: "Database type",
-    description: "The physical type currently used by the database engine.",
+    label: msg("catalog.database_type"),
+    description: msg("catalog.the_physical_type_currently_used_by_the"),
   }),
   required: field(z.string(), {
-    label: "Required",
-    description:
-      "Whether this field must contain a value. Required fields do not accept SQL NULL.",
-    valueHelp: choiceHelp(z.string(), ["Yes", "No"]),
+    label: msg("catalog.required"),
+    description: msg("catalog.whether_this_field_must_contain_a_value"),
+    valueHelp: choiceHelp(z.string(), [msg("view.yes"), msg("choices.no")]),
   }),
   defaultValue: field(z.string(), {
-    label: "Default",
-    description:
-      "The value supplied by the table definition when an insert omits this field.",
+    label: msg("catalog.default"),
+    description: msg("catalog.the_value_supplied_by_the_table_definition"),
   }),
   databaseDefault: field(z.string(), {
-    label: "Database default",
-    description:
-      "The default expression currently configured in the physical database.",
+    label: msg("catalog.database_default"),
+    description: msg(
+      "catalog.the_default_expression_currently_configured_in_the",
+    ),
   }),
   constraints: field(z.string(), {
-    label: "Constraints",
-    description:
-      "Rules such as primary key, unique, or generated that apply to this field.",
+    label: msg("catalog.constraints"),
+    description: msg("catalog.rules_such_as_primary_key_unique_or"),
   }),
   reference: field(z.string(), {
-    label: "Reference",
-    description: "The related table and field referenced by this foreign key.",
+    label: msg("catalog.reference"),
+    description: msg("catalog.the_related_table_and_field_referenced_by"),
   }),
   indexName: field(z.string(), {
-    label: "Index",
-    description:
-      "The name of the index used to find rows efficiently or enforce uniqueness.",
+    label: msg("catalog.index"),
+    description: msg("catalog.the_name_of_the_index_used_to"),
   }),
   indexColumns: field(z.string(), {
-    label: "Fields",
-    description: "The fields in this index, in index order.",
+    label: msg("catalog.fields"),
+    description: msg("catalog.the_fields_in_this_index_in_index"),
   }),
   unique: field(z.string(), {
-    label: "Unique",
-    description:
-      "Whether this index rejects rows with duplicate indexed values.",
-    valueHelp: choiceHelp(z.string(), ["Yes", "No"]),
+    label: msg("catalog.unique"),
+    description: msg("catalog.whether_this_index_rejects_rows_with_duplicate"),
+    valueHelp: choiceHelp(z.string(), [msg("view.yes"), msg("choices.no")]),
   }),
   difference: field(z.string(), {
-    label: "Difference",
-    description:
-      "A difference between the activated definition, deployed catalog, and physical database.",
+    label: msg("catalog.difference"),
+    description: msg(
+      "catalog.a_difference_between_the_activated_definition_deployed",
+    ),
   }),
   schemaState: field(synchronizationState, {
-    label: "Database schema",
-    description:
-      "Whether the physical database agrees with the deployed table definition.",
+    label: msg("catalog.database_schema"),
+    description: msg("catalog.whether_the_physical_database_agrees_with_the"),
   }),
   fields: field(z.string(), {
-    label: "Fields",
-    description: "The number of active and retired fields in this table.",
+    label: msg("catalog.fields"),
+    description: msg("catalog.the_number_of_active_and_retired_fields"),
   }),
   expression: field(z.string(), {
-    label: "Database check",
-    description:
-      "An expression the database checks when inserting or updating a row.",
+    label: msg("view.database_check"),
+    description: msg(
+      "catalog.an_expression_the_database_checks_when_inserting",
+    ),
   }),
   change: field(z.string(), {
-    label: "Change",
-    description:
-      "How the activated source definition differs from the deployed definition.",
+    label: msg("catalog.change"),
+    description: msg(
+      "catalog.how_the_activated_source_definition_differs_from",
+    ),
     valueHelp: choiceHelp(z.string(), [
-      "New",
-      "Removed",
-      "Same",
-      "Changed",
-      "Unavailable",
+      msg("view.new"),
+      msg("view.removed"),
+      msg("view.same"),
+      msg("view.changed"),
+      msg("view.unavailable"),
     ]),
   }),
   activated: field(z.string(), {
-    label: "Activated definition",
-    description:
-      "The definition evaluated from the currently activated package source.",
+    label: msg("catalog.activated_definition"),
+    description: msg(
+      "catalog.the_definition_evaluated_from_the_currently_activated",
+    ),
   }),
   deployed: field(z.string(), {
-    label: "Deployed definition",
-    description:
-      "The definition most recently synchronized into the database catalog.",
+    label: msg("catalog.deployed_definition"),
+    description: msg(
+      "catalog.the_definition_most_recently_synchronized_into_the",
+    ),
   }),
   database: field(z.string(), {
-    label: "Database",
-    description:
-      "The field or index as it currently exists in the physical database.",
+    label: msg("catalog.database"),
+    description: msg("catalog.the_field_or_index_as_it_currently"),
   }),
   result: field(z.string(), {
-    label: "Result",
-    description:
-      "Whether the compared definitions agree, or how many differences need review.",
+    label: msg("catalog.result"),
+    description: msg("catalog.whether_the_compared_definitions_agree_or_how"),
   }),
   operation: field(z.string(), {
-    label: "Operation",
-    description: "The database operation that will run after confirmation.",
-    valueHelp: choiceHelp(z.string(), ["Retired fields", "Retired table"]),
+    label: msg("catalog.operation"),
+    description: msg("catalog.the_database_operation_that_will_run_after"),
+    valueHelp: choiceHelp(z.string(), [
+      msg("view.retired_fields"),
+      msg("program.retired_table"),
+    ]),
   }),
   affected: field(z.string(), {
-    label: "Permanently remove",
-    description:
-      "The table or retired fields whose stored data will be permanently deleted.",
+    label: msg("catalog.permanently_remove"),
+    description: msg("catalog.the_table_or_retired_fields_whose_stored"),
   }),
   warning: field(z.string(), {
-    label: "Warning",
-    description: "The data-loss consequence of confirming this operation.",
+    label: msg("catalog.warning"),
+    description: msg("catalog.the_data_loss_consequence_of_confirming_this"),
   }),
   activeColumns: field(z.number(), {
-    label: "Active fields",
-    description: "Number of fields in the deployed active table definition.",
+    label: msg("view.active_fields"),
+    description: msg("catalog.number_of_fields_in_the_deployed_active"),
   }),
   retiredColumns: field(z.number(), {
-    label: "Retired fields",
-    description:
-      "Number of retired fields retained in the database until explicitly trimmed.",
+    label: msg("view.retired_fields"),
+    description: msg("catalog.number_of_retired_fields_retained_in_the"),
   }),
   confirmed: field(z.boolean(), {
-    label: "I understand that this data cannot be recovered",
-    description:
-      "Confirm only after reviewing the exact structures and data that will be permanently removed.",
+    label: msg("catalog.i_understand_that_this_data_cannot_be"),
+    description: msg(
+      "catalog.confirm_only_after_reviewing_the_exact_structures",
+    ),
   }),
 });

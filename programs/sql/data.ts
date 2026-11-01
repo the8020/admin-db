@@ -1,3 +1,5 @@
+import { text as localizedText } from "/p/the8020/i18n/mod.ts";
+import { msg } from "/p/the8020/admin-db/i18n/messages.ts";
 import {
   bytesToBase64,
   type DatabaseValue,
@@ -102,15 +104,21 @@ export function sqlStatementIntent(
   backend: DatabaseBackend,
 ): SQLStatementIntent {
   if (typeof source !== "string" || source.trim().length === 0) {
-    throw new TypeError("Enter one SQL statement to run");
+    throw new TypeError(
+      localizedText(msg("ui.enter_one_sql_statement_to_run")),
+    );
   }
   if (new TextEncoder().encode(source).byteLength > MAXIMUM_STATEMENT_BYTES) {
-    throw new TypeError("SQL statement must not exceed 1 MiB");
+    throw new TypeError(
+      localizedText(msg("ui.sql_statement_must_not_exceed_1_mib")),
+    );
   }
   const statement = source.trim();
   const tokens = tokenizeStatement(statement, backend);
   if (tokens.length === 0) {
-    throw new TypeError("Enter one SQL statement to run");
+    throw new TypeError(
+      localizedText(msg("ui.enter_one_sql_statement_to_run")),
+    );
   }
   const topLevel = tokens.filter((token) => token.depth === 0);
   let kind = topLevel[0]?.word ?? "";
@@ -120,7 +128,11 @@ export function sqlStatementIntent(
   }
   if (transactionStatementKinds.has(kind)) {
     throw new TypeError(
-      "Transaction control is unavailable; run one self-contained SQL statement",
+      localizedText(
+        msg(
+          "ui.transaction_control_is_unavailable_run_one_self_contained_sql_statement",
+        ),
+      ),
     );
   }
   const hasReturning = topLevel.some((token) => token.word === "RETURNING");
@@ -157,18 +169,24 @@ export function presentSQLResult(result: SQLResult): SQLResultPresentation {
   }
   const facts: Array<[string, string]> = [];
   if (result.affected_rows !== undefined) {
-    facts.push(["Rows affected", displayDatabaseValue(result.affected_rows)]);
+    facts.push([
+      localizedText(msg("data.rows_affected")),
+      displayDatabaseValue(result.affected_rows),
+    ]);
   }
   if (result.insert_id !== undefined) {
     facts.push(["Insert ID", displayDatabaseValue(result.insert_id)]);
   }
   if (facts.length === 0) {
-    facts.push(["Status", "Statement completed successfully"]);
+    facts.push([
+      localizedText(msg("catalog.status")),
+      localizedText(msg("data.statement_completed_successfully")),
+    ]);
   }
   return {
     columns: [
-      { key: "result", heading: "Result" },
-      { key: "value", heading: "Value" },
+      { key: "result", heading: localizedText(msg("catalog.result")) },
+      { key: "value", heading: localizedText(msg("query.value")) },
     ],
     rows: facts.map(([result, value], index) => ({
       __rowKey: String(index),
@@ -225,7 +243,9 @@ function tokenizeStatement(source: string, backend: DatabaseBackend): Token[] {
       continue;
     }
     if (terminated) {
-      throw new TypeError("Run one SQL statement at a time");
+      throw new TypeError(
+        localizedText(msg("ui.run_one_sql_statement_at_a_time")),
+      );
     }
     if (character === ";") {
       terminated = true;
@@ -261,7 +281,9 @@ function tokenizeStatement(source: string, backend: DatabaseBackend): Token[] {
     if (dollarQuote !== undefined) {
       const end = source.indexOf(dollarQuote, index + dollarQuote.length);
       if (end < 0) {
-        throw new TypeError("SQL contains an unterminated dollar quote");
+        throw new TypeError(
+          localizedText(msg("ui.sql_contains_an_unterminated_dollar_quote")),
+        );
       }
       index = end + dollarQuote.length;
       continue;
@@ -332,13 +354,17 @@ function quotedEnd(
     }
     return index + 1;
   }
-  throw new TypeError("SQL contains an unterminated quoted value");
+  throw new TypeError(
+    localizedText(msg("ui.sql_contains_an_unterminated_quoted_value")),
+  );
 }
 
 function bracketedIdentifierEnd(source: string, start: number): number {
   const end = source.indexOf("]", start + 1);
   if (end >= 0) return end + 1;
-  throw new TypeError("SQL contains an unterminated bracketed identifier");
+  throw new TypeError(
+    localizedText(msg("ui.sql_contains_an_unterminated_bracketed_identifier")),
+  );
 }
 
 function blockCommentEnd(
@@ -362,5 +388,7 @@ function blockCommentEnd(
     }
     index++;
   }
-  throw new TypeError("SQL contains an unterminated block comment");
+  throw new TypeError(
+    localizedText(msg("ui.sql_contains_an_unterminated_block_comment")),
+  );
 }

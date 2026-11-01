@@ -1,5 +1,6 @@
+import { msg } from "/p/the8020/admin-db/i18n/messages.ts";
 import type { ColumnDescriptor } from "/p/the8020/db/codecs.ts";
-import { field, type LayoutDocument, z } from "/p/the8020/uui/mod.ts";
+import { field, type LayoutDeclaration, z } from "/p/the8020/uui/mod.ts";
 import {
   DEFAULT_BROWSE_LIMIT,
   queryInfo,
@@ -39,7 +40,7 @@ export function tableBrowseModel() {
 
 export function tableBrowseLayout(
   columns: readonly ColumnDescriptor[],
-): LayoutDocument {
+): LayoutDeclaration {
   return {
     schema: 1,
     id: "database-table-browse",
@@ -50,15 +51,19 @@ export function tableBrowseLayout(
         {
           id: "query",
           type: "detail",
-          title: "Query",
+          title: msg("view.query"),
           controls: ["where", "limit", "orderBy"],
         },
         {
           id: "rows",
           type: "list",
-          title: "Rows",
+          title: msg("view.rows"),
           bind: "rows",
-          toolbar: [{ id: "run", label: "Run query", kind: "primary" }],
+          toolbar: [{
+            id: "run",
+            label: msg("view.run_query"),
+            kind: "primary",
+          }],
           display: columns.map((column) => column.name),
           headings: Object.fromEntries(
             columns.map((column) => [

@@ -1,3 +1,4 @@
+import { msg } from "/p/the8020/admin-db/i18n/messages.ts";
 import { allowed } from "../../src/authorized.ts";
 import {
   BACK_EVENT,
@@ -24,17 +25,22 @@ export default async function sqlExecutor(table = ""): Promise<void> {
     screenModel.data = model;
     const event = await callScreen({
       id: "database-sql-executor",
-      title: "SQL executor",
-      description:
-        "Run one SQL statement directly against the system database. Statements may change data or schema; output shows rows or an execution summary.",
+      title: msg("program.sql_executor"),
+      description: msg("program.run_one_sql_statement_directly_against_the"),
       schema: sqlScreen(columns),
       model: screenModel,
       layout: sqlLayout(columns),
       header: {
-        controls: [{ bind: "table", label: "Table reference", length: "long" }],
+        controls: [{
+          bind: "table",
+          label: msg("program.table_reference"),
+          length: "long",
+        }],
         actions: [
-          { id: "run", label: "Run SQL", kind: "primary" },
-          ...(model.table ? [{ id: "select", label: "New SELECT" }] : []),
+          { id: "run", label: msg("program.run_sql"), kind: "primary" },
+          ...(model.table
+            ? [{ id: "select", label: msg("program.new_select") }]
+            : []),
         ],
       },
     });

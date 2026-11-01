@@ -30,7 +30,11 @@
     "toolbar": [
       {
         "id": "refresh",
-        "label": "[[icon=refresh]] Refresh"
+        "label": {
+          "package": "the8020/admin-db",
+          "key": "program.refresh",
+          "fallback": "[[icon=refresh]] Refresh"
+        }
       }
     ]
   }

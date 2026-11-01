@@ -8,7 +8,11 @@
       {
         "id": "overview",
         "type": "detail",
-        "title": "Comparison",
+        "title": {
+          "package": "the8020/admin-db",
+          "key": "layouts.database.compare.overview.title",
+          "fallback": "Comparison"
+        },
         "controls": [
           "tableId",
           "definitionState",
@@ -21,7 +25,11 @@
       {
         "id": "columns",
         "type": "list",
-        "title": "Fields",
+        "title": {
+          "package": "the8020/admin-db",
+          "key": "catalog.fields",
+          "fallback": "Fields"
+        },
         "bind": "columns",
         "key": "key",
         "display": [
@@ -35,7 +43,11 @@
       {
         "id": "indexes",
         "type": "list",
-        "title": "Indexes",
+        "title": {
+          "package": "the8020/admin-db",
+          "key": "layouts.database.advanced.indexes.title",
+          "fallback": "Indexes"
+        },
         "bind": "indexes",
         "key": "key",
         "display": [
@@ -49,7 +61,11 @@
       {
         "id": "differences",
         "type": "list",
-        "title": "Detected differences",
+        "title": {
+          "package": "the8020/admin-db",
+          "key": "layouts.database.advanced.differences.title",
+          "fallback": "Detected differences"
+        },
         "bind": "differences",
         "key": "key",
         "display": [

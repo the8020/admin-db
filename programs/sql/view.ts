@@ -1,5 +1,6 @@
+import { msg } from "/p/the8020/admin-db/i18n/messages.ts";
 import { queryInfo } from "../../types/query.ts";
-import { field, type LayoutDocument, z } from "/p/the8020/uui/mod.ts";
+import { field, type LayoutDeclaration, z } from "/p/the8020/uui/mod.ts";
 import type { SQLResultColumn } from "./data.ts";
 import { tableId } from "/p/the8020/db/types/table.ts";
 
@@ -17,13 +18,13 @@ export function sqlScreen(columns: readonly SQLResultColumn[]) {
   };
   return z.object({
     table: field(tableId, {
-      label: "Table reference",
+      label: msg("program.table_reference"),
       length: "long",
       reactive: true,
     }),
     sql: field(queryInfo.shape.sql, {
       control: "textarea",
-      placeholder: "SELECT * FROM table_name LIMIT 100",
+      placeholder: msg("view.select_from_table_name_limit_100"),
       length: "long",
       rowSpan: 2,
     }),
@@ -33,7 +34,7 @@ export function sqlScreen(columns: readonly SQLResultColumn[]) {
 
 export function sqlLayout(
   columns: readonly SQLResultColumn[],
-): LayoutDocument {
+): LayoutDeclaration {
   return {
     schema: 1,
     id: "database-sql-executor",
@@ -49,7 +50,7 @@ export function sqlLayout(
         {
           id: "output",
           type: "list",
-          title: "Output",
+          title: msg("view.output"),
           bind: "output",
           key: "__rowKey",
           display: columns.map((column) => column.key),

@@ -1,3 +1,5 @@
+import { text as localizedText } from "/p/the8020/i18n/mod.ts";
+import { msg } from "/p/the8020/admin-db/i18n/messages.ts";
 import { catalogInfo } from "../../types/catalog.ts";
 import { sourceInfo } from "/p/the8020/packages/types/source.ts";
 import { field, z } from "/p/the8020/uui/mod.ts";
@@ -93,31 +95,31 @@ export const ListScreen = z.object({
     navigation: z.string(),
     package: field(packageId, { readOnly: true }),
     table: field(catalogInfo.shape.tableName, {
-      label: "Table",
+      label: msg("view.table"),
       readOnly: true,
     }),
     state: field(catalogInfo.shape.state, {
-      label: "Table state",
+      label: msg("view.table_state"),
       readOnly: true,
     }),
     synchronization: field(catalogInfo.shape.synchronization, {
-      label: "Last sync result",
+      label: msg("view.last_sync_result"),
       readOnly: true,
     }),
     activeColumns: field(catalogInfo.shape.activeColumns, {
-      label: "Active fields",
+      label: msg("view.active_fields"),
       readOnly: true,
     }),
     retiredColumns: field(catalogInfo.shape.retiredColumns, {
-      label: "Retired fields",
+      label: msg("view.retired_fields"),
       readOnly: true,
     }),
     synchronizedAt: field(catalogInfo.shape.synchronizedAt, {
-      label: "Last synchronized",
+      label: msg("view.last_synchronized"),
       readOnly: true,
     }),
     alert: field(catalogInfo.shape.attention, {
-      label: "Attention",
+      label: msg("view.attention"),
       readOnly: true,
     }),
   })),
@@ -148,7 +150,10 @@ export const ColumnRow = z.object({
   reference: field(catalogInfo.shape.reference, {
     readOnly: true,
   }),
-  referenceTable: field(tableId, { label: "Related table", readOnly: true }),
+  referenceTable: field(tableId, {
+    label: msg("view.related_table"),
+    readOnly: true,
+  }),
 });
 
 const IndexRow = z.object({
@@ -175,7 +180,7 @@ export const DetailScreen = z.object({
     readOnly: true,
   }),
   physicalTable: field(tableId, {
-    label: "Physical table",
+    label: msg("view.physical_table"),
     readOnly: true,
     open: undefined,
   }),
@@ -186,11 +191,11 @@ export const DetailScreen = z.object({
     readOnly: true,
   }),
   sourceCommit: field(sourceInfo.shape.commit, {
-    label: "Deployed package commit",
+    label: msg("view.deployed_package_commit"),
     readOnly: true,
   }),
   sourceModule: field(sourceInfo.shape.path, {
-    label: "Definition module",
+    label: msg("view.definition_module"),
     readOnly: true,
   }),
   synchronizedAt: field(catalogInfo.shape.synchronizedAt, {
@@ -205,7 +210,7 @@ export const DetailScreen = z.object({
   checks: z.array(z.object({
     key: z.string(),
     expression: field(catalogInfo.shape.expression, {
-      label: "Database check",
+      label: msg("view.database_check"),
       readOnly: true,
     }),
   })),
@@ -237,11 +242,11 @@ export const CompareScreen = z.object({
     readOnly: true,
   }),
   deployedCommit: field(sourceInfo.shape.commit, {
-    label: "Deployed package commit",
+    label: msg("view.deployed_package_commit"),
     readOnly: true,
   }),
   activatedCommit: field(sourceInfo.shape.commit, {
-    label: "Activated package commit",
+    label: msg("view.activated_package_commit"),
     readOnly: true,
   }),
   result: field(catalogInfo.shape.result, { readOnly: true }),
@@ -271,15 +276,15 @@ export const ConfirmScreen = z.object({
 export const DefinitionsScreen = z.object({
   definitions: z.array(z.object({
     navigation: z.string(),
-    id: field(tableId, { label: "Definition", readOnly: true }),
-    package: field(packageId, { label: "Package", readOnly: true }),
+    id: field(tableId, { label: msg("view.definition"), readOnly: true }),
+    package: field(packageId, { label: msg("view.package"), readOnly: true }),
     state: field(catalogInfo.shape.definitionChange, { readOnly: true }),
     commit: field(sourceInfo.shape.commit, {
-      label: "Activated commit",
+      label: msg("view.activated_commit"),
       readOnly: true,
     }),
     error: field(catalogInfo.shape.attention, {
-      label: "Attention",
+      label: msg("view.attention"),
       readOnly: true,
     }),
   })),
@@ -329,7 +334,7 @@ export function tableDetailModel(
     synchronizedAt: detail.synchronized_at ?? "—",
     fields:
       `${detail.active_columns} active, ${detail.retired_columns} retired`,
-    attention: detail.error || "None",
+    attention: detail.error || localizedText(msg("view.none")),
     columns: columnRows(detail),
     indexes: indexRows(
       detail.descriptor.indexes ?? [],
@@ -353,11 +358,13 @@ export function tableComparisonModel(
     deployedCommit: detail.source_commit || "—",
     activatedCommit: detail.current_source_commit ?? "—",
     result: differenceCount === 0
-      ? "Activated definition, deployed catalog, and database agree"
+      ? localizedText(
+        msg("view.activated_definition_deployed_catalog_and_database_agree"),
+      )
       : `${differenceCount} difference${
         differenceCount === 1 ? "" : "s"
       } detected`,
-    attention: detail.error || "None",
+    attention: detail.error || localizedText(msg("view.none")),
     columns: comparisonColumnRows(detail),
     indexes: comparisonIndexRows(detail),
     differences: differenceRows(detail.differences),
@@ -419,10 +426,10 @@ function indexRows(
       key: name,
       name,
       state: definition === undefined
-        ? "Uncatalogued"
+        ? localizedText(msg("view.uncatalogued"))
         : databaseIndex === undefined
-        ? "Missing from database"
-        : "Active",
+        ? localizedText(msg("view.missing_from_database"))
+        : localizedText(msg("view.active")),
       columns: (definition?.columns ?? databaseIndex?.columns ?? []).join(", "),
       unique: yesNo(definition?.unique ?? databaseIndex?.unique ?? false),
     };
@@ -441,10 +448,10 @@ function comparisonColumnRows(detail: TableDetail) {
     key: name,
     name,
     change: unavailable
-      ? "Unavailable"
+      ? localizedText(msg("view.unavailable"))
       : definitionChange(activated.get(name), deployed.get(name)),
     activated: unavailable
-      ? "Definition could not be evaluated"
+      ? localizedText(msg("view.definition_could_not_be_evaluated"))
       : logicalColumnSummary(activated.get(name)),
     deployed: logicalColumnSummary(deployed.get(name)),
     database: physicalColumnSummary(physical.get(name)),
@@ -463,10 +470,10 @@ function comparisonIndexRows(detail: TableDetail) {
     key: name,
     name,
     change: unavailable
-      ? "Unavailable"
+      ? localizedText(msg("view.unavailable"))
       : definitionChange(activated.get(name), deployed.get(name)),
     activated: unavailable
-      ? "Definition could not be evaluated"
+      ? localizedText(msg("view.definition_could_not_be_evaluated"))
       : indexSummary(activated.get(name)),
     deployed: indexSummary(deployed.get(name)),
     database: indexSummary(physical.get(name)),
@@ -475,11 +482,15 @@ function comparisonIndexRows(detail: TableDetail) {
 
 function differenceRows(differences: string[]) {
   if (differences.length === 0) {
-    return [{ key: "ok", status: "OK", issue: "No differences detected" }];
+    return [{
+      key: "ok",
+      status: "OK",
+      issue: localizedText(msg("view.no_differences_detected")),
+    }];
   }
   return differences.map((issue, index) => ({
     key: String(index),
-    status: "Attention",
+    status: localizedText(msg("view.attention")),
     issue,
   }));
 }
@@ -515,13 +526,15 @@ function columnState(
   catalog: CatalogColumn | undefined,
   physical: PhysicalColumn | undefined,
 ): string {
-  if (catalog?.state === "retired") return "Retired";
-  if (definition === undefined && physical !== undefined) return "Uncatalogued";
-  if (definition !== undefined && physical === undefined) {
-    return "Missing from database";
+  if (catalog?.state === "retired") return localizedText(msg("view.retired"));
+  if (definition === undefined && physical !== undefined) {
+    return localizedText(msg("view.uncatalogued"));
   }
-  if (catalog === undefined) return "Uncatalogued";
-  return "Active";
+  if (definition !== undefined && physical === undefined) {
+    return localizedText(msg("view.missing_from_database"));
+  }
+  if (catalog === undefined) return localizedText(msg("view.uncatalogued"));
+  return localizedText(msg("view.active"));
 }
 
 function logicalType(column: ColumnDescriptor): string {
@@ -536,7 +549,7 @@ function logicalType(column: ColumnDescriptor): string {
 
 function defaultValue(value: DefaultDescriptor | undefined): string {
   if (value === undefined) return "—";
-  if (value.kind === "now") return "Current time";
+  if (value.kind === "now") return localizedText(msg("view.current_time"));
   if (value.kind !== "literal") return stateLabel(value.kind);
   if (typeof value.value === "string") return `“${value.value}”`;
   return value.value === null ? "null" : String(value.value);
@@ -547,9 +560,13 @@ function constraints(
   physical: PhysicalColumn | undefined,
 ): string {
   const values: string[] = [];
-  if (logical?.primary_key ?? physical?.primary_key) values.push("Primary key");
-  if (logical?.unique) values.push("Unique");
-  if (logical?.generated ?? physical?.generated) values.push("Generated");
+  if (logical?.primary_key ?? physical?.primary_key) {
+    values.push(localizedText(msg("view.primary_key")));
+  }
+  if (logical?.unique) values.push(localizedText(msg("catalog.unique")));
+  if (logical?.generated ?? physical?.generated) {
+    values.push(localizedText(msg("view.generated")));
+  }
   return values.join(", ") || "—";
 }
 
@@ -591,11 +608,15 @@ function definitionChange<T>(
   current: T | undefined,
   deployed: T | undefined,
 ): string {
-  if (current === undefined && deployed !== undefined) return "Removed";
-  if (current !== undefined && deployed === undefined) return "New";
+  if (current === undefined && deployed !== undefined) {
+    return localizedText(msg("view.removed"));
+  }
+  if (current !== undefined && deployed === undefined) {
+    return localizedText(msg("view.new"));
+  }
   return JSON.stringify(current) === JSON.stringify(deployed)
-    ? "Same"
-    : "Changed";
+    ? localizedText(msg("view.same"))
+    : localizedText(msg("view.changed"));
 }
 
 function orderedUnion(
@@ -609,7 +630,7 @@ function orderedUnion(
 }
 
 function yesNo(value: boolean): string {
-  return value ? "Yes" : "No";
+  return value ? localizedText(msg("view.yes")) : "No";
 }
 
 export function stateLabel(value: string): string {

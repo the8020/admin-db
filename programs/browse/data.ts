@@ -1,3 +1,5 @@
+import { msg } from "/p/the8020/admin-db/i18n/messages.ts";
+import { text as localizedText } from "/p/the8020/i18n/mod.ts";
 import {
   bytesToBase64,
   type ColumnDescriptor,
@@ -79,11 +81,17 @@ export function tableBrowseStatement(
     options.limit > MAXIMUM_BROWSE_LIMIT
   ) {
     throw new TypeError(
-      `Limit must be an integer from 1 through ${MAXIMUM_BROWSE_LIMIT}`,
+      localizedText(
+        msg("ui.limit_must_be_an_integer_from_1_through_value1", {
+          value1: MAXIMUM_BROWSE_LIMIT,
+        }),
+      ),
     );
   }
   if (columns.length === 0) {
-    throw new TypeError("Table has no defined fields to browse");
+    throw new TypeError(
+      localizedText(msg("ui.table_has_no_defined_fields_to_browse")),
+    );
   }
   const where = sqlClause(options.where, "Where");
   const orderBy = sqlClause(options.orderBy, "Order by");
@@ -138,11 +146,20 @@ export function quoteIdentifier(value: string): string {
 }
 
 function sqlClause(value: string, label: string): string {
-  if (typeof value !== "string") throw new TypeError(`${label} must be text`);
+  if (typeof value !== "string") {
+    throw new TypeError(
+      localizedText(msg("ui.value1_must_be_text", { value1: label })),
+    );
+  }
   const clause = value.trim();
   if (clause.length > MAXIMUM_SQL_CLAUSE_LENGTH) {
     throw new TypeError(
-      `${label} must not exceed ${MAXIMUM_SQL_CLAUSE_LENGTH} characters`,
+      localizedText(
+        msg("ui.value1_must_not_exceed_value2_characters", {
+          value1: label,
+          value2: MAXIMUM_SQL_CLAUSE_LENGTH,
+        }),
+      ),
     );
   }
   if (
@@ -150,7 +167,12 @@ function sqlClause(value: string, label: string): string {
     clause.includes("/*") || clause.includes("*/")
   ) {
     throw new TypeError(
-      `${label} must be one SQL fragment without comments or a statement separator`,
+      localizedText(
+        msg(
+          "ui.value1_must_be_one_sql_fragment_without_comments_or_a_statement_separator",
+          { value1: label },
+        ),
+      ),
     );
   }
   return clause;

@@ -8,7 +8,11 @@
       {
         "id": "overview",
         "type": "detail",
-        "title": "Overview",
+        "title": {
+          "package": "the8020/admin-db",
+          "key": "layouts.database.advanced.overview.title",
+          "fallback": "Overview"
+        },
         "controls": [
           "package",
           "tableName",
@@ -21,7 +25,11 @@
       {
         "id": "columns",
         "type": "list",
-        "title": "Fields",
+        "title": {
+          "package": "the8020/admin-db",
+          "key": "catalog.fields",
+          "fallback": "Fields"
+        },
         "bind": "columns",
         "key": "key",
         "display": [

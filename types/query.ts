@@ -1,3 +1,5 @@
+import { text } from "/p/the8020/i18n/mod.ts";
+import { msg } from "/p/the8020/admin-db/i18n/messages.ts";
 import { decimal, field, z } from "/p/the8020/db/fields.ts";
 import type { ColumnDescriptor } from "/p/the8020/db/codecs.ts";
 
@@ -7,29 +9,24 @@ export const MAXIMUM_SQL_CLAUSE_LENGTH = 4_000;
 
 export const queryInfo = z.object({
   where: field(z.string().max(MAXIMUM_SQL_CLAUSE_LENGTH), {
-    label: "Where",
-    description:
-      "A SQL condition, for example `enabled = true`. Leave out the `WHERE` keyword. Leave empty to include all rows up to the limit.",
+    label: msg("query.where"),
+    description: msg("query.a_sql_condition_for_example_enabled_true"),
   }),
   limit: field(z.number().int().min(1).max(MAXIMUM_BROWSE_LIMIT), {
-    label: "Limit",
-    description:
-      "Maximum number of rows to fetch, from **1** through **10,000**. Use Where to narrow large tables before increasing the limit.",
+    label: msg("query.limit"),
+    description: msg("query.maximum_number_of_rows_to_fetch_from"),
   }),
   orderBy: field(z.string().max(MAXIMUM_SQL_CLAUSE_LENGTH), {
-    label: "Order by",
-    description:
-      "Fields to sort by, for example `createdAt DESC`. Leave out the `ORDER BY` keyword.",
+    label: msg("query.order_by"),
+    description: msg("query.fields_to_sort_by_for_example_createdat"),
   }),
   sql: field(z.string().max(1_048_576), {
-    label: "SQL",
-    description:
-      "Run one SQL statement at a time, up to **1 MiB**. Statements may read or change data and schema. Transaction-control statements are unavailable.",
+    label: msg("program.sql"),
+    description: msg("query.run_one_sql_statement_at_a_time"),
   }),
   resultValue: field(z.string(), {
-    label: "Value",
-    description:
-      'The value returned by the SQL statement. `NULL` means no value, `""` is empty text, and `base64:` introduces binary data.',
+    label: msg("query.value"),
+    description: msg("query.the_value_returned_by_the_sql_statement"),
   }),
 });
 
@@ -62,19 +59,31 @@ export function tableValue(column: ColumnDescriptor): z.ZodType {
     schema = schema.nullable();
   }
   const type = column.logical_type === "decimal"
-    ? `Decimal with ${column.precision} total digits and ${column.scale} decimal places.`
+    ? text(
+      msg("query.decimal", {
+        precision: column.precision!,
+        scale: column.scale!,
+      }),
+    )
     : column.logical_type === "enum"
-    ? `One of: ${column.enum_values!.join(", ")}.`
+    ? text(msg("query.enum", { values: column.enum_values!.join(", ") }))
     : column.logical_type === "bytes"
-    ? "Binary data displayed as Base64 text."
-    : `A ${column.logical_type} value.`;
+    ? text(msg("query.bytes"))
+    : text(msg("query.typed", { type: column.logical_type }));
   return field(schema, {
     label: column.name,
     description: [
       type,
-      column.nullable ? "SQL NULL is allowed." : "A value is required.",
+      text(msg(column.nullable ? "query.nullable" : "query.required")),
       ...(column.reference
-        ? [`References ${column.reference.table}.${column.reference.column}.`]
+        ? [
+          text(
+            msg("query.reference", {
+              table: column.reference.table,
+              column: column.reference.column,
+            }),
+          ),
+        ]
         : []),
     ].join(" "),
   });

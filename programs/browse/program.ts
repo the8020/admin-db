@@ -1,3 +1,5 @@
+import { text as localizedText } from "/p/the8020/i18n/mod.ts";
+import { msg } from "/p/the8020/admin-db/i18n/messages.ts";
 import { allowed } from "../../src/authorized.ts";
 import { kernel } from "@the8020/kernel";
 import {
@@ -42,7 +44,9 @@ export default async function browseTable(tableName: unknown): Promise<void> {
       } catch (error) {
         model.rows = [];
         sendMessage(
-          error instanceof Error ? error.message : "Table browse failed",
+          error instanceof Error
+            ? error.message
+            : localizedText(msg("program.table_browse_failed")),
           "error",
         );
       }
@@ -50,16 +54,17 @@ export default async function browseTable(tableName: unknown): Promise<void> {
     screenModel.data = model;
     const event = await callScreen({
       id: "database-table-browse",
-      title: `Rows · ${detail.table_id.split("__").at(-1)}`,
-      description:
-        "Filter and sort the rows below. Leave Where blank to include all rows up to the limit.",
+      title: msg("program.rows_value1", {
+        value1: detail.table_id.split("__").at(-1)!,
+      }),
+      description: msg("program.filter_and_sort_the_rows_below_leave"),
       schema,
       model: screenModel,
       layout,
       header: {
         actions: [{
           id: "table",
-          label: "Table details",
+          label: msg("program.table_details"),
         }],
       },
     });

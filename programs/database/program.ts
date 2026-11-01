@@ -1,3 +1,5 @@
+import { text as localizedText } from "/p/the8020/i18n/mod.ts";
+import { msg } from "/p/the8020/admin-db/i18n/messages.ts";
 import { requirePermission } from "/p/the8020/auth/mod.ts";
 import { allowed } from "../../src/authorized.ts";
 import { kernel } from "@the8020/kernel";
@@ -8,7 +10,7 @@ import {
   invokeProgram,
   Model,
   presentPage,
-  type ScreenAction,
+  type ScreenActionDeclaration,
   sendMessage,
   z,
 } from "/p/the8020/uui/mod.ts";
@@ -56,14 +58,14 @@ export default async function databaseTables(tableId?: string): Promise<void> {
     screenModel.data = screenModelData;
     const event = await callScreen({
       id: "database-tables",
-      title: "Database tables",
+      title: msg("program.database_tables"),
       schema: ListScreen,
       model: screenModel,
       layout: listLayout,
       header: {
-        actions: [{ id: "sql", label: "SQL executor" }, {
+        actions: [{ id: "sql", label: msg("program.sql_executor") }, {
           id: "advanced",
-          label: "Advanced",
+          label: msg("program.advanced"),
         }],
       },
     });
@@ -87,16 +89,17 @@ async function databaseMaintenance(): Promise<void> {
   while (true) {
     const event = await callScreen({
       id: "database-maintenance",
-      title: "Database maintenance",
-      description:
-        "Review changes to table definitions, then synchronize the database when ready.",
+      title: msg("program.database_maintenance"),
+      description: msg(
+        "program.review_changes_to_table_definitions_then_synchronize",
+      ),
       schema: z.object({}),
       model,
       actions: [{
         id: "definitions",
-        label: "Review definitions",
+        label: msg("program.review_definitions"),
         kind: "primary",
-      }, { id: "sync-all", label: "Synchronize all" }],
+      }, { id: "sync-all", label: msg("program.synchronize_all") }],
     });
     if (event.action === BACK_EVENT) return;
     try {
@@ -104,10 +107,13 @@ async function databaseMaintenance(): Promise<void> {
       if (event.action === "sync-all") {
         await requireEdit("*");
         await kernel.database.tables.synchronizeAll();
-        sendMessage("Database tables synchronized", "success");
+        sendMessage(
+          localizedText(msg("program.database_tables_synchronized")),
+          "success",
+        );
       }
     } catch (error) {
-      notifyError(error, "Synchronization failed");
+      notifyError(error, localizedText(msg("program.synchronization_failed")));
     }
   }
 }
@@ -128,9 +134,10 @@ async function tableDetail(tableId: string, advanced = false): Promise<void> {
     screenModel1.data = screenModel1Data;
     const event = await callScreen({
       id: advanced ? "database-table-advanced" : "database-table-detail",
-      title: `${
-        advanced ? "Advanced ·" : "Table"
-      } ${screenModel1Data.tableName}`,
+      title: msg("program.value1_value2", {
+        value1: advanced ? "Advanced ·" : localizedText(msg("view.table")),
+        value2: screenModel1Data.tableName,
+      }),
       schema: DetailScreen,
       model: screenModel1,
       layout: advanced ? advancedLayout : detailLayout,
@@ -160,7 +167,7 @@ async function tableDetail(tableId: string, advanced = false): Promise<void> {
         await presentPage(() =>
           callScreen({
             id: "database-column",
-            title: `Field ${column.name}`,
+            title: msg("program.field_value1", { value1: column.name }),
             schema: ColumnRow,
             model: new Model(column),
             controls: [
@@ -183,7 +190,12 @@ async function tableDetail(tableId: string, advanced = false): Promise<void> {
       if (event.action === "count-rows") {
         const count = await countTableRows(detail.table_id);
         sendMessage(
-          `Table contains ${count.toString()} ${count === 1n ? "row" : "rows"}`,
+          localizedText(
+            msg("program.table_contains_value1_value2", {
+              value1: count.toString(),
+              value2: count === 1n ? "row" : "rows",
+            }),
+          ),
           "info",
         );
       }
@@ -193,11 +205,17 @@ async function tableDetail(tableId: string, advanced = false): Promise<void> {
       if (event.action === "sync") {
         await requireEdit(tableId);
         await kernel.database.tables.synchronize(tableId);
-        sendMessage("Table synchronized", "success");
+        sendMessage(
+          localizedText(msg("program.table_synchronized")),
+          "success",
+        );
       }
       if (
         event.action === "trim-columns" &&
-        await confirmTrim("Retired fields", retired.join(", "))
+        await confirmTrim(
+          localizedText(msg("view.retired_fields")),
+          retired.join(", "),
+        )
       ) {
         await requireEdit(tableId);
         await kernel.database.tables.trim({
@@ -205,11 +223,14 @@ async function tableDetail(tableId: string, advanced = false): Promise<void> {
           columns: retired,
           confirm: true,
         });
-        sendMessage("Retired fields permanently removed", "success");
+        sendMessage(
+          localizedText(msg("program.retired_fields_permanently_removed")),
+          "success",
+        );
       }
       if (
         event.action === "trim-table" &&
-        await confirmTrim("Retired table", tableId)
+        await confirmTrim(localizedText(msg("program.retired_table")), tableId)
       ) {
         await requireEdit(tableId);
         await kernel.database.tables.trim({
@@ -217,11 +238,17 @@ async function tableDetail(tableId: string, advanced = false): Promise<void> {
           dropTable: true,
           confirm: true,
         });
-        sendMessage("Retired table permanently removed", "success");
+        sendMessage(
+          localizedText(msg("program.retired_table_permanently_removed")),
+          "success",
+        );
         return;
       }
     } catch (error) {
-      notifyError(error, "Database operation failed");
+      notifyError(
+        error,
+        localizedText(msg("program.database_operation_failed")),
+      );
     }
   }
 }
@@ -229,39 +256,43 @@ async function tableDetail(tableId: string, advanced = false): Promise<void> {
 export function tableDetailActions(
   detail: TableDetail,
   advanced = false,
-): ScreenAction[] {
+): ScreenActionDeclaration[] {
   if (!advanced) {
     return [
-      { id: "browse", label: "Browse rows", kind: "primary" },
-      { id: "count-rows", label: "Count rows" },
-      { id: "sql", label: "SQL" },
+      { id: "browse", label: msg("program.browse_rows"), kind: "primary" },
+      { id: "count-rows", label: msg("program.count_rows") },
+      { id: "sql", label: msg("program.sql") },
       ...(detail.source_package
-        ? [{ id: "package", label: "Open package" }]
+        ? [{ id: "package", label: msg("program.open_package") }]
         : []),
-      { id: "advanced", label: "Advanced" },
-      { id: "refresh", label: "[[icon=refresh]] Refresh" },
+      { id: "advanced", label: msg("program.advanced") },
+      { id: "refresh", label: msg("program.refresh") },
     ];
   }
   const retired = detail.columns.some((column) => column.state === "retired");
   return [
     ...(detail.source_package
       ? [
-        { id: "sync", label: "Synchronize", kind: "primary" as const },
-        { id: "compare", label: "Compare activated definition" },
+        {
+          id: "sync",
+          label: msg("program.synchronize"),
+          kind: "primary" as const,
+        },
+        { id: "compare", label: msg("program.compare_activated_definition") },
       ]
       : []),
-    { id: "refresh", label: "[[icon=refresh]] Refresh" },
+    { id: "refresh", label: msg("program.refresh") },
     ...(retired
       ? [{
         id: "trim-columns",
-        label: "Trim retired fields",
+        label: msg("program.trim_retired_fields"),
         kind: "danger" as const,
       }]
       : []),
     ...(detail.state === "retired"
       ? [{
         id: "trim-table",
-        label: "Trim table",
+        label: msg("program.trim_table"),
         kind: "danger" as const,
       }]
       : []),
@@ -279,7 +310,7 @@ async function comparisonDetail(tableId: string): Promise<void> {
     screenModel2.data = screenModel2Data;
     const event = await callScreen({
       id: "database-table-comparison",
-      title: `Compare ${tableId}`,
+      title: msg("program.compare_tableid", { tableId: tableId }),
       schema: CompareScreen,
       model: screenModel2,
       layout: compareLayout,
@@ -288,10 +319,14 @@ async function comparisonDetail(tableId: string): Promise<void> {
           ...(
             detail.definition_state !== "error" &&
               detail.definition_state !== "missing"
-              ? [{ id: "sync", label: "Synchronize", kind: "primary" as const }]
+              ? [{
+                id: "sync",
+                label: msg("program.synchronize"),
+                kind: "primary" as const,
+              }]
               : []
           ),
-          { id: "refresh", label: "[[icon=refresh]] Refresh" },
+          { id: "refresh", label: msg("program.refresh") },
         ],
       },
     });
@@ -300,9 +335,15 @@ async function comparisonDetail(tableId: string): Promise<void> {
       try {
         await requireEdit(tableId);
         await kernel.database.tables.synchronize(tableId);
-        sendMessage("Table synchronized", "success");
+        sendMessage(
+          localizedText(msg("program.table_synchronized")),
+          "success",
+        );
       } catch (error) {
-        notifyError(error, "Synchronization failed");
+        notifyError(
+          error,
+          localizedText(msg("program.synchronization_failed")),
+        );
       }
     }
   }
@@ -315,7 +356,9 @@ async function confirmTrim(
   const model: z.infer<typeof ConfirmScreen> = {
     operation,
     affected,
-    warning: "This permanently deletes database structure and stored data.",
+    warning: localizedText(
+      msg("program.this_permanently_deletes_database_structure_and_stored"),
+    ),
     confirmed: false,
   };
   const screenModel3 = new Model(model);
@@ -324,12 +367,16 @@ async function confirmTrim(
     const event = await callScreen({
       id: "database-trim-confirmation",
       class: CONFIRM_CLASS,
-      title: "Confirm destructive database trim",
+      title: msg("program.confirm_destructive_database_trim"),
       schema: ConfirmScreen,
       model: screenModel3,
       layout: confirmLayout,
       header: {
-        actions: [{ id: "trim", label: "Permanently trim", kind: "danger" }],
+        actions: [{
+          id: "trim",
+          label: msg("program.permanently_trim"),
+          kind: "danger",
+        }],
       },
     });
     if (event.action === BACK_EVENT) return false;
@@ -338,7 +385,7 @@ async function confirmTrim(
         requireDestructiveConfirmation(model.confirmed);
         return true;
       } catch (error) {
-        notifyError(error, "Confirmation required");
+        notifyError(error, localizedText(msg("program.confirmation_required")));
       }
     }
   }
@@ -346,7 +393,11 @@ async function confirmTrim(
 
 export function requireDestructiveConfirmation(confirmed: boolean): void {
   if (!confirmed) {
-    throw new Error("Confirm permanent deletion before trimming database data");
+    throw new Error(
+      localizedText(
+        msg("ui.confirm_permanent_deletion_before_trimming_database_data"),
+      ),
+    );
   }
 }
 
@@ -368,8 +419,8 @@ async function definitionList(): Promise<void> {
     screenModel4.data = screenModel4Data;
     const event = await callScreen({
       id: "database-table-definitions",
-      title: "Activated definition changes",
-      description: "Select a table to review its changes before applying them.",
+      title: msg("program.activated_definition_changes"),
+      description: msg("program.select_a_table_to_review_its_changes"),
       schema: DefinitionsScreen,
       model: screenModel4,
       layout: definitionsLayout,

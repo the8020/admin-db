@@ -1,3 +1,4 @@
+import { text } from "/p/the8020/i18n/mod.ts";
 import { z } from "/p/the8020/uui/mod.ts";
 import { buildFieldCatalog } from "/p/the8020/uui/fields.ts";
 import { fieldMetadata } from "/p/the8020/db/fields.ts";
@@ -231,7 +232,7 @@ Deno.test("table detail exposes row count and parameterized browse actions", () 
   assertEquals(
     tableDetailActions(tableFixture()).slice(0, 2).map((action) => ({
       id: action.id,
-      label: action.label,
+      label: text(action.label),
     })),
     [
       { id: "browse", label: "Browse rows" },
