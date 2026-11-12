@@ -33,7 +33,7 @@ export default async function browseTable(tableName: unknown): Promise<void> {
   const columns = detail.descriptor.columns ?? [];
   const schema = tableBrowseScreen(columns);
   const model = tableBrowseModel();
-  const layout = tableBrowseLayout(columns);
+  const layout = tableBrowseLayout(columns, detail.table_id);
   let refresh = true;
 
   const screenModel = new Model(model);

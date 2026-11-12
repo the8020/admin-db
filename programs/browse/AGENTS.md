@@ -16,6 +16,8 @@ Parent DOX: [admin-db/programs DOX](../AGENTS.md).
 - Reuse `../../types/` fields for labels, descriptions, and scalar schemas;
   screen modules own layout and editability.
 
+- Supply the physical table ID as the shared list `layoutKey`, keeping saved
+  variants separate between tables even when their columns match.
 - Accept one physical table name and preserve deployed descriptor column order.
 - Accept only single-statement read-only Where and Order by fragments; bound the
   result limit.

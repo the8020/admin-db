@@ -182,6 +182,9 @@ Deno.test("SQL program reshapes output and reports errors as UUI messages", asyn
     if (operation !== "database.execute") {
       return Promise.reject(new Error(`unexpected operation ${operation}`));
     }
+    if (String(input.statement).includes("the8020__uui__list_layouts")) {
+      return Promise.resolve({ columns: [], rows: [] });
+    }
     calls.push(input);
     const statement = String(input.statement);
     if (statement.startsWith("SELECT")) {

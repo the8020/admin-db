@@ -13,7 +13,10 @@ import { queryInfo, tableValue } from "../../types/query.ts";
 import { catalogInfo } from "../../types/catalog.ts";
 import { assert, assertEquals, assertThrows } from "@std/assert";
 import type { ColumnDescriptor } from "/p/the8020/db/codecs.ts";
-import { kernelInvokeSymbol } from "@the8020/kernel";
+import {
+  kernelDatabaseBackendSymbol,
+  kernelInvokeSymbol,
+} from "@the8020/kernel";
 import type {
   ScreenEventMessage,
   ScreenSnapshot,
@@ -351,6 +354,11 @@ Deno.test("browse rows use logical types from the deployed table definition", ()
     false,
   );
   assertEquals(
+    tableBrowseLayout(columns, "acme__orders__orders").root.children?.[1]
+      ?.layoutKey,
+    "acme__orders__orders",
+  );
+  assertEquals(
     tableBrowseLayout(columns).root.children?.[1]?.headings?.total,
     "total",
   );
@@ -372,6 +380,8 @@ Deno.test("browse program receives a table name and reruns changed filters", asy
   const statements: string[] = [];
   const runtime = globalThis as unknown as Record<symbol, unknown>;
   const previousInvoke = runtime[kernelInvokeSymbol];
+  const previousBackend = runtime[kernelDatabaseBackendSymbol];
+  runtime[kernelDatabaseBackendSymbol] = "sqlite";
   runtime[kernelInvokeSymbol] = (
     operation: string,
     input: Record<string, unknown>,
@@ -397,6 +407,9 @@ Deno.test("browse program receives a table name and reruns changed filters", asy
       return Promise.resolve(undefined);
     }
     if (operation === "database.execute") {
+      if (String(input.statement).includes("the8020__uui__list_layouts")) {
+        return Promise.resolve({ columns: [], rows: [] });
+      }
       statements.push(String(input.statement));
       assertEquals(input.return_rows, true);
       if (String(input.statement).startsWith("SELECT COUNT(*)")) {
@@ -453,6 +466,9 @@ Deno.test("browse program receives a table name and reruns changed filters", asy
     unbind();
     if (previousInvoke === undefined) delete runtime[kernelInvokeSymbol];
     else runtime[kernelInvokeSymbol] = previousInvoke;
+    if (previousBackend === undefined) {
+      delete runtime[kernelDatabaseBackendSymbol];
+    } else runtime[kernelDatabaseBackendSymbol] = previousBackend;
   }
 });
 

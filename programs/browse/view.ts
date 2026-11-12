@@ -40,6 +40,7 @@ export function tableBrowseModel() {
 
 export function tableBrowseLayout(
   columns: readonly ColumnDescriptor[],
+  layoutKey?: string,
 ): LayoutDeclaration {
   return {
     schema: 1,
@@ -56,6 +57,7 @@ export function tableBrowseLayout(
         },
         {
           id: "rows",
+          layoutKey,
           type: "list",
           title: msg("view.rows"),
           bind: "rows",
