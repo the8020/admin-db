@@ -221,6 +221,8 @@ below.
   platform imports. The package config owns dependencies and tasks.
 
 - `deno task check` formats, lints, and type-checks the program.
+- The test task permits reads within the package workspace for shared runtime
+  imports; it grants no write or network access.
 - `deno task test` covers list/detail/comparison view models, row browse query
   and logical-value mapping, generic SQL intent and dynamic result presentation,
   removal of raw descriptor controls, and destructive confirmation.
