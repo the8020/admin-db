@@ -201,6 +201,14 @@
     "view.optional": "opcional",
     "view.required": "obligatori",
     "view.default_value": "predeterminat {value}",
-    "view.reference": "fa referència a {table}.{column}"
+    "view.reference": "fa referència a {table}.{column}",
+    "errors.database_returned_a_malformed_result_row": "Base de dades va retornar una fila de resultats malformats",
+    "errors.database_returned_values_without_result_columns": "Valors de base de dades retornats sense columnes de resultat",
+    "errors.table_browse_requires_a_table_name_input_parameter": "La navegació de taula requereix un paràmetre d'entrada del nom de taula",
+    "errors.database_did_not_return_a_row_count": "La base de dades no va retornar un conte de filas",
+    "errors.database_returned_an_invalid_row_count": "Base de dades va retornar un conte de fila inválide",
+    "errors.database_returned_fields_that_differ_from_the_table_definition": "Camps de base de dades retornats que es diferencien de la definició de taula",
+    "errors.database_returned_a_malformed_table_row": "Base de dades va retornar una fila de taula mal format",
+    "errors.invalid_database_identifier": "Identificador de base de dades invalida"
   }
 }

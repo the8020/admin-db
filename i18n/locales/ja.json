@@ -201,6 +201,14 @@
     "view.optional": "任意",
     "view.required": "必須",
     "view.default_value": "既定値 {value}",
-    "view.reference": "参照先 {table}.{column}"
+    "view.reference": "参照先 {table}.{column}",
+    "errors.database_returned_a_malformed_result_row": "データベースが誤った結果行を返した",
+    "errors.database_returned_values_without_result_columns": "データベース返済値は結果列なし",
+    "errors.table_browse_requires_a_table_name_input_parameter": "テーブルを閲覧するには,テーブル名入力パラメータが必要です",
+    "errors.database_did_not_return_a_row_count": "データベースは行数を返却しなかった",
+    "errors.database_returned_an_invalid_row_count": "データベースは無効な行数を返した",
+    "errors.database_returned_fields_that_differ_from_the_table_definition": "テーブル定義とは異なるデータベース返済フィールド",
+    "errors.database_returned_a_malformed_table_row": "データベースが誤った表列を返した",
+    "errors.invalid_database_identifier": "不正なデータベース識別子"
   }
 }

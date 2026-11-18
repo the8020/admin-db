@@ -201,6 +201,14 @@
     "view.optional": "Facultatif",
     "view.required": "Obligatoire",
     "view.default_value": "Valeur par défaut : {value}",
-    "view.reference": "Référence : {table}.{column}"
+    "view.reference": "Référence : {table}.{column}",
+    "errors.database_returned_a_malformed_result_row": "La base de données a renvoyé une ligne de résultats malformée",
+    "errors.database_returned_values_without_result_columns": "Vérités retournées de base de données sans colonne de résultat",
+    "errors.table_browse_requires_a_table_name_input_parameter": "La navigation dans la table nécessite un paramètre d'entrée du nom de la table",
+    "errors.database_did_not_return_a_row_count": "La base de données n' a pas renvoyé un nombre de lignes",
+    "errors.database_returned_an_invalid_row_count": "La base de données a renvoyé un nombre de lignes non valide",
+    "errors.database_returned_fields_that_differ_from_the_table_definition": "Des champs de base de données retournés qui diffèrent de la définition du tableau",
+    "errors.database_returned_a_malformed_table_row": "La base de données a renvoyé une rangée de table malformée",
+    "errors.invalid_database_identifier": "Identificateur de base de données non valide"
   }
 }

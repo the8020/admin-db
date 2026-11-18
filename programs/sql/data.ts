@@ -1,3 +1,5 @@
+import { text as formatMessage } from "/p/the8020/i18n/mod.ts";
+import { msg as messageSymbol } from "/p/the8020/admin-db/i18n/messages.ts";
 import { text as localizedText } from "/p/the8020/i18n/mod.ts";
 import { msg } from "/p/the8020/admin-db/i18n/messages.ts";
 import {
@@ -152,7 +154,11 @@ export function presentSQLResult(result: SQLResult): SQLResultPresentation {
       columns,
       rows: result.rows.map((values, rowIndex) => {
         if (values.length !== columns.length) {
-          throw new Error("Database returned a malformed result row");
+          throw new Error(
+            formatMessage(
+              messageSymbol("errors.database_returned_a_malformed_result_row"),
+            ),
+          );
         }
         return {
           __rowKey: String(rowIndex),
@@ -165,7 +171,11 @@ export function presentSQLResult(result: SQLResult): SQLResultPresentation {
     };
   }
   if (result.rows.length > 0) {
-    throw new Error("Database returned values without result columns");
+    throw new Error(
+      formatMessage(
+        messageSymbol("errors.database_returned_values_without_result_columns"),
+      ),
+    );
   }
   const facts: Array<[string, string]> = [];
   if (result.affected_rows !== undefined) {

@@ -201,6 +201,14 @@
     "view.optional": "valinnainen",
     "view.required": "pakollinen",
     "view.default_value": "oletus {value}",
-    "view.reference": "viittaa kohteeseen {table}.{column}"
+    "view.reference": "viittaa kohteeseen {table}.{column}",
+    "errors.database_returned_a_malformed_result_row": "Tiedokanta palautti virheellisen tulosjoukon",
+    "errors.database_returned_values_without_result_columns": "Tiedokanta palautti arvoja ilman tulos sarakkeita",
+    "errors.table_browse_requires_a_table_name_input_parameter": "Taulukon selaaminen vaatii taulukon nimien sisäänpääsyparametriä",
+    "errors.database_did_not_return_a_row_count": "Tiedokanta ei palauttanut rivien lukemista",
+    "errors.database_returned_an_invalid_row_count": "Tiedokanta palautti virheenlaskennan",
+    "errors.database_returned_fields_that_differ_from_the_table_definition": "Tiedokannan palautetut kentät , jotka poikkeavat taulukon määritelmästä",
+    "errors.database_returned_a_malformed_table_row": "Tiedokanta palautti virheellisen taulukon",
+    "errors.invalid_database_identifier": "Epävirallinen tietokanta-identifiitorin"
   }
 }

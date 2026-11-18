@@ -201,6 +201,14 @@
     "view.optional": "valfritt",
     "view.required": "obligatoriskt",
     "view.default_value": "standard {value}",
-    "view.reference": "refererar till {table}.{column}"
+    "view.reference": "refererar till {table}.{column}",
+    "errors.database_returned_a_malformed_result_row": "Databasen returnerade en felaktig resultat rad",
+    "errors.database_returned_values_without_result_columns": "Databas returnerade värden utan resultatkolumner",
+    "errors.table_browse_requires_a_table_name_input_parameter": "Att bläddra i tabell kräver ett tabellnamn-inmatningsparameter",
+    "errors.database_did_not_return_a_row_count": "Databasen returnerade inte radernas antal",
+    "errors.database_returned_an_invalid_row_count": "Databasen returnerade ett ogiltigt radantal",
+    "errors.database_returned_fields_that_differ_from_the_table_definition": "Databas returnerade fält som skiljer sig från tabelldefinitionen",
+    "errors.database_returned_a_malformed_table_row": "Databasen returnerade en felaktig tabell rad",
+    "errors.invalid_database_identifier": "Invalida databasidentifierare"
   }
 }

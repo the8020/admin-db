@@ -201,6 +201,14 @@
     "view.optional": "opțional",
     "view.required": "obligatoriu",
     "view.default_value": "implicit {value}",
-    "view.reference": "referință la {table}.{column}"
+    "view.reference": "referință la {table}.{column}",
+    "errors.database_returned_a_malformed_result_row": "Baza de date a returnat o linie de rezultate defectuoasă",
+    "errors.database_returned_values_without_result_columns": "Valorile returnate din baza de date fără coloane de rezultate",
+    "errors.table_browse_requires_a_table_name_input_parameter": "Navigarea prin tabel necesită un parametru de intrare al numelui tabelului",
+    "errors.database_did_not_return_a_row_count": "Baza de date nu a returnat un număr de rânduri",
+    "errors.database_returned_an_invalid_row_count": "Baza de date a returnat un număr invalid de rânduri",
+    "errors.database_returned_fields_that_differ_from_the_table_definition": "Câmpuri returnate din baza de date care diferă de definiția tabelului",
+    "errors.database_returned_a_malformed_table_row": "Baza de date a returnat o linie de tabel deformată",
+    "errors.invalid_database_identifier": "Identificator de bază de date nu valabil"
   }
 }

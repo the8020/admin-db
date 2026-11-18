@@ -1,3 +1,5 @@
+import { localizedText as resolveMessage } from "/p/the8020/i18n/mod.ts";
+import { msg as messageSymbol } from "/p/the8020/admin-db/i18n/messages.ts";
 import { text as localizedText } from "/p/the8020/i18n/mod.ts";
 import { msg } from "/p/the8020/admin-db/i18n/messages.ts";
 import { allowed } from "../../src/authorized.ts";
@@ -24,7 +26,13 @@ interface BrowseTableDetail {
 
 export default async function browseTable(tableName: unknown): Promise<void> {
   if (typeof tableName !== "string" || tableName.length === 0) {
-    throw new TypeError("Table browse requires a table name input parameter");
+    throw new TypeError(
+      await resolveMessage(
+        messageSymbol(
+          "errors.table_browse_requires_a_table_name_input_parameter",
+        ),
+      ),
+    );
   }
   if (!await allowed("the8020.admin-db.table.view", tableName)) return;
   const detail = await kernel.database.tables.inspect(

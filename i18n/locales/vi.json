@@ -201,6 +201,14 @@
     "view.optional": "không bắt buộc",
     "view.required": "bắt buộc",
     "view.default_value": "mặc định {value}",
-    "view.reference": "tham chiếu {table}.{column}"
+    "view.reference": "tham chiếu {table}.{column}",
+    "errors.database_returned_a_malformed_result_row": "Cơ sở dữ liệu trả về một hàng kết quả sai",
+    "errors.database_returned_values_without_result_columns": "Các giá trị trả lại cơ sở dữ liệu mà không có cột kết quả",
+    "errors.table_browse_requires_a_table_name_input_parameter": "Quá trình duyệt bảng yêu cầu tham số đầu vào tên bảng",
+    "errors.database_did_not_return_a_row_count": "Cơ sở dữ liệu không trả lại số hàng",
+    "errors.database_returned_an_invalid_row_count": "Cơ sở dữ liệu trả lại số hàng không hợp lệ",
+    "errors.database_returned_fields_that_differ_from_the_table_definition": "Các trường trả về cơ sở dữ liệu khác với định nghĩa bảng",
+    "errors.database_returned_a_malformed_table_row": "Cơ sở dữ liệu trả về một hàng bảng bị hình thành sai",
+    "errors.invalid_database_identifier": "Định dạng cơ sở dữ liệu không hợp lệ"
   }
 }

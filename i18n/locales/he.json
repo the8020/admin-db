@@ -149,7 +149,7 @@
     "program.database_operation_failed": "פעולת מסד הנתונים נכשלה",
     "program.retired_table": "טבלה שיצאה משימוש",
     "program.table_browse_failed": "העיון בטבלה נכשל",
-    "package.description": "תוכניות ניהול מסד הנתונים של \u206680|20\u2069",
+    "package.description": "תוכניות ניהול מסד הנתונים של ⁦80|20⁩",
     "widgets.database.title": "מסד נתונים",
     "widgets.database.description": "ניהול טבלאות מסד הנתונים",
     "categories.development.title": "פיתוח",
@@ -201,6 +201,14 @@
     "view.optional": "רשות",
     "view.required": "חובה",
     "view.default_value": "ברירת מחדל {value}",
-    "view.reference": "מפנה אל {table}.{column}"
+    "view.reference": "מפנה אל {table}.{column}",
+    "errors.database_returned_a_malformed_result_row": "בסיס הנתונים החזיר שורה תוצאות שגויה",
+    "errors.database_returned_values_without_result_columns": "נתונים החזרו הערכים ללא עמודי תוצאות",
+    "errors.table_browse_requires_a_table_name_input_parameter": "לגלוש בשולחן דורש פרמטרת הכניסה של שם השולחן",
+    "errors.database_did_not_return_a_row_count": "בסיס הנתונים לא החזר מספר שורות",
+    "errors.database_returned_an_invalid_row_count": "בסיס הנתונים החזר סכום שורות לא חוקי",
+    "errors.database_returned_fields_that_differ_from_the_table_definition": "שדות באסודות נתונים שמאוחדים מהגדרה של הטבלה",
+    "errors.database_returned_a_malformed_table_row": "בסיס הנתונים החזיר שורה של טבלה שגויה",
+    "errors.invalid_database_identifier": "מזהה בסיס נתונים לא חוקי"
   }
 }

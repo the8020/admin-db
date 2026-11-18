@@ -201,6 +201,14 @@
     "view.optional": "可选",
     "view.required": "必填",
     "view.default_value": "默认值 {value}",
-    "view.reference": "引用 {table}.{column}"
+    "view.reference": "引用 {table}.{column}",
+    "errors.database_returned_a_malformed_result_row": "数据库返回错误的结果行",
+    "errors.database_returned_values_without_result_columns": "数据库返回值没有结果列",
+    "errors.table_browse_requires_a_table_name_input_parameter": "浏览表需要表名输入参数",
+    "errors.database_did_not_return_a_row_count": "数据库没有返回列数",
+    "errors.database_returned_an_invalid_row_count": "数据库返回了无效的行数",
+    "errors.database_returned_fields_that_differ_from_the_table_definition": "与表定义不同的数据库返回字段",
+    "errors.database_returned_a_malformed_table_row": "数据库返回错误的表列",
+    "errors.invalid_database_identifier": "无效的数据库标识符"
   }
 }

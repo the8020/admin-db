@@ -149,7 +149,7 @@
     "program.database_operation_failed": "عملیات پایگاه داده ناموفق بود",
     "program.retired_table": "جدول بازنشسته",
     "program.table_browse_failed": "مرور جدول ناموفق بود",
-    "package.description": "برنامه‌های مدیریت پایگاه دادهٔ \u206680|20\u2069",
+    "package.description": "برنامه‌های مدیریت پایگاه دادهٔ ⁦80|20⁩",
     "widgets.database.title": "پایگاه داده",
     "widgets.database.description": "مدیریت جدول‌های پایگاه داده",
     "categories.development.title": "توسعه",
@@ -201,6 +201,14 @@
     "view.optional": "اختیاری",
     "view.required": "الزامی",
     "view.default_value": "پیش‌فرض {value}",
-    "view.reference": "ارجاع به {table}.{column}"
+    "view.reference": "ارجاع به {table}.{column}",
+    "errors.database_returned_a_malformed_result_row": "پایگاه داده یک ردیف نتیجه نادرست را بازگردانده",
+    "errors.database_returned_values_without_result_columns": "ارزش های بازگردانده شده پایگاه داده بدون ستون نتایج",
+    "errors.table_browse_requires_a_table_name_input_parameter": "مرور جدول نیاز به یک پارامتر ورودی نام جدول دارد",
+    "errors.database_did_not_return_a_row_count": "پایگاه داده تعداد ردیف را بازنمی گرداند",
+    "errors.database_returned_an_invalid_row_count": "پایگاه داده تعداد صف های باطل را بازگردانده",
+    "errors.database_returned_fields_that_differ_from_the_table_definition": "دامنه های بازگردانده شده پایگاه داده که از تعریف جدول متفاوت هستند",
+    "errors.database_returned_a_malformed_table_row": "پایگاه داده یک ردیف جدول نادرست را بازگردانده است",
+    "errors.invalid_database_identifier": "شناسه پایگاه داده ناشناخته"
   }
 }

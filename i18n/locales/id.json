@@ -201,6 +201,14 @@
     "view.optional": "opsional",
     "view.required": "wajib",
     "view.default_value": "default {value}",
-    "view.reference": "merujuk ke {table}.{column}"
+    "view.reference": "merujuk ke {table}.{column}",
+    "errors.database_returned_a_malformed_result_row": "Database mengembalikan baris hasil yang salah",
+    "errors.database_returned_values_without_result_columns": "Database nilai dikembalikan tanpa kolom hasil",
+    "errors.table_browse_requires_a_table_name_input_parameter": "Penelusuran tabel membutuhkan parameter input nama tabel",
+    "errors.database_did_not_return_a_row_count": "Database tidak mengembalikan jumlah baris",
+    "errors.database_returned_an_invalid_row_count": "Database mengembalikan jumlah baris yang tidak valid",
+    "errors.database_returned_fields_that_differ_from_the_table_definition": "Database kembali bidang yang berbeda dari definisi tabel",
+    "errors.database_returned_a_malformed_table_row": "Database mengembalikan baris tabel yang rusak",
+    "errors.invalid_database_identifier": "Identifier database yang tidak valid"
   }
 }

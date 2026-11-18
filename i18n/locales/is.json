@@ -201,6 +201,14 @@
     "view.optional": "valfrjálst",
     "view.required": "áskilið",
     "view.default_value": "sjálfgefið {value}",
-    "view.reference": "vísar á {table}.{column}"
+    "view.reference": "vísar á {table}.{column}",
+    "errors.database_returned_a_malformed_result_row": "gagnagrunn skilaði rangt niðurstöður röð",
+    "errors.database_returned_values_without_result_columns": "Upplýsingasöfnun skilað gildi án niðurstöðukjölda",
+    "errors.table_browse_requires_a_table_name_input_parameter": "Til að skoða borð þarf að hafa inngangsaðstöðu fyrir nafn borðs",
+    "errors.database_did_not_return_a_row_count": "gagnagrunn skilaði ekki röðum",
+    "errors.database_returned_an_invalid_row_count": "gagnagrunn skilaði ógildu röðatöl",
+    "errors.database_returned_fields_that_differ_from_the_table_definition": "gagnagrunn skilað sviði sem eru mismunandi frá skilgreiningu töflunnar",
+    "errors.database_returned_a_malformed_table_row": "gagnagrunn skilaði rangt töflur",
+    "errors.invalid_database_identifier": "Ógildi gagnagrunnavísitölu"
   }
 }

@@ -201,6 +201,14 @@
     "view.optional": "opcional",
     "view.required": "obrigatório",
     "view.default_value": "valor predefinido {value}",
-    "view.reference": "referencia {table}.{column}"
+    "view.reference": "referencia {table}.{column}",
+    "errors.database_returned_a_malformed_result_row": "Base de dados retornou uma linha de resultados mal formada",
+    "errors.database_returned_values_without_result_columns": "Valores de base de dados devolvidos sem colunas de resultados",
+    "errors.table_browse_requires_a_table_name_input_parameter": "Para navegar pela tabela é necessário um parâmetro de entrada de nome da tabela",
+    "errors.database_did_not_return_a_row_count": "Base de dados não retornou uma contagem de filas",
+    "errors.database_returned_an_invalid_row_count": "Base de dados retornou um conteúdo de linha inválido",
+    "errors.database_returned_fields_that_differ_from_the_table_definition": "Base de dados devolvidos campos que diferem da definição de tabela",
+    "errors.database_returned_a_malformed_table_row": "Base de dados retornou uma linha de tabela mal formada",
+    "errors.invalid_database_identifier": "Identificador de base de dados inválido"
   }
 }

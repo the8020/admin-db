@@ -201,6 +201,14 @@
     "view.optional": "opsyonal",
     "view.required": "kailangan",
     "view.default_value": "default {value}",
-    "view.reference": "tumutukoy sa {table}.{column}"
+    "view.reference": "tumutukoy sa {table}.{column}",
+    "errors.database_returned_a_malformed_result_row": "Database bumalik isang malformed resulta linya",
+    "errors.database_returned_values_without_result_columns": "Database bumalik halaga nang walang mga haligi ng resulta",
+    "errors.table_browse_requires_a_table_name_input_parameter": "Pag-browse ng talahan ay nangangailangan ng isang parameter ng input ng pangalan ng talahan",
+    "errors.database_did_not_return_a_row_count": "Database ay hindi bumalik sa isang linya bilang",
+    "errors.database_returned_an_invalid_row_count": "Ang database ay nagbalik ng hindi katumbas na bilang ng mga linya",
+    "errors.database_returned_fields_that_differ_from_the_table_definition": "Database bumalik mga larangan na naiiba mula sa definition ng talahan",
+    "errors.database_returned_a_malformed_table_row": "Database bumalik ang isang malformed tables row",
+    "errors.invalid_database_identifier": "Invalid database identifier"
   }
 }

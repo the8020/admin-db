@@ -201,6 +201,14 @@
     "view.optional": "nepovinné",
     "view.required": "povinné",
     "view.default_value": "predvolená hodnota {value}",
-    "view.reference": "odkazuje na {table}.{column}"
+    "view.reference": "odkazuje na {table}.{column}",
+    "errors.database_returned_a_malformed_result_row": "Databáza vrátila nesprávne vytvorený riadok výsledkov",
+    "errors.database_returned_values_without_result_columns": "Vrátené hodnoty databázy bez stĺpcov výsledkov",
+    "errors.table_browse_requires_a_table_name_input_parameter": "Prehľadávanie tabuľky vyžaduje vstupný parametr názvu tabuľky",
+    "errors.database_did_not_return_a_row_count": "Databáza nevrátila počet riadkov",
+    "errors.database_returned_an_invalid_row_count": "Databáza vrátila neplatný počet riadkov",
+    "errors.database_returned_fields_that_differ_from_the_table_definition": "Vrátené polia z databázy, ktoré sa líšia od definície tabuľky",
+    "errors.database_returned_a_malformed_table_row": "Databáza vrátila nesprávny riadok tabuľky",
+    "errors.invalid_database_identifier": "Nevalidný identifikátor databázy"
   }
 }

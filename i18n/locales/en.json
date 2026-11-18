@@ -201,6 +201,14 @@
     "view.optional": "optional",
     "view.required": "required",
     "view.default_value": "default {value}",
-    "view.reference": "references {table}.{column}"
+    "view.reference": "references {table}.{column}",
+    "errors.database_returned_a_malformed_result_row": "Database returned a malformed result row",
+    "errors.database_returned_values_without_result_columns": "Database returned values without result columns",
+    "errors.table_browse_requires_a_table_name_input_parameter": "Table browse requires a table name input parameter",
+    "errors.database_did_not_return_a_row_count": "Database did not return a row count",
+    "errors.database_returned_an_invalid_row_count": "Database returned an invalid row count",
+    "errors.database_returned_fields_that_differ_from_the_table_definition": "Database returned fields that differ from the table definition",
+    "errors.database_returned_a_malformed_table_row": "Database returned a malformed table row",
+    "errors.invalid_database_identifier": "Invalid database identifier"
   }
 }

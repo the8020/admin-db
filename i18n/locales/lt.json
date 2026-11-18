@@ -201,6 +201,14 @@
     "view.optional": "neprivaloma",
     "view.required": "privaloma",
     "view.default_value": "numatyta {value}",
-    "view.reference": "nurodo {table}.{column}"
+    "view.reference": "nurodo {table}.{column}",
+    "errors.database_returned_a_malformed_result_row": "Duomenų bazė grąžino netinkamą rezultatų eilutę",
+    "errors.database_returned_values_without_result_columns": "Duomenų bazės grąžintos vertės be rezultatų skyrius",
+    "errors.table_browse_requires_a_table_name_input_parameter": "Skaitmenų naršymui reikia įvesti lentelės pavadinimo parametrus",
+    "errors.database_did_not_return_a_row_count": "Duomenų bazė neatrodė eilutės skaičiaus",
+    "errors.database_returned_an_invalid_row_count": "Duomenų bazė grąžino nepageidaujamą eilutės skaičių",
+    "errors.database_returned_fields_that_differ_from_the_table_definition": "Duomenų bazės grąžinti laukai, kurie skiriasi nuo lentelės apibrėžimo",
+    "errors.database_returned_a_malformed_table_row": "Duomenų bazė grąžino netinkamą lentelės eilutę",
+    "errors.invalid_database_identifier": "Negalima duomenų bazės identifikatorius"
   }
 }

@@ -201,6 +201,14 @@
     "view.optional": "valgfri",
     "view.required": "påkrævet",
     "view.default_value": "standard {value}",
-    "view.reference": "henviser til {table}.{column}"
+    "view.reference": "henviser til {table}.{column}",
+    "errors.database_returned_a_malformed_result_row": "Databasen returnerede en fejlformet resultat række",
+    "errors.database_returned_values_without_result_columns": "Database returnerede værdier uden resultatkolonne",
+    "errors.table_browse_requires_a_table_name_input_parameter": "For at navigere i tabellen kræves et indgangsparameter for tabellenavn",
+    "errors.database_did_not_return_a_row_count": "Databasen returnerede ikke et rækkeantal",
+    "errors.database_returned_an_invalid_row_count": "Databasen returnerede en ugyldig rækkeantal",
+    "errors.database_returned_fields_that_differ_from_the_table_definition": "Database returnerede felter, der afviger fra tabeldefinitionen",
+    "errors.database_returned_a_malformed_table_row": "Databasen returnerede en fejlagtig tabel række",
+    "errors.invalid_database_identifier": "Ugyldig databaseidentifikator"
   }
 }

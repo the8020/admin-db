@@ -201,6 +201,14 @@
     "view.optional": "선택 사항",
     "view.required": "필수",
     "view.default_value": "기본값 {value}",
-    "view.reference": "참조 {table}.{column}"
+    "view.reference": "참조 {table}.{column}",
+    "errors.database_returned_a_malformed_result_row": "데이터베이스가 잘못된 결과 행을 반환",
+    "errors.database_returned_values_without_result_columns": "데이터베이스 결과 열 없이 반환된 값",
+    "errors.table_browse_requires_a_table_name_input_parameter": "테이블 탐색은 테이블 이름 입력 매개 변수를 필요로 합니다",
+    "errors.database_did_not_return_a_row_count": "데이터베이스에서 행수를 반환하지 않았습니다",
+    "errors.database_returned_an_invalid_row_count": "데이터베이스는 유효하지 않은 행수를 반환했습니다",
+    "errors.database_returned_fields_that_differ_from_the_table_definition": "테이블 정의에서 다른 데이터베이스 반환 필드",
+    "errors.database_returned_a_malformed_table_row": "데이터베이스가 잘못된 테이블 행을 반환",
+    "errors.invalid_database_identifier": "유효하지 않은 데이터베이스 식별자"
   }
 }
