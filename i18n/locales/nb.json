@@ -201,6 +201,14 @@
     "view.optional": "valgfritt",
     "view.required": "påkrevd",
     "view.default_value": "standard {value}",
-    "view.reference": "refererer til {table}.{column}"
+    "view.reference": "refererer til {table}.{column}",
+    "errors.database_returned_a_malformed_result_row": "Databasen returnerte en feilformet resultat rad",
+    "errors.database_returned_values_without_result_columns": "Database returnerte verdier uten resultatkolonne",
+    "errors.table_browse_requires_a_table_name_input_parameter": "For å se på tabell kreves et tabellnavnsinngangsparameter",
+    "errors.database_did_not_return_a_row_count": "Databasen returnerte ikke radtall",
+    "errors.database_returned_an_invalid_row_count": "Databasen returnerte en ugyldig radtelling",
+    "errors.database_returned_fields_that_differ_from_the_table_definition": "Database returnerte felt som er forskjellig fra definisjonen på tabellen",
+    "errors.database_returned_a_malformed_table_row": "Databasen returnerte en feilaktig tabell linje",
+    "errors.invalid_database_identifier": "Ugyldig databasidentifikator"
   }
 }

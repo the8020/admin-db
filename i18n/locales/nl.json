@@ -201,6 +201,14 @@
     "view.optional": "optioneel",
     "view.required": "verplicht",
     "view.default_value": "standaard {value}",
-    "view.reference": "verwijst naar {table}.{column}"
+    "view.reference": "verwijst naar {table}.{column}",
+    "errors.database_returned_a_malformed_result_row": "Database heeft een verkeerd geformateerde resultaat rij teruggestuurd",
+    "errors.database_returned_values_without_result_columns": "Database teruggestuurd waarden zonder resultaatkolommen",
+    "errors.table_browse_requires_a_table_name_input_parameter": "Bij het bladeren van tabellen is een inputparameter voor de naam van de tabel vereist",
+    "errors.database_did_not_return_a_row_count": "Database heeft geen rijgetal teruggestuurd",
+    "errors.database_returned_an_invalid_row_count": "Database heeft een ongeldig rijgetal teruggestuurd",
+    "errors.database_returned_fields_that_differ_from_the_table_definition": "Database-gegevensvelden die verschillen van de tabeldefinitie",
+    "errors.database_returned_a_malformed_table_row": "Database heeft een verkeerd geformateerde tabel rij teruggestuurd",
+    "errors.invalid_database_identifier": "Niet geldige database-identificatie"
   }
 }

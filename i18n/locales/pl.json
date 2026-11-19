@@ -201,6 +201,14 @@
     "view.optional": "opcjonalne",
     "view.required": "wymagane",
     "view.default_value": "domyślnie {value}",
-    "view.reference": "odwołanie do {table}.{column}"
+    "view.reference": "odwołanie do {table}.{column}",
+    "errors.database_returned_a_malformed_result_row": "Baza danych zwróciła nieprawidłowy wiersz wyników",
+    "errors.database_returned_values_without_result_columns": "Wartości zwrócone w bazie danych bez kolumn wyników",
+    "errors.table_browse_requires_a_table_name_input_parameter": "Przeglądanie tabeli wymaga parametru wejścia nazwy tabeli",
+    "errors.database_did_not_return_a_row_count": "Baza danych nie zwróciła liczby wierszy",
+    "errors.database_returned_an_invalid_row_count": "Baza danych zwróciła nieważny numer wierszy",
+    "errors.database_returned_fields_that_differ_from_the_table_definition": "Połączenia z bazy danych, które różnią się od definicji tabeli",
+    "errors.database_returned_a_malformed_table_row": "Baza danych zwróciła nieprawidłowy wiersz tabeli",
+    "errors.invalid_database_identifier": "Nieważny identyfikator bazy danych"
   }
 }

@@ -201,6 +201,14 @@
     "view.optional": "незадължително",
     "view.required": "задължително",
     "view.default_value": "по подразбиране {value}",
-    "view.reference": "сочи към {table}.{column}"
+    "view.reference": "сочи към {table}.{column}",
+    "errors.database_returned_a_malformed_result_row": "Базата данни е върнала неправилно формулирана редица резултати",
+    "errors.database_returned_values_without_result_columns": "Възвращаеми стойности в базата данни без колони с резултати",
+    "errors.table_browse_requires_a_table_name_input_parameter": "За преглеждане на таблица се изисква параметър за вход на име на таблицата",
+    "errors.database_did_not_return_a_row_count": "Базата данни не е върнала бройка на редове",
+    "errors.database_returned_an_invalid_row_count": "Базата данни е върнала невалиден брой редове",
+    "errors.database_returned_fields_that_differ_from_the_table_definition": "База данни възвърнати полета, които се различават от определението на таблицата",
+    "errors.database_returned_a_malformed_table_row": "Базата данни е върнала неправилно формулирана ред таблица",
+    "errors.invalid_database_identifier": "Невалиден идентификатор на базата данни"
   }
 }

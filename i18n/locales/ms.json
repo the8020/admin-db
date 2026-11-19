@@ -201,6 +201,14 @@
     "view.optional": "pilihan",
     "view.required": "wajib",
     "view.default_value": "lalai {value}",
-    "view.reference": "merujuk {table}.{column}"
+    "view.reference": "merujuk {table}.{column}",
+    "errors.database_returned_a_malformed_result_row": "Pangkalan data mengembalikan baris hasil yang salah",
+    "errors.database_returned_values_without_result_columns": "Nilai pangkalan data dikembalikan tanpa lajur hasil",
+    "errors.table_browse_requires_a_table_name_input_parameter": "Penyaringan jadual memerlukan parameter input nama jadual",
+    "errors.database_did_not_return_a_row_count": "Pangkalan data tidak mengembalikan bilangan baris",
+    "errors.database_returned_an_invalid_row_count": "Pangkalan data mengembalikan nombor baris yang tidak sah",
+    "errors.database_returned_fields_that_differ_from_the_table_definition": "Lapangan pangkalan data yang dikembalikan yang berbeza dari definisi jadual",
+    "errors.database_returned_a_malformed_table_row": "Pangkalan data mengembalikan baris jadual yang salah",
+    "errors.invalid_database_identifier": "ID pangkalan data yang tidak sah"
   }
 }

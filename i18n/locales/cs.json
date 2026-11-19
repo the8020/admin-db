@@ -201,6 +201,14 @@
     "view.optional": "nepovinné",
     "view.required": "povinné",
     "view.default_value": "výchozí hodnota {value}",
-    "view.reference": "odkazuje na {table}.{column}"
+    "view.reference": "odkazuje na {table}.{column}",
+    "errors.database_returned_a_malformed_result_row": "Databáze vrátila poškozený řádek výsledku",
+    "errors.database_returned_values_without_result_columns": "Databáze vrátila hodnoty bez sloupců výsledku",
+    "errors.table_browse_requires_a_table_name_input_parameter": "Pro prohlížení tabulky je nutné zadat její název",
+    "errors.database_did_not_return_a_row_count": "Databáze nevrátila počet řádků",
+    "errors.database_returned_an_invalid_row_count": "Databáze vrátila neplatný počet řádků",
+    "errors.database_returned_fields_that_differ_from_the_table_definition": "Databáze vrátila pole, která se liší od definice tabulky",
+    "errors.database_returned_a_malformed_table_row": "Databáze vrátila poškozený řádek tabulky",
+    "errors.invalid_database_identifier": "Neplatný identifikátor databáze"
   }
 }

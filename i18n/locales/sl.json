@@ -201,6 +201,14 @@
     "view.optional": "neobvezno",
     "view.required": "obvezno",
     "view.default_value": "privzeto {value}",
-    "view.reference": "sklic na {table}.{column}"
+    "view.reference": "sklic na {table}.{column}",
+    "errors.database_returned_a_malformed_result_row": "Databaza je vrnila nepravilno oblikovano vrstico rezultatov",
+    "errors.database_returned_values_without_result_columns": "Vrnjeni vrednosti podatkovne baze brez stolpcev rezultatov",
+    "errors.table_browse_requires_a_table_name_input_parameter": "Za pregledovanje tabele je potreben vnosni parameter imena tabele",
+    "errors.database_did_not_return_a_row_count": "V zbirki podatkov ni vrnjen števila vrstic",
+    "errors.database_returned_an_invalid_row_count": "Databaza je vrnila neplatno število vrstic",
+    "errors.database_returned_fields_that_differ_from_the_table_definition": "Vpišeni polji podatkovne baze, ki se razlikujejo od opredelitve tabele",
+    "errors.database_returned_a_malformed_table_row": "Databaza je vrnila nepravilno oblikovano vrstico tabele",
+    "errors.invalid_database_identifier": "Neveljavna identifikacijska številka zbirke podatkov"
   }
 }

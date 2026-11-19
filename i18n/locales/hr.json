@@ -201,6 +201,14 @@
     "view.optional": "neobavezno",
     "view.required": "obavezno",
     "view.default_value": "zadano {value}",
-    "view.reference": "upućuje na {table}.{column}"
+    "view.reference": "upućuje na {table}.{column}",
+    "errors.database_returned_a_malformed_result_row": "Baza podataka je vratila pogrešno formiran red rezultata",
+    "errors.database_returned_values_without_result_columns": "Databaza vratila vrijednosti bez stupova rezultata",
+    "errors.table_browse_requires_a_table_name_input_parameter": "Pretraživanje tabele zahtijeva parametar ulaza imena tabele",
+    "errors.database_did_not_return_a_row_count": "Baza podataka nije vratila broj redova",
+    "errors.database_returned_an_invalid_row_count": "Baza podataka je vratila nevaljan broj redova",
+    "errors.database_returned_fields_that_differ_from_the_table_definition": "Baza podataka vratila polja koji se razlikuju od definicije tabele",
+    "errors.database_returned_a_malformed_table_row": "Baza podataka je vratila pogrešno oblikovan red tabele",
+    "errors.invalid_database_identifier": "Neispravni identifikacijski znak za bazu podataka"
   }
 }

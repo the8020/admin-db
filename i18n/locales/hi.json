@@ -201,6 +201,14 @@
     "view.optional": "वैकल्पिक",
     "view.required": "आवश्यक",
     "view.default_value": "डिफ़ॉल्ट {value}",
-    "view.reference": "{table}.{column} का संदर्भ देता है"
+    "view.reference": "{table}.{column} का संदर्भ देता है",
+    "errors.database_returned_a_malformed_result_row": "डेटाबेस ने गलत रूप से परिणाम पंक्ति लौटा दी",
+    "errors.database_returned_values_without_result_columns": "परिणाम स्तंभों के बिना डेटाबेस लौटाए गए मान",
+    "errors.table_browse_requires_a_table_name_input_parameter": "तालिका ब्राउज़ करने के लिए तालिका नाम इनपुट पैरामीटर की आवश्यकता होती है",
+    "errors.database_did_not_return_a_row_count": "डेटाबेस में पंक्तियों की गिनती नहीं लौटाई गई",
+    "errors.database_returned_an_invalid_row_count": "डेटाबेस ने अमान्य पंक्ति गिनती लौटाई",
+    "errors.database_returned_fields_that_differ_from_the_table_definition": "डेटाबेस लौटा फ़ील्ड जो तालिका परिभाषा से भिन्न हैं",
+    "errors.database_returned_a_malformed_table_row": "डेटाबेस एक गलत रूपरेखा तालिका पंक्ति लौटाया",
+    "errors.invalid_database_identifier": "अवैध डेटाबेस पहचानकर्ता"
   }
 }

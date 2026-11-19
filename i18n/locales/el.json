@@ -201,6 +201,14 @@
     "view.optional": "προαιρετικό",
     "view.required": "υποχρεωτικό",
     "view.default_value": "προεπιλογή {value}",
-    "view.reference": "αναφορά στο {table}.{column}"
+    "view.reference": "αναφορά στο {table}.{column}",
+    "errors.database_returned_a_malformed_result_row": "Η βάση δεδομένων επέστρεψε μια λανθασμένη σειρά αποτελεσμάτων",
+    "errors.database_returned_values_without_result_columns": "Αξίες της βάσης δεδομένων χωρίς στήλες αποτελεσμάτων",
+    "errors.table_browse_requires_a_table_name_input_parameter": "Η περιήγηση πίνακα απαιτεί μια παράμετρο εισόδου ονόματος πίνακα",
+    "errors.database_did_not_return_a_row_count": "Η βάση δεδομένων δεν επέστρεψε αριθμό γραμμών",
+    "errors.database_returned_an_invalid_row_count": "Η βάση δεδομένων επέστρεψε άκυρη αριθμό γραμμών",
+    "errors.database_returned_fields_that_differ_from_the_table_definition": "Πεδία επιστροφής στη βάση δεδομένων που διαφέρουν από τον ορισμό του πίνακα",
+    "errors.database_returned_a_malformed_table_row": "Η βάση δεδομένων επέστρεψε μια λανθασμένη σειρά πίνακα",
+    "errors.invalid_database_identifier": "Άκυρος αναγνωριστικός κωδικός βάσης δεδομένων"
   }
 }

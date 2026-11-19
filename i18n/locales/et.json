@@ -201,6 +201,14 @@
     "view.optional": "valikuline",
     "view.required": "nõutav",
     "view.default_value": "vaikimisi {value}",
-    "view.reference": "viitab väljale {table}.{column}"
+    "view.reference": "viitab väljale {table}.{column}",
+    "errors.database_returned_a_malformed_result_row": "Andmebaas toob tagasi valevormitud tulemuste rida",
+    "errors.database_returned_values_without_result_columns": "Andmebaasi tagastatud väärtused ilma tulemuste veerusideta",
+    "errors.table_browse_requires_a_table_name_input_parameter": "Tabeli vajutamiseks on vaja tabeli nime sissepääsu parameetrit",
+    "errors.database_did_not_return_a_row_count": "Andmebaas ei toonud rida loetelu",
+    "errors.database_returned_an_invalid_row_count": "Andmebaasi tagasi vale rida loetelu",
+    "errors.database_returned_fields_that_differ_from_the_table_definition": "Andmebaasi tagastatud valdkonnad, mis erinevad tabelis esitatud määratlusest",
+    "errors.database_returned_a_malformed_table_row": "Andmebaasi tagasi valevormitud tabeli rida",
+    "errors.invalid_database_identifier": "Vaevastu andmebaasi tunnistus"
   }
 }

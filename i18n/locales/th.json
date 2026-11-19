@@ -201,6 +201,14 @@
     "view.optional": "ไม่บังคับ",
     "view.required": "จำเป็น",
     "view.default_value": "ค่าเริ่มต้น {value}",
-    "view.reference": "อ้างอิง {table}.{column}"
+    "view.reference": "อ้างอิง {table}.{column}",
+    "errors.database_returned_a_malformed_result_row": "แบ้ซข้อมูลคืนแถวผลผิดรูป",
+    "errors.database_returned_values_without_result_columns": "ฐานข้อมูลคืนค่าโดยไม่มีคอลัมน์ผล",
+    "errors.table_browse_requires_a_table_name_input_parameter": "การค้นหาตารางต้องการปารามีการใส่ชื่อตาราง",
+    "errors.database_did_not_return_a_row_count": "แบ๊สข้อมูลไม่ได้คืนจํานวนแถว",
+    "errors.database_returned_an_invalid_row_count": "ฐานข้อมูลคืนจํานวนแถวไม่ถูกต้อง",
+    "errors.database_returned_fields_that_differ_from_the_table_definition": "กองข้อมูลที่คืนที่แตกต่างจากความนิยามตาราง",
+    "errors.database_returned_a_malformed_table_row": "แบ๊สข้อมูลคืนแถวตารางที่ผิดรูป",
+    "errors.invalid_database_identifier": "ปรับตัวประจําฐานข้อมูลไม่ถูกต้อง"
   }
 }

@@ -201,6 +201,14 @@
     "view.optional": "nav obligāts",
     "view.required": "obligāts",
     "view.default_value": "noklusējums {value}",
-    "view.reference": "atsaucas uz {table}.{column}"
+    "view.reference": "atsaucas uz {table}.{column}",
+    "errors.database_returned_a_malformed_result_row": "Datu bāze atdeva nepareizu rezultāta līniju",
+    "errors.database_returned_values_without_result_columns": "Datubāzes atgriezenis bez rezultāta kolonām",
+    "errors.table_browse_requires_a_table_name_input_parameter": "Tabula pārlūkošana prasa tabula nosaukumu ievades parametru",
+    "errors.database_did_not_return_a_row_count": "Datu bāze neatrods radzu skaitu",
+    "errors.database_returned_an_invalid_row_count": "Datu bāze atdeva nepareizu radzu skaitli",
+    "errors.database_returned_fields_that_differ_from_the_table_definition": "Datubāzes atgriezenis lauki, kas atšķiras no tabulā definētās",
+    "errors.database_returned_a_malformed_table_row": "Datu bāze atguvusi nepareizu tabulas līniju",
+    "errors.invalid_database_identifier": "Nevalids datu bāzes identifikators"
   }
 }

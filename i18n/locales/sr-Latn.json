@@ -201,6 +201,14 @@
     "view.optional": "neobavezno",
     "view.required": "obavezno",
     "view.default_value": "podrazumevano {value}",
-    "view.reference": "upućuje na {table}.{column}"
+    "view.reference": "upućuje na {table}.{column}",
+    "errors.database_returned_a_malformed_result_row": "Baza podataka vratila je pogrešan redok rezultata",
+    "errors.database_returned_values_without_result_columns": "Baza podataka vratila vrednosti bez kolona rezultata",
+    "errors.table_browse_requires_a_table_name_input_parameter": "Pretraživanje tablice zahteva parametr ulaska imena tablice",
+    "errors.database_did_not_return_a_row_count": "Baza podataka nije vratila broj redova",
+    "errors.database_returned_an_invalid_row_count": "Baza podataka vratila je nevažni broj redova",
+    "errors.database_returned_fields_that_differ_from_the_table_definition": "Baza podataka vratila je polje koje se razlikuju od definicije tabele",
+    "errors.database_returned_a_malformed_table_row": "Baza podataka vratila je nepravilno obrađen redok tabele",
+    "errors.invalid_database_identifier": "Nevažni identifikator baze podataka"
   }
 }

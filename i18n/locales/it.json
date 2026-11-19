@@ -201,6 +201,14 @@
     "view.optional": "facoltativo",
     "view.required": "obbligatorio",
     "view.default_value": "predefinito {value}",
-    "view.reference": "fa riferimento a {table}.{column}"
+    "view.reference": "fa riferimento a {table}.{column}",
+    "errors.database_returned_a_malformed_result_row": "Database ha restituito una riga di risultati malformata",
+    "errors.database_returned_values_without_result_columns": "Valori restituiti dalla banca dati senza colonne di risultati",
+    "errors.table_browse_requires_a_table_name_input_parameter": "Per navigare nella tabella è necessario un parametro di input del nome della tabella",
+    "errors.database_did_not_return_a_row_count": "Database non ha restituito un numero di righe",
+    "errors.database_returned_an_invalid_row_count": "Database ha restituito un numero di righe non valido",
+    "errors.database_returned_fields_that_differ_from_the_table_definition": "I campi restituiti dalla banca dati che differiscono dalla definizione della tabella",
+    "errors.database_returned_a_malformed_table_row": "La banca dati ha restituito una riga di tabella malformata",
+    "errors.invalid_database_identifier": "Identificatore di database non valido"
   }
 }

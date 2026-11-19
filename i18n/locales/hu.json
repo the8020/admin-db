@@ -201,6 +201,14 @@
     "view.optional": "nem kötelező",
     "view.required": "kötelező",
     "view.default_value": "alapérték: {value}",
-    "view.reference": "hivatkozás: {table}.{column}"
+    "view.reference": "hivatkozás: {table}.{column}",
+    "errors.database_returned_a_malformed_result_row": "Az adatbázis visszaadta a hibás eredményt",
+    "errors.database_returned_values_without_result_columns": "Az adatbázis visszaadott értékek eredményei nélkül",
+    "errors.table_browse_requires_a_table_name_input_parameter": "A táblázat böngészéséhez a táblázat neve beadási paraméter szükséges",
+    "errors.database_did_not_return_a_row_count": "Az adatbázis nem adta vissza a sorszámot",
+    "errors.database_returned_an_invalid_row_count": "Az adatbázis visszaadott egy nem érvényes sorszámot",
+    "errors.database_returned_fields_that_differ_from_the_table_definition": "Az adatbázis visszaadott mezői, amelyek eltérnek a táblázat meghatározásától",
+    "errors.database_returned_a_malformed_table_row": "Az adatbázis visszaadott egy hibás táblázat sorát",
+    "errors.invalid_database_identifier": "Nem érvényes adatbázis azonosító"
   }
 }

@@ -201,6 +201,14 @@
     "view.optional": "可選",
     "view.required": "必填",
     "view.default_value": "預設值 {value}",
-    "view.reference": "參照 {table}.{column}"
+    "view.reference": "參照 {table}.{column}",
+    "errors.database_returned_a_malformed_result_row": "數據庫返回錯誤的結果行",
+    "errors.database_returned_values_without_result_columns": "沒有結果列的數據庫返回值",
+    "errors.table_browse_requires_a_table_name_input_parameter": "查看表需要表名輸入參數",
+    "errors.database_did_not_return_a_row_count": "數據庫沒有返回行數",
+    "errors.database_returned_an_invalid_row_count": "數據庫返回無效的行數",
+    "errors.database_returned_fields_that_differ_from_the_table_definition": "數據庫返回的欄位與表定義不同",
+    "errors.database_returned_a_malformed_table_row": "資料庫返回錯誤表列",
+    "errors.invalid_database_identifier": "不有效的數據庫識別碼"
   }
 }

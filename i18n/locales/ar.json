@@ -149,7 +149,7 @@
     "program.database_operation_failed": "فشلت عملية قاعدة البيانات",
     "program.retired_table": "جدول مستبعد",
     "program.table_browse_failed": "فشل استعراض الجدول",
-    "package.description": "برامج إدارة قاعدة بيانات \u206680|20\u2069",
+    "package.description": "برامج إدارة قاعدة بيانات ⁦80|20⁩",
     "widgets.database.title": "قاعدة البيانات",
     "widgets.database.description": "إدارة جداول قاعدة البيانات",
     "categories.development.title": "التطوير",
@@ -201,6 +201,14 @@
     "view.optional": "اختياري",
     "view.required": "مطلوب",
     "view.default_value": "الافتراضي {value}",
-    "view.reference": "يشير إلى {table}.{column}"
+    "view.reference": "يشير إلى {table}.{column}",
+    "errors.database_returned_a_malformed_result_row": "أرسلت قاعدة البيانات صف نتيجة خاطئة",
+    "errors.database_returned_values_without_result_columns": "قاعدة البيانات أعادت القيم دون أعمدة النتيجة",
+    "errors.table_browse_requires_a_table_name_input_parameter": "التصفح في الجدول يتطلب معايير إدخال اسم الجدول",
+    "errors.database_did_not_return_a_row_count": "قاعدة البيانات لم تعيد عدد الصفوف",
+    "errors.database_returned_an_invalid_row_count": "أرسلت قاعدة البيانات عدد الصفوف غير صالح",
+    "errors.database_returned_fields_that_differ_from_the_table_definition": "قاعدة البيانات أعادت الحقول التي تختلف عن تعريف الجدول",
+    "errors.database_returned_a_malformed_table_row": "أرسلت قاعدة البيانات صف جدول خاطئ",
+    "errors.invalid_database_identifier": "معرف قاعدة البيانات غير صالح"
   }
 }

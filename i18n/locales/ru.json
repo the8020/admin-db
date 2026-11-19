@@ -201,6 +201,14 @@
     "view.optional": "необязательное",
     "view.required": "обязательное",
     "view.default_value": "по умолчанию {value}",
-    "view.reference": "ссылка на {table}.{column}"
+    "view.reference": "ссылка на {table}.{column}",
+    "errors.database_returned_a_malformed_result_row": "База данных вернула неправильный ряд результатов",
+    "errors.database_returned_values_without_result_columns": "Внесенные значения базы данных без столбцов результатов",
+    "errors.table_browse_requires_a_table_name_input_parameter": "Просмотр таблицы требует параметра ввода имени таблицы",
+    "errors.database_did_not_return_a_row_count": "База данных не вернула количество строков",
+    "errors.database_returned_an_invalid_row_count": "База данных вернула недействительный перечень строк",
+    "errors.database_returned_fields_that_differ_from_the_table_definition": "Возвращенные поля в базе данных , отличающиеся от определения таблицы",
+    "errors.database_returned_a_malformed_table_row": "База данных вернула неправильный ряд таблицы",
+    "errors.invalid_database_identifier": "Недействительный идентификатор базы данных"
   }
 }

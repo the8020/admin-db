@@ -201,6 +201,14 @@
     "view.optional": "isteğe bağlı",
     "view.required": "zorunlu",
     "view.default_value": "varsayılan {value}",
-    "view.reference": "{table}.{column} alanına başvurur"
+    "view.reference": "{table}.{column} alanına başvurur",
+    "errors.database_returned_a_malformed_result_row": "Veritabanı yanlış biçimlendirilmiş bir sonuç satırı gönderdi",
+    "errors.database_returned_values_without_result_columns": "Veritabanı sonuç sütunları olmayan değerler gönderildi",
+    "errors.table_browse_requires_a_table_name_input_parameter": "Tabloyu taramak için bir tablo adı girme parametresi gerekir",
+    "errors.database_did_not_return_a_row_count": "Veritabanı bir satır sayısını göndermedi",
+    "errors.database_returned_an_invalid_row_count": "Veritabanı geçersiz satır sayısını gönderdi",
+    "errors.database_returned_fields_that_differ_from_the_table_definition": "Tablo tanımından farklı veri tabanı gönderilen alanlar",
+    "errors.database_returned_a_malformed_table_row": "Veritabanı yanlış biçimlendirilmiş bir tablo satırı gönderdi",
+    "errors.invalid_database_identifier": "Geçersiz veritabanı kimliği"
   }
 }
