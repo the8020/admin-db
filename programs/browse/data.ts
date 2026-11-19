@@ -1,3 +1,5 @@
+import { text as formatMessage } from "/p/the8020/i18n/mod.ts";
+import { msg as messageSymbol } from "/p/the8020/admin-db/i18n/messages.ts";
 import { msg } from "/p/the8020/admin-db/i18n/messages.ts";
 import { text as localizedText } from "/p/the8020/i18n/mod.ts";
 import {
@@ -37,7 +39,11 @@ export async function countTableRows(tableName: string): Promise<bigint> {
 export function rowCountFromResult(result: RowResult): bigint {
   const raw = result.rows[0]?.[0];
   if (raw === undefined) {
-    throw new Error("Database did not return a row count");
+    throw new Error(
+      formatMessage(
+        messageSymbol("errors.database_did_not_return_a_row_count"),
+      ),
+    );
   }
   const value = decodeDatabaseValue(raw);
   const count = typeof value === "bigint"
@@ -46,7 +52,11 @@ export function rowCountFromResult(result: RowResult): bigint {
     ? BigInt(value)
     : undefined;
   if (count === undefined || count < 0n) {
-    throw new Error("Database returned an invalid row count");
+    throw new Error(
+      formatMessage(
+        messageSymbol("errors.database_returned_an_invalid_row_count"),
+      ),
+    );
   }
   return count;
 }
@@ -94,7 +104,10 @@ export function tableBrowseStatement(
     );
   }
   const where = sqlClause(options.where, "Where");
-  const orderBy = sqlClause(options.orderBy, "Order by");
+  const orderBy = sqlClause(
+    options.orderBy,
+    formatMessage(messageSymbol("query.order_by")),
+  );
   const selection = columns.map((column) => quoteIdentifier(column.name)).join(
     ", ",
   );
@@ -115,12 +128,20 @@ export function tableRowsFromResult(
     result.columns.some((name, index) => name !== columns[index]?.name)
   ) {
     throw new Error(
-      "Database returned fields that differ from the table definition",
+      formatMessage(
+        messageSymbol(
+          "errors.database_returned_fields_that_differ_from_the_table_definition",
+        ),
+      ),
     );
   }
   return result.rows.map((values) => {
     if (values.length !== columns.length) {
-      throw new Error("Database returned a malformed table row");
+      throw new Error(
+        formatMessage(
+          messageSymbol("errors.database_returned_a_malformed_table_row"),
+        ),
+      );
     }
     return Object.fromEntries(columns.map((column, index) => [
       column.name,
@@ -140,7 +161,9 @@ export function quoteIdentifier(value: string): string {
     typeof value !== "string" || value.length === 0 || value.includes("\0") ||
     new TextEncoder().encode(value).byteLength > 63
   ) {
-    throw new TypeError("Invalid database identifier");
+    throw new TypeError(
+      formatMessage(messageSymbol("errors.invalid_database_identifier")),
+    );
   }
   return `"${value.replaceAll('"', '""')}"`;
 }
